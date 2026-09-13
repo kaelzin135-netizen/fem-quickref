@@ -1466,12 +1466,13 @@ body.mostrar-contas .conta-longa { display: inline; }
 
 .modal-caixa {
     width: 100%;
-    max-width: 520px;
-    max-height: 80vh;
+    max-width: 600px;
+    max-height: 84vh;
     display: flex;
     flex-direction: column;
     background: var(--elevado);
     border: 1px solid var(--linha-forte);
+    border-radius: 6px;
     box-shadow: 0 18px 50px rgba(0, 0, 0, .5);
 }
 
@@ -1479,32 +1480,28 @@ body.mostrar-contas .conta-longa { display: inline; }
     display: flex;
     align-items: flex-start;
     gap: 14px;
-    padding: 16px 18px 12px;
-    border-bottom: 2px solid var(--accent);
+    padding: 20px 24px 4px;
 }
 
 .modal-topo h3 {
     margin: 0;
     font-family: inherit;
-    font-size: 17px;
+    font-size: 22px;
     font-weight: 700;
     color: var(--tinta);
 }
 
 .modal-sub {
-    margin: 3px 0 0;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .9px;
-    color: var(--accent);
+    margin: 4px 0 0;
+    font-size: 12px;
+    color: var(--tinta-tenue);
 }
 
 .modal-x {
     margin-left: auto;
     flex: 0 0 auto;
-    width: 28px;
-    height: 28px;
+    width: 30px;
+    height: 30px;
     border: 0;
     background: none;
     cursor: pointer;
@@ -1517,10 +1514,10 @@ body.mostrar-contas .conta-longa { display: inline; }
 .modal-x::before, .modal-x::after {
     content: "";
     position: absolute;
-    left: 6px;
-    top: 13px;
-    width: 16px;
-    height: 2px;
+    left: 7px;
+    top: 14px;
+    width: 17px;
+    height: 1.5px;
     background: var(--tinta);
 }
 
@@ -1528,19 +1525,22 @@ body.mostrar-contas .conta-longa { display: inline; }
 .modal-x::after { transform: rotate(-45deg); }
 
 .modal-corpo {
-    padding: 14px 18px 18px;
+    padding: 14px 24px 22px;
     overflow-y: auto;
     font-size: 14px;
-    line-height: 1.6;
+    line-height: 1.65;
     color: var(--tinta-fraca);
     scrollbar-width: thin;
 }
 
-.modal-corpo p { margin: 0 0 .7em; }
+.modal-corpo p { margin: 0 0 1em; }
 .modal-corpo p:last-child { margin-bottom: 0; }
-.modal-corpo b { color: var(--tinta); font-weight: 500; }
-.modal-corpo i { color: var(--tinta); }
-.modal-corpo .ref-livro { font-size: 12px; color: var(--tinta-tenue); margin-top: 1em; }
+.modal-corpo i { color: var(--tinta); font-style: normal; }
+
+/* termo em destaque no meio do texto, como os deles */
+.modal-corpo b { color: var(--accent); font-weight: 500; }
+.modal-corpo .rot-uso { color: var(--accent); font-weight: 500; }
+.modal-corpo .ref-livro { font-size: 12px; color: var(--tinta-tenue); margin-top: 1.2em; }
 
 /* treinada em branco, mestre no acento — o realce por estado deles */
 .linha.treinada .linha-nome { color: var(--tinta); }

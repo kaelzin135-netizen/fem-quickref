@@ -296,8 +296,15 @@ function abrir_pericia(id) {
     if (!d) { return; }
     abrir_modal(p.nome, d.subtitle,
         "<p><i>" + esc(d.description) + "</i></p>" +
-        (d.bullets || []).map(function (b) { return "<p>" + b + "</p>"; }).join("") +
+        (d.bullets || []).map(function (b) { return "<p>" + realcarRotulo(b) + "</p>"; }).join("") +
         (d.reference ? '<p class="ref-livro">' + esc(d.reference) + "</p>" : ""));
+}
+
+/* "Exemplos:" e afins vao no acento, como os termos destacados do C.R.I.S.
+   O livro do F&M nao nomeia cada uso da pericia, entao so ha rotulo onde
+   o proprio texto abre com um. */
+function realcarRotulo(html) {
+    return html.replace(/^([A-ZÀ-Ü][^:<]{1,40}):/, '<span class="rot-uso">$1:</span>');
 }
 
 function desenhar_pericias() {
