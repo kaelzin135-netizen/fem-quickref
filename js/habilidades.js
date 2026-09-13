@@ -93,5 +93,5 @@ function preencher() {
 }
 
 window.addEventListener("DOMContentLoaded", function () {
-    init_engine(SECTIONS, preencher);
+    init_engine(SECTIONS, preencher, { titulo: "Habilidades", ordenarPorTamanho: true });
 });

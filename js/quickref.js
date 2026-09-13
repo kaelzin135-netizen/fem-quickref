@@ -60,5 +60,5 @@ var FILL = [
 window.addEventListener("DOMContentLoaded", function () {
     init_engine(SECTIONS, function () {
         FILL.forEach(function (f) { fill_section(f[0], f[1], f[2]); });
-    });
+    }, { titulo: "Combate", ordenarPorTamanho: true });
 });

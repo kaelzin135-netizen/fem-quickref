@@ -119,6 +119,21 @@ As duas tabelas são **calculadas em JavaScript** a partir das regras (`js/evolu
 digitadas à mão — a de valores máximos assume o melhor atributo possível (15 na criação + 2 da
 origem, subindo com os pontos de atributo até o teto natural de 20) e nenhuma habilidade.
 
+## Navegação e temas
+
+A barra do topo fica só com as três abas, a busca e o botão de tema. As **categorias da
+página ficam na lateral esquerda**, cada uma com a quantidade de itens e a cor da seção,
+e a seção que está na tela aparece destacada conforme você rola. Em Combate e Habilidades
+a lateral (e a própria ordem das seções) vai **da maior para a menor**; em Evolução a ordem
+é a da progressão, porque aquela página é um passo a passo.
+
+Ao filtrar, a lateral acompanha: some quem não tem resultado e as contagens passam a
+mostrar quantos itens sobraram em cada seção.
+
+O botão no canto alterna **Dia** (cards claros) e **Noite** (cards escuros). A escolha fica
+salva no navegador; na primeira visita ele segue a preferência do sistema. No modo noite as
+cores de cada seção são clareadas para continuarem legíveis sobre o fundo escuro.
+
 ## Atalhos
 
 `/` foca a busca, `Esc` fecha o modal ou limpa a busca. A busca ignora acentos

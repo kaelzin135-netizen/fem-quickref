@@ -175,6 +175,8 @@ function preencher() {
     fill_section(data_regras_calc, "regras-lista", "Regra de cálculo");
 }
 
+/* Esta página é um passo a passo: a ordem das seções é a da progressão,
+   não a de tamanho. */
 window.addEventListener("DOMContentLoaded", function () {
-    init_engine(SECTIONS, preencher);
+    init_engine(SECTIONS, preencher, { titulo: "Evolução", ordenarPorTamanho: false });
 });
