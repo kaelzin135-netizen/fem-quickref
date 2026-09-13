@@ -537,78 +537,106 @@ body {
 #section-regras       { --accent: var(--c-regras); }
 
 /* ------------------------------------------------------------------------- */
-/* Modal                                                                       */
+/* Painel de detalhe embutido                                                  */
 /* ------------------------------------------------------------------------- */
 
-.modal-open {
-    overflow: hidden;
+.detalhe {
+    clear: both;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 0 10px;
+    padding: 10px 14px 12px;
+    border-left: 4px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    background-color: var(--surface-alt);
+    color: var(--ink);
+    animation: abrir-detalhe .13s ease-out;
 }
 
-.modal-open .modal {
-    overflow-x: hidden;
-    overflow-y: auto;
+@keyframes abrir-detalhe {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: none; }
 }
 
-.modal {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 1040;
-    overflow: hidden;
-    outline: 0;
-    display: none;
+.detalhe-topo {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 2px;
 }
 
-.modal-visible {
-    display: block;
+.detalhe-titulo {
+    font-family: Lora, 'Calisto MT', Garamond, Georgia, serif;
+    font-variant: small-caps;
+    font-weight: bold;
+    font-size: 14pt;
+    line-height: 1.2;
+    color: var(--accent);
 }
 
-.modal-dialog {
-    position: relative;
-    width: auto;
-    margin: 8px;
+:root[data-tema="noite"] .detalhe-titulo {
+    color: color-mix(in oklab, var(--accent) 45%, #fafaf9);
 }
 
-.modal-backdrop {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-color: #000;
-    opacity: .68;
+.detalhe-tipo {
+    margin-left: auto;
+    font-size: .82em;
+    color: var(--ink-soft);
+    white-space: nowrap;
 }
 
-.modal-container {
-    background-clip: padding-box;
-    outline: 0;
-    box-shadow: 0 6px 30px rgba(0, 0, 0, .7);
-    margin-bottom: 0;
+.detalhe-fechar {
+    flex: 0 0 auto;
+    border: 0;
+    background: none;
+    color: var(--ink-soft);
+    font-size: 15pt;
+    line-height: 1;
+    padding: 0 2px;
+    cursor: pointer;
 }
 
-/* dentro do modal o texto é sempre tinta sobre a superfície, nunca o acento */
-.modal-container .section-content .text,
-.modal-container .section-content {
+.detalhe-fechar:hover {
     color: var(--ink);
 }
 
-#modal-subtitle {
-    color: var(--ink-soft);
+.detalhe-fechar:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
 }
 
-#modal-reference {
+.detalhe-desc {
+    font-style: italic;
     color: var(--ink-soft);
+    line-height: 1.35;
+    margin-bottom: .2em;
 }
 
-#modal-bullets p {
+.detalhe p {
+    color: var(--ink);
     line-height: 1.45;
-    color: var(--ink);
+    max-width: 90ch;
 }
 
-#modal-title .float-right {
-    line-height: 2.6;
+.detalhe hr {
+    border: 0;
+    border-top: 1px solid var(--rule);
+}
+
+.detalhe-ref {
+    margin-top: .9em;
+    font-style: italic;
+    font-size: .9em;
+    color: var(--ink-soft);
+}
+
+.item.aberto .item-title {
+    text-decoration: underline;
+}
+
+.item.aberto .item-icon {
+    filter: brightness(1.35);
+    box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--accent);
 }
 
 /* ------------------------------------------------------------------------- */
@@ -730,7 +758,6 @@ p:first-child {
     .fontsize { font-size: 11pt; }
     .iconsize { width: 40px; height: 40px; }
     .itemsize { height: 40px; width: 50%; }
-    .modalsize { width: 620px; margin: 30px auto; }
     #sidebar { flex-basis: 190px; }
 }
 
@@ -739,7 +766,6 @@ p:first-child {
     .fontsize { font-size: 12pt; }
     .iconsize { width: 44px; height: 44px; }
     .itemsize { height: 44px; width: 33.33%; }
-    .modalsize { width: 620px; margin: 30px auto; }
 }
 
 /* Desktop grande */
@@ -747,7 +773,6 @@ p:first-child {
     .fontsize { font-size: 12pt; }
     .iconsize { width: 44px; height: 44px; }
     .itemsize { height: 44px; width: 25%; }
-    .modalsize { width: 660px; margin: 30px auto; }
 }
 
 /* Impressão */

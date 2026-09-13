@@ -40,7 +40,7 @@ function add_item(parent, data, type) {
 
     var section = parent.closest(".section-container");
 
-    item.onclick = function () { show_modal(data, section, type); };
+    item.onclick = function () { abrir_detalhe(item, data, section, type); };
 
     item.dataset.search = normalize([
         title, subtitle, data.description || "", (data.bullets || []).join(" ")
@@ -73,41 +73,74 @@ function add_group(contentEl, subtitleHtml, data, type) {
 }
 
 /* ------------------------------------------------------------------------- */
-/* Modal                                                                       */
+/* Detalhe embutido — abre logo abaixo da linha do item, sem pop-up            */
 /* ------------------------------------------------------------------------- */
 
-function show_modal(data, section, type) {
-    var title = data.title || "[sem título]";
-    var subtitle = data.description || data.subtitle || "";
-    var bullets = data.bullets || [];
-    var reference = data.reference || "";
-    type = type || "";
+var DETALHE = null;   /* { painel, item } */
 
-    var cor = section
-        ? window.getComputedStyle(section).backgroundColor
-        : "black";
-
-    document.body.classList.add("modal-open");
-    document.getElementById("modal").classList.add("modal-visible");
-
-    var container = document.getElementById("modal-container");
-    container.style.setProperty("--accent", cor);
-    container.style.backgroundColor = cor;
-    container.style.borderColor = cor;
-
-    document.getElementById("modal-title").innerHTML =
-        escape_html(title) + '<span class="float-right">' + escape_html(type) + '</span>';
-    document.getElementById("modal-subtitle").innerHTML = subtitle;
-    document.getElementById("modal-reference").textContent = reference;
-    document.getElementById("modal-bullets").innerHTML =
-        bullets.map(function (b) { return "<p>" + b + "</p>"; }).join("\n<hr>\n");
-
-    document.getElementById("modal").scrollTop = 0;
+function fechar_detalhe() {
+    if (!DETALHE) { return; }
+    DETALHE.painel.parentNode.removeChild(DETALHE.painel);
+    DETALHE.item.classList.remove("aberto");
+    DETALHE = null;
 }
 
-function hide_modal() {
-    document.body.classList.remove("modal-open");
-    document.getElementById("modal").classList.remove("modal-visible");
+/* Último item visível da mesma linha visual do item clicado, para o painel
+   nascer abaixo da linha inteira e não no meio dela. */
+function fim_da_linha(item) {
+    var irmaos = item.parentElement.querySelectorAll(".item:not(.hidden)");
+    var topo = item.offsetTop;
+    var ultimo = item;
+    Array.prototype.forEach.call(irmaos, function (outro) {
+        if (Math.abs(outro.offsetTop - topo) < 4) { ultimo = outro; }
+    });
+    return ultimo;
+}
+
+function abrir_detalhe(item, data, section, type) {
+    var eraEste = DETALHE && DETALHE.item === item;
+    fechar_detalhe();
+    if (eraEste) { return; }          /* clicar de novo fecha */
+
+    var titulo = data.title || "[sem título]";
+    var desc = data.description || data.subtitle || "";
+    var bullets = data.bullets || [];
+    var ref = data.reference || "";
+
+    var painel = document.createElement("div");
+    painel.className = "detalhe";
+    painel.innerHTML =
+        '<div class="detalhe-topo">' +
+        '<span class="detalhe-titulo">' + escape_html(titulo) + '</span>' +
+        '<span class="detalhe-tipo">' + escape_html(type || "") + '</span>' +
+        '<button type="button" class="detalhe-fechar" title="Fechar" aria-label="Fechar">&times;</button>' +
+        '</div>' +
+        '<div class="detalhe-desc">' + desc + '</div>' +
+        '<div class="detalhe-corpo">' +
+        bullets.map(function (b) { return "<p>" + b + "</p>"; }).join("\n<hr>\n") +
+        '</div>' +
+        (ref ? '<div class="detalhe-ref">' + escape_html(ref) + '</div>' : '');
+
+    if (section) {
+        painel.style.setProperty("--accent",
+            window.getComputedStyle(section).backgroundColor);
+    }
+
+    var ancora = fim_da_linha(item);
+    ancora.parentNode.insertBefore(painel, ancora.nextSibling);
+    item.classList.add("aberto");
+    DETALHE = { painel: painel, item: item };
+
+    painel.querySelector(".detalhe-fechar").onclick = function (e) {
+        e.stopPropagation();
+        fechar_detalhe();
+    };
+
+    /* traz o painel para a tela sem dar um salto brusco */
+    var caixa = painel.getBoundingClientRect();
+    if (caixa.bottom > window.innerHeight) {
+        painel.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }
 }
 
 /* ------------------------------------------------------------------------- */
@@ -246,6 +279,8 @@ function apply_search(raw) {
     var q = normalize(raw.trim());
     var any = false;
 
+    fechar_detalhe();   /* as linhas mudam de composição ao filtrar */
+
     ALL_ITEMS.forEach(function (item) {
         var match = !q || item.dataset.search.indexOf(q) !== -1;
         item.classList.toggle("hidden", !match);
@@ -255,18 +290,18 @@ function apply_search(raw) {
     /* Busca vazia: tudo volta a aparecer, inclusive seções que só têm tabelas */
     if (!q) {
         document.querySelectorAll(".section-container, .section-row").forEach(function (el) {
-            if (el.id === "modal-container") { return; }
             el.classList.remove("hidden");
         });
         document.querySelectorAll(".side-link").forEach(function (a) {
             a.classList.remove("hidden");
+            var total = contar_itens(a.dataset.secao);
+            a.querySelector(".side-count").textContent = total ? total : "";
         });
         document.getElementById("no-results").style.display = "none";
         return;
     }
 
     document.querySelectorAll(".section-container").forEach(function (section) {
-        if (section.id === "modal-container") { return; }
         var visibleInSection = 0;
 
         section.querySelectorAll(".section-row").forEach(function (row) {
@@ -306,13 +341,14 @@ function init_engine(sections, preencher, opcoes) {
     build_sidebar(sections, opcoes.titulo, opcoes.ordenarPorTamanho !== false);
     init_scrollspy();
 
-    document.getElementById("modal").onclick = hide_modal;
+    /* a composição das linhas muda com a largura — o painel aberto perderia o lugar */
+    window.addEventListener("resize", fechar_detalhe);
 
     var search = document.getElementById("search");
 
     document.addEventListener("keydown", function (e) {
         if (e.key === "Escape") {
-            hide_modal();
+            fechar_detalhe();
             if (document.activeElement === search && search.value) {
                 search.value = "";
                 apply_search("");

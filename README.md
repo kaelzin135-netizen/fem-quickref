@@ -119,6 +119,13 @@ As duas tabelas são **calculadas em JavaScript** a partir das regras (`js/evolu
 digitadas à mão — a de valores máximos assume o melhor atributo possível (15 na criação + 2 da
 origem, subindo com os pontos de atributo até o teto natural de 20) e nenhuma habilidade.
 
+## Como abrir um item
+
+Clicar em um card **abre o texto ali mesmo**, num painel que nasce logo abaixo da linha
+daquele card e ocupa a largura toda — sem pop-up e sem tirar você do lugar. Clicar de novo
+no mesmo card fecha; clicar em outro move o painel. Também fecham o `×`, a tecla `Esc` e
+qualquer busca. Só um painel fica aberto por vez.
+
 ## Navegação e temas
 
 A barra do topo fica só com as três abas, a busca e o botão de tema. As **categorias da
