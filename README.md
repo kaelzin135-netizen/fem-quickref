@@ -142,6 +142,16 @@ As abas da terceira coluna são **Habilidades · Ataques e TRs · Assistente · 
 PV, PE e Integridade são barras com botões −5 −1 +1 +5, e as perícias treinadas ficam
 destacadas na cor da seção. Abaixo de 1100 px o layout volta ao empilhamento normal.
 
+No lugar do pentágono de atributos do C.R.I.S. há um **selo hexagonal de barreira**,
+desenhado em SVG: seis vértices, um por atributo, com o véu externo tracejado girando
+devagar e a CD de Especialização no núcleo. Hexágono porque são seis atributos e porque
+barreira e domínio são a geometria da casa em *Jujutsu Kaisen*.
+
+O acabamento também segue o C.R.I.S.: campos sublinhados em vez de caixas, o acento da
+seção como um traço curto antes do título em vez de moldura colorida, e cantos e sombras
+suaves. **Só a aba Ficha usa essa linguagem** — Combate, Habilidades e Evolução seguem no
+formato da referência de D&D, com as molduras coloridas.
+
 **Toda conta fica à vista, sem tomar a tela.** Embaixo de cada número vem a conta resumida
 (`10+3+2+2`); passando o mouse aparece a versão nomeada, e o botão **Contas resumidas /
 detalhadas** no topo abre todas de uma vez:

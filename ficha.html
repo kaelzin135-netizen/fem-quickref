@@ -47,7 +47,33 @@
             </div>
             <div class="cartao" id="sec-atributos">
                 <h2>Atributos</h2>
-                <div class="grade-attr" id="ficha-atributos"></div>
+                <div class="selo">
+                    <!-- selo de barreira: seis vértices, um por atributo -->
+                    <svg class="selo-arte" viewBox="0 0 300 300" aria-hidden="true">
+                        <defs>
+                            <radialGradient id="brilhoSelo" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="var(--selo-brilho)" stop-opacity=".5" />
+                                <stop offset="70%" stop-color="var(--selo-brilho)" stop-opacity="0" />
+                            </radialGradient>
+                        </defs>
+                        <circle cx="150" cy="150" r="120" fill="url(#brilhoSelo)" />
+                        <circle class="selo-veu" cx="150" cy="150" r="142" />
+                        <circle class="selo-veu-fino" cx="150" cy="150" r="134" />
+                        <polygon class="selo-hex" points="150,45 240.9,97.5 240.9,202.5 150,255 59.1,202.5 59.1,97.5" />
+                        <polygon class="selo-hex-int" points="150,88 187.2,109.5 187.2,152.5 150,174 112.8,152.5 112.8,109.5" />
+                        <g class="selo-raios">
+                            <line x1="150" y1="150" x2="150" y2="45" />
+                            <line x1="150" y1="150" x2="240.9" y2="97.5" />
+                            <line x1="150" y1="150" x2="240.9" y2="202.5" />
+                            <line x1="150" y1="150" x2="150" y2="255" />
+                            <line x1="150" y1="150" x2="59.1" y2="202.5" />
+                            <line x1="150" y1="150" x2="59.1" y2="97.5" />
+                        </g>
+                        <circle class="selo-nucleo" cx="150" cy="150" r="30" />
+                    </svg>
+                    <div class="selo-nos" id="ficha-atributos"></div>
+                    <div class="selo-centro" id="ficha-selo-centro"></div>
+                </div>
             </div>
             <div class="cartao" id="sec-recursos">
                 <div id="ficha-recursos"></div>

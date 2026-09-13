@@ -60,9 +60,9 @@ function desenhar_identidade() {
         '<div class="cabeca-linha">' +
         '<label class="mini-campo"><span>Nível</span>' +
         '<input type="number" min="1" max="20" data-campo="nivel" value="' + F.nivel + '"></label>' +
-        '<span class="selo">' + esc(grau()) + "</span>" +
-        '<span class="selo" title="' + esc(formula(bt())) + '">Treino ' + fmt(bt().total) + "</span>" +
-        (e ? '<span class="selo">' + esc(e.pvDado) + "×" + F.nivel + "</span>" : "") +
+        '<span class="pilula">' + esc(grau()) + "</span>" +
+        '<span class="pilula" title="' + esc(formula(bt())) + '">Treino ' + fmt(bt().total) + "</span>" +
+        (e ? '<span class="pilula">' + esc(e.pvDado) + "×" + F.nivel + "</span>" : "") +
         "</div>" +
         '<details class="mais-campos"><summary>Jogador, campanha, técnica, atributos-chave</summary>' +
         '<div class="campos">' +
@@ -83,20 +83,34 @@ function campoTexto(campo, rotulo) {
         '<input type="text" data-campo="' + campo + '" value="' + esc(F[campo]) + '"></label>';
 }
 
+/* Seis atributos nos vértices do selo. As posições em % espelham o hexágono
+   do SVG (raio 105 num viewBox de 300). */
+var POS_SELO = {
+    for: [50, 15], des: [80.3, 32.5], con: [80.3, 67.5],
+    int: [50, 85], sab: [19.7, 67.5], pre: [19.7, 32.5]
+};
+
 function desenhar_atributos() {
     document.getElementById("ficha-atributos").innerHTML =
         ATRIBUTOS.map(function (a) {
             var v = valorAtributo(a.id);
             var extras = v.partes.length > 1;
-            return '<div class="attr' + (extras ? " tem-bonus" : "") + '" title="' +
-                esc(formula(v)) + '">' +
-                '<span class="attr-nome">' + esc(a.curto) + "</span>" +
-                '<span class="attr-mod">' + fmt(modAtributo(a.id)) + "</span>" +
+            var pos = POS_SELO[a.id];
+            return '<div class="no' + (extras ? " tem-bonus" : "") + '" style="left:' + pos[0] +
+                "%;top:" + pos[1] + '%" title="' + esc(a.nome + " — " + formula(v)) + '">' +
+                '<span class="no-mod">' + fmt(modAtributo(a.id)) + "</span>" +
                 '<input type="number" min="1" max="30" data-atributo="' + a.id + '" value="' +
                 (Number(F.atributosBase[a.id]) || 0) + '">' +
-                (extras ? '<span class="attr-bonus">= ' + v.total + "</span>" : "") +
+                '<span class="no-nome">' + esc(a.curto) + "</span>" +
                 "</div>";
         }).join("");
+
+    var e = espec();
+    var cd = cdEspec();
+    document.getElementById("ficha-selo-centro").innerHTML =
+        '<span class="centro-rot">CD</span>' +
+        '<span class="centro-val" title="' + esc(formula(cd)) + '">' + cd.total + "</span>" +
+        '<span class="centro-sub">' + esc(e ? nomeAtributo(F.atribCD).slice(0, 3) : "—") + "</span>";
 }
 
 /* barras de recurso com −/+, como as de vida e determinação do C.R.I.S. */
@@ -137,7 +151,6 @@ function tile(rotulo, res, sufixo) {
 function desenhar_valores() {
     document.getElementById("ficha-valores").innerHTML =
         tile("Defesa", defesa()) +
-        tile("CD Espec.", cdEspec()) +
         tile("Atenção", atencao()) +
         tile("Iniciativa", iniciativa()) +
         tile("Desloc.", deslocamento(), "m");
