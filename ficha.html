@@ -144,6 +144,21 @@
     <script type="text/javascript" src="js/data_hab_talento.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/data_hab_aptidao.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/data_evolucao.js" charset="utf-8"></script>
+    <!-- pop-up de detalhe (perícia, por enquanto) -->
+    <div class="modal-fundo hidden" id="modal-ficha" role="dialog" aria-modal="true"
+        aria-labelledby="modal-titulo">
+        <div class="modal-caixa">
+            <div class="modal-topo">
+                <div>
+                    <h3 id="modal-titulo"></h3>
+                    <p class="modal-sub" id="modal-sub"></p>
+                </div>
+                <button type="button" class="modal-x" id="modal-fechar" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-corpo" id="modal-corpo"></div>
+        </div>
+    </div>
+
     <script type="text/javascript" src="js/data_pericia.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/data_ficha.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/engine.js" charset="utf-8"></script>

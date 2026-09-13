@@ -205,8 +205,8 @@ function desenhar_aptidoes() {
     document.getElementById("ficha-aptidoes").innerHTML =
         APTIDOES_NIVEL.map(function (a) {
             var r = nivelAptidao(a.id);
-            return '<label class="apt" title="' + esc(a.nome + " — " + formula(r)) + '">' +
-                '<span class="apt-sigla">' + a.sigla + "</span>" +
+            return '<label class="apt" title="' + esc(formula(r)) + '">' +
+                '<span class="apt-nome">' + esc(a.nome) + "</span>" +
                 '<input type="number" min="0" max="5" data-aptidao="' + a.id + '" value="' +
                 (Number(F.aptidoes[a.id]) || 0) + '">' +
                 '<span class="apt-total">' + r.total + "</span></label>";
@@ -225,7 +225,7 @@ function linhaTeste(nome, curto, controles, res, treinado, mestre, verId) {
     /* quando ha texto no livro, o nome vira botao que abre o detalhe */
     var rotulo = verId
         ? '<button type="button" class="linha-nome linha-nome-btn" data-pericia-ver="' +
-          esc(verId) + '" aria-expanded="false" title="Ver para que serve">' + esc(nome) + "</button>"
+          esc(verId) + '" title="Ver para que serve">' + esc(nome) + "</button>"
         : '<span class="linha-nome">' + esc(nome) + "</span>";
     return '<div class="linha' + (treinado ? " treinada" : "") + (mestre ? " mestre" : "") + '">' +
         marcaLinha() +
@@ -266,14 +266,38 @@ function textoDaPericia(nome) {
     return null;
 }
 
-function detalhePericia(p) {
+/* --------------------------------------------------- pop-up ------------- */
+
+var focoAntesDoModal = null;
+
+function abrir_modal(titulo, sub, corpo) {
+    var fundo = document.getElementById("modal-ficha");
+    if (!fundo) { return; }
+    focoAntesDoModal = document.activeElement;
+    document.getElementById("modal-titulo").textContent = titulo;
+    document.getElementById("modal-sub").textContent = sub || "";
+    document.getElementById("modal-corpo").innerHTML = corpo;
+    fundo.classList.remove("hidden");
+    document.getElementById("modal-fechar").focus();
+}
+
+function fechar_modal() {
+    var fundo = document.getElementById("modal-ficha");
+    if (!fundo || fundo.classList.contains("hidden")) { return; }
+    fundo.classList.add("hidden");
+    if (focoAntesDoModal && focoAntesDoModal.isConnected) { focoAntesDoModal.focus(); }
+    focoAntesDoModal = null;
+}
+
+function abrir_pericia(id) {
+    var p = PERICIAS.filter(function (x) { return x.id === id; })[0];
+    if (!p) { return; }
     var d = textoDaPericia(p.nome);
-    if (!d) { return ""; }
-    return '<div class="linha-detalhe hidden" data-det="' + esc(p.id) + '">' +
+    if (!d) { return; }
+    abrir_modal(p.nome, d.subtitle,
         "<p><i>" + esc(d.description) + "</i></p>" +
         (d.bullets || []).map(function (b) { return "<p>" + b + "</p>"; }).join("") +
-        (d.reference ? '<p class="ref-livro">' + esc(d.reference) + "</p>" : "") +
-        "</div>";
+        (d.reference ? '<p class="ref-livro">' + esc(d.reference) + "</p>" : ""));
 }
 
 function desenhar_pericias() {
@@ -282,11 +306,9 @@ function desenhar_pericias() {
         PERICIAS.map(function (p) {
             var reg = F.pericias[p.id];
             var temTexto = !!textoDaPericia(p.nome);
-            return '<div class="linha-grupo">' +
-                linhaTeste(p.nome + (p.exigeTreino ? " *" : ""), p.attr.toUpperCase(),
-                    ctrlTM("pericias", p.id, reg), pericia(p.id), reg.t || reg.m, reg.m,
-                    temTexto ? p.id : null) +
-                detalhePericia(p) + "</div>";
+            return linhaTeste(p.nome + (p.exigeTreino ? " *" : ""), p.attr.toUpperCase(),
+                ctrlTM("pericias", p.id, reg), pericia(p.id), reg.t || reg.m, reg.m,
+                temTexto ? p.id : null);
         }).join("");
 }
 
@@ -529,6 +551,17 @@ function ligar_eventos() {
         }
     });
 
+    var fundoModal = document.getElementById("modal-ficha");
+    if (fundoModal) {
+        document.getElementById("modal-fechar").addEventListener("click", fechar_modal);
+        fundoModal.addEventListener("mousedown", function (e) {
+            if (e.target === fundoModal) { fechar_modal(); }
+        });
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") { fechar_modal(); }
+        });
+    }
+
     raiz.addEventListener("change", function (e) {
         var el = e.target;
         if (el.tagName === "SELECT" && el.dataset.campo) { F[el.dataset.campo] = el.value; desenhar(); }
@@ -541,15 +574,7 @@ function ligar_eventos() {
 
         if (d.aba) { trocar_aba(d.aba); return; }
 
-        if (d.periciaVer) {
-            var det = document.querySelector('.linha-detalhe[data-det="' + d.periciaVer + '"]');
-            if (det) {
-                var abrindo = det.classList.contains("hidden");
-                det.classList.toggle("hidden", !abrindo);
-                el.setAttribute("aria-expanded", abrindo ? "true" : "false");
-            }
-            return;
-        }
+        if (d.periciaVer) { abrir_pericia(d.periciaVer); return; }
 
         if (d.rec) {
             F[d.rec] = Math.max(0, (Number(F[d.rec]) || 0) + Number(d.delta));
