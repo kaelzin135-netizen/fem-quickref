@@ -457,7 +457,16 @@ function trocar_aba(nome) {
 }
 
 function ligar_eventos() {
-    var raiz = document.getElementById("ficha");
+    /* A identidade fica numa faixa fora de #ficha, entao a delegacao precisa
+       cobrir as duas raizes - sem isso os campos do cabecalho nao gravam. */
+    var raizes = [document.getElementById("ficha"), document.getElementById("ficha-identidade")]
+        .filter(Boolean);
+
+    var raiz = {
+        addEventListener: function (tipo, fn) {
+            raizes.forEach(function (r) { r.addEventListener(tipo, fn); });
+        }
+    };
 
     raiz.addEventListener("input", function (e) {
         var el = e.target;
