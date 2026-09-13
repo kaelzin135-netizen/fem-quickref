@@ -13,7 +13,7 @@
     <link rel="icon" type="image/png" href="img/crowned-skull.png">
 </head>
 
-<body class="page-background">
+<body class="page-background body-ficha">
 
     <nav id="nav">
         <div class="nav-inner">
@@ -34,68 +34,73 @@
         </div>
     </nav>
 
-    <div class="pagina-ficha" id="ficha">
+    <div class="ficha-app" id="ficha">
 
-        <div class="painel hidden" id="caixa-json">
-            <textarea id="area-json" rows="6" spellcheck="false"
-                placeholder="O JSON da ficha aparece aqui ao exportar. Para importar, cole um JSON e clique em Importar."></textarea>
+        <!-- coluna 1: identidade, atributos, recursos, valores, aptidões -->
+        <div class="col col-1">
+            <div class="painel hidden" id="caixa-json">
+                <textarea id="area-json" rows="5" spellcheck="false"
+                    placeholder="O JSON aparece aqui ao exportar. Para importar, cole um JSON e clique em Importar."></textarea>
+            </div>
+            <div class="cartao" id="sec-identidade">
+                <div id="ficha-identidade"></div>
+            </div>
+            <div class="cartao" id="sec-atributos">
+                <h2>Atributos</h2>
+                <div class="grade-attr" id="ficha-atributos"></div>
+            </div>
+            <div class="cartao" id="sec-recursos">
+                <div id="ficha-recursos"></div>
+            </div>
+            <div class="cartao" id="sec-valores">
+                <div class="tiles" id="ficha-valores"></div>
+            </div>
+            <div class="cartao" id="sec-aptidoes">
+                <h2>Aptidões <span class="h2-nota">0 a 5</span></h2>
+                <div class="grade-apt" id="ficha-aptidoes"></div>
+            </div>
         </div>
 
-        <div id="sec-identidade" class="cartao cartao-largo">
-            <div id="ficha-identidade"></div>
+        <!-- coluna 2: perícias -->
+        <div class="col col-2">
+            <div class="cartao alto" id="sec-pericias">
+                <h2>Perícias <span class="h2-nota">T · M · outros</span></h2>
+                <div class="linhas" id="ficha-pericias"></div>
+                <p class="rodape-col">* em regra, só pode ser usada se você for treinado</p>
+            </div>
         </div>
 
-        <div class="grid-ficha">
+        <!-- coluna 3: abas -->
+        <div class="col col-3">
+            <div class="cartao alto" id="sec-abas">
+                <div class="abas" id="abas-ficha">
+                    <button type="button" class="aba-btn ativa" data-aba="habilidades">Habilidades</button>
+                    <button type="button" class="aba-btn" data-aba="testes">Ataques e TRs</button>
+                    <button type="button" class="aba-btn" data-aba="assistente">Assistente</button>
+                    <button type="button" class="aba-btn" data-aba="notas">Anotações</button>
+                </div>
 
-            <div class="coluna">
-                <div id="sec-atributos" class="cartao">
-                    <h2>Atributos</h2>
-                    <div class="grade-attr" id="ficha-atributos"></div>
+                <div class="aba-painel" data-painel="habilidades">
+                    <div id="ficha-itens"></div>
                 </div>
-                <div id="sec-aptidoes" class="cartao">
-                    <h2>Aptidões <span class="h2-nota">nível 0 a 5</span></h2>
-                    <div class="grade-apt" id="ficha-aptidoes"></div>
-                </div>
-                <div id="sec-assistente" class="cartao">
-                    <h2>Assistente</h2>
-                    <div id="ficha-assistente"></div>
-                </div>
-            </div>
 
-            <div class="coluna">
-                <div id="sec-pericias" class="cartao">
-                    <h2>Perícias <span class="h2-nota">T treinado · M mestre · * exige treino</span></h2>
-                    <div class="linhas" id="ficha-pericias"></div>
-                </div>
-            </div>
-
-            <div class="coluna">
-                <div id="sec-testes" class="cartao">
+                <div class="aba-painel hidden" data-painel="testes">
                     <h2>Jogadas de Ataque</h2>
                     <div class="linhas" id="ficha-ataques"></div>
                     <h2>Testes de Resistência</h2>
                     <div class="linhas" id="ficha-resistencias"></div>
                 </div>
+
+                <div class="aba-painel hidden" data-painel="assistente">
+                    <div class="aviso-ficha hidden" id="aviso-ficha"></div>
+                    <div id="ficha-assistente"></div>
+                </div>
+
+                <div class="aba-painel hidden" data-painel="notas">
+                    <textarea data-campo="anotacoes" class="anotacoes" rows="18"
+                        placeholder="Equipamento, feitiços, votos, ganchos de história…"></textarea>
+                </div>
             </div>
-
-        </div>
-
-        <div class="aviso-ficha hidden" id="aviso-ficha"></div>
-
-        <div id="sec-itens" class="cartao cartao-largo">
-            <h2>Habilidades, Talentos e Aptidões <span class="h2-nota">do livro ou homebrew</span></h2>
-            <div id="ficha-itens"></div>
-        </div>
-
-        <div id="sec-anotacoes" class="cartao cartao-largo">
-            <h2>Anotações</h2>
-            <textarea data-campo="anotacoes" rows="4" class="anotacoes"
-                placeholder="Equipamento, feitiços, votos, ganchos de história…"></textarea>
-        </div>
-
-        <div class="footer">
-            Referência não-oficial · Feiticeiros &amp; Maldições — Livro de Regras v2.5.2 ·
-            estrutura baseada na Ficha de Personagem v2.5
         </div>
 
     </div>

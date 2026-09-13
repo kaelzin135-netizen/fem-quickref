@@ -1,7 +1,6 @@
 /* ------------------------------------------------------------------------- */
-/* Ficha — painel compacto                                                     */
-/* Totais em destaque, conta resumida embaixo e conta completa no hover ou no  */
-/* modo "contas detalhadas".                                                   */
+/* Ficha — três colunas em uma tela, coluna 3 em abas                          */
+/* Estrutura inspirada na do C.R.I.S. (424 / 356 / 500, rolagem por coluna).   */
 /* ------------------------------------------------------------------------- */
 
 function esc(s) {
@@ -10,7 +9,6 @@ function esc(s) {
         .replace(/"/g, "&quot;");
 }
 
-/* nomeada: "10 base + 3 Destreza + 2 ½ nível" */
 function formula(res) {
     if (!res.partes.length) { return "sem parcelas"; }
     return res.partes.map(function (p, i) {
@@ -20,7 +18,6 @@ function formula(res) {
     }).join("");
 }
 
-/* curta: "10+3+2+2" — cabe embaixo do número sem tomar a tela */
 function formulaCurta(res) {
     if (!res.partes.length) { return ""; }
     return res.partes.map(function (p, i) {
@@ -35,14 +32,6 @@ function conta(res) {
         '<span class="conta-longa">' + esc(formula(res)) + "</span></span>";
 }
 
-function tile(rotulo, res, sufixo) {
-    return '<div class="tile">' +
-        '<span class="tile-rot">' + esc(rotulo) + "</span>" +
-        '<span class="tile-val">' + (Math.round(res.total * 10) / 10) +
-        (sufixo ? "<i>" + esc(sufixo) + "</i>" : "") + "</span>" +
-        conta(res) + "</div>";
-}
-
 function opcoes(lista, valor, campoId, campoNome) {
     return lista.map(function (o) {
         var id = o[campoId || "id"], nome = o[campoNome || "nome"];
@@ -55,67 +44,44 @@ function origemAtual() {
     return ORIGENS.filter(function (o) { return o.id === F.origem; })[0] || null;
 }
 
-/* -------------------------------------------------------- cabeçalho ------ */
+/* --------------------------------------------------- coluna 1: topo ------ */
 
 function desenhar_identidade() {
     var e = espec();
-    var pv = pvMax(), pe = peMax(), ig = integridadeMax();
     document.getElementById("ficha-identidade").innerHTML =
-        '<div class="cabeca">' +
         '<input type="text" class="campo-nome" data-campo="nome" placeholder="Nome do personagem" value="' +
         esc(F.nome) + '">' +
-        '<select data-campo="especializacao" class="sel-cabeca"><option value="">Especialização</option>' +
+        '<div class="cabeca-linha">' +
+        '<select data-campo="especializacao"><option value="">Especialização</option>' +
         opcoes(ESPECIALIZACOES, F.especializacao) + "</select>" +
-        '<select data-campo="origem" class="sel-cabeca"><option value="">Origem</option>' +
+        '<select data-campo="origem"><option value="">Origem</option>' +
         opcoes(ORIGENS, F.origem) + "</select>" +
+        "</div>" +
+        '<div class="cabeca-linha">' +
         '<label class="mini-campo"><span>Nível</span>' +
         '<input type="number" min="1" max="20" data-campo="nivel" value="' + F.nivel + '"></label>' +
         '<span class="selo">' + esc(grau()) + "</span>" +
         '<span class="selo" title="' + esc(formula(bt())) + '">Treino ' + fmt(bt().total) + "</span>" +
-        (e ? '<span class="selo">' + esc(e.pvDado) + " · " + F.nivel + " dados</span>" : "") +
+        (e ? '<span class="selo">' + esc(e.pvDado) + "×" + F.nivel + "</span>" : "") +
         "</div>" +
-
-        '<div class="tiles">' +
-        tileRecurso("PV", pv, "pvPerdidos") +
-        tileRecurso(e ? e.recurso : "PE", pe, "pePerdidos") +
-        tileRecurso("Integridade", ig, "integridadePerdida") +
-        tile("Defesa", defesa()) +
-        tile("CD Espec.", cdEspec()) +
-        tile("Atenção", atencao()) +
-        tile("Iniciativa", iniciativa()) +
-        tile("Desloc.", deslocamento(), "m") +
-        "</div>" +
-
-        '<details class="mais-campos"><summary>Jogador, campanha, técnica e atributos-chave</summary>' +
+        '<details class="mais-campos"><summary>Jogador, campanha, técnica, atributos-chave</summary>' +
         '<div class="campos">' +
         campoTexto("jogador", "Jogador") + campoTexto("campanha", "Campanha") +
-        campoTexto("tecnica", "Técnica amaldiçoada") +
-        '<label class="campo"><span>Atributo da CD</span><select data-campo="atribCD">' +
+        campoTexto("tecnica", "Técnica") +
+        '<label class="campo"><span>Atrib. da CD</span><select data-campo="atribCD">' +
         opcoes(e ? ATRIBUTOS.filter(function (a) { return e.chave.indexOf(a.id) >= 0; }) : ATRIBUTOS,
             F.atribCD) + "</select></label>" +
-        '<label class="campo"><span>Atributo de jujutsu</span><select data-campo="atribJujutsu">' +
+        '<label class="campo"><span>Atrib. de jujutsu</span><select data-campo="atribJujutsu">' +
         opcoes(ATRIBUTOS, F.atribJujutsu) + "</select></label>" +
         "</div>" +
         (origemAtual() ? '<p class="nota-origem">' + esc(origemAtual().notas) + "</p>" : "") +
         "</details>";
 }
 
-function tileRecurso(rotulo, res, campo) {
-    var perdidos = Number(F[campo]) || 0;
-    return '<div class="tile tile-recurso">' +
-        '<span class="tile-rot">' + esc(rotulo) + "</span>" +
-        '<span class="tile-val">' + (res.total - perdidos) + "<i>/" + res.total + "</i></span>" +
-        '<label class="perdidos" title="Perdidos">−<input type="number" min="0" data-campo="' +
-        campo + '" value="' + perdidos + '"></label>' +
-        conta(res) + "</div>";
-}
-
 function campoTexto(campo, rotulo) {
     return '<label class="campo"><span>' + esc(rotulo) + "</span>" +
         '<input type="text" data-campo="' + campo + '" value="' + esc(F[campo]) + '"></label>';
 }
-
-/* -------------------------------------------------------- atributos ------ */
 
 function desenhar_atributos() {
     document.getElementById("ficha-atributos").innerHTML =
@@ -128,10 +94,53 @@ function desenhar_atributos() {
                 '<span class="attr-mod">' + fmt(modAtributo(a.id)) + "</span>" +
                 '<input type="number" min="1" max="30" data-atributo="' + a.id + '" value="' +
                 (Number(F.atributosBase[a.id]) || 0) + '">' +
-                (extras ? '<span class="attr-bonus" title="' + esc(formula(v)) + '">= ' +
-                    v.total + "</span>" : "") +
+                (extras ? '<span class="attr-bonus">= ' + v.total + "</span>" : "") +
                 "</div>";
         }).join("");
+}
+
+/* barras de recurso com −/+, como as de vida e determinação do C.R.I.S. */
+function barra(rotulo, res, campo) {
+    var perdidos = Number(F[campo]) || 0;
+    var atual = res.total - perdidos;
+    var pct = res.total > 0 ? Math.max(0, Math.min(100, (atual / res.total) * 100)) : 0;
+    var baixo = pct <= 25 ? " baixo" : pct <= 50 ? " meio" : "";
+    return '<div class="rec">' +
+        '<div class="rec-topo"><span class="rec-rot">' + esc(rotulo) + "</span>" +
+        '<span class="rec-num">' + atual + '<i>/' + res.total + "</i></span></div>" +
+        '<div class="rec-barra"><div class="rec-fill' + baixo + '" style="width:' + pct + '%"></div></div>' +
+        '<div class="rec-ctrl">' +
+        '<button type="button" class="passo" data-rec="' + campo + '" data-delta="-5">−5</button>' +
+        '<button type="button" class="passo" data-rec="' + campo + '" data-delta="-1">−1</button>' +
+        '<input type="number" min="0" data-campo="' + campo + '" value="' + perdidos + '" title="Perdidos">' +
+        '<button type="button" class="passo" data-rec="' + campo + '" data-delta="1">+1</button>' +
+        '<button type="button" class="passo" data-rec="' + campo + '" data-delta="5">+5</button>' +
+        conta(res) + "</div></div>";
+}
+
+function desenhar_recursos() {
+    var e = espec();
+    document.getElementById("ficha-recursos").innerHTML =
+        barra("Pontos de Vida", pvMax(), "pvPerdidos") +
+        barra("Pontos de " + (e ? e.recurso : "Energia"), peMax(), "pePerdidos") +
+        barra("Integridade da Alma", integridadeMax(), "integridadePerdida");
+}
+
+function tile(rotulo, res, sufixo) {
+    return '<div class="tile">' +
+        '<span class="tile-rot">' + esc(rotulo) + "</span>" +
+        '<span class="tile-val">' + (Math.round(res.total * 10) / 10) +
+        (sufixo ? "<i>" + esc(sufixo) + "</i>" : "") + "</span>" +
+        conta(res) + "</div>";
+}
+
+function desenhar_valores() {
+    document.getElementById("ficha-valores").innerHTML =
+        tile("Defesa", defesa()) +
+        tile("CD Espec.", cdEspec()) +
+        tile("Atenção", atencao()) +
+        tile("Iniciativa", iniciativa()) +
+        tile("Desloc.", deslocamento(), "m");
 }
 
 function desenhar_aptidoes() {
@@ -152,10 +161,10 @@ function desenhar_aptidoes() {
         }).join("");
 }
 
-/* ---------------------------------------------------- linhas de teste ---- */
+/* ------------------------------------------------ coluna 2 e abas -------- */
 
-function linhaTeste(nome, curto, controles, res) {
-    return '<div class="linha">' +
+function linhaTeste(nome, curto, controles, res, treinado) {
+    return '<div class="linha' + (treinado ? " treinada" : "") + '">' +
         '<span class="linha-nome">' + esc(nome) + "</span>" +
         '<span class="linha-attr">' + esc(curto) + "</span>" +
         controles +
@@ -175,16 +184,18 @@ function ctrlTM(tipo, id, reg) {
 function desenhar_pericias() {
     document.getElementById("ficha-pericias").innerHTML =
         PERICIAS.map(function (p) {
+            var reg = F.pericias[p.id];
             return linhaTeste(p.nome + (p.exigeTreino ? " *" : ""), p.attr.toUpperCase(),
-                ctrlTM("pericias", p.id, F.pericias[p.id]), pericia(p.id));
+                ctrlTM("pericias", p.id, reg), pericia(p.id), reg.t || reg.m);
         }).join("");
 }
 
 function desenhar_testes() {
     document.getElementById("ficha-resistencias").innerHTML =
         RESISTENCIAS.map(function (r) {
+            var reg = F.resistencias[r.id];
             return linhaTeste(r.nome, r.attr.toUpperCase(),
-                ctrlTM("resistencias", r.id, F.resistencias[r.id]), resistencia(r.id));
+                ctrlTM("resistencias", r.id, reg), resistencia(r.id), reg.t || reg.m);
         }).join("");
 
     document.getElementById("ficha-ataques").innerHTML =
@@ -197,11 +208,11 @@ function desenhar_testes() {
                 '" data-campo="t"' + (reg.t ? " checked" : "") + ">T</label>" +
                 '<input type="number" class="micro" title="Outros bônus" data-ataque="' + a.id +
                 '" data-campo="outros" value="' + (Number(reg.outros) || 0) + '">';
-            return linhaTeste(a.nome, "", ctrl, ataque(a.id));
+            return linhaTeste(a.nome, "", ctrl, ataque(a.id), reg.t);
         }).join("");
 }
 
-/* -------------------------------------------------------------- itens ---- */
+/* ------------------------------------------------------------- itens ---- */
 
 function rotuloAlvo(id) {
     var a = ALVOS.filter(function (x) { return x.id === id; })[0];
@@ -217,14 +228,14 @@ function desenhar_itens() {
         }).join("");
         return '<div class="item-ficha">' +
             '<div class="item-ficha-topo">' +
-            '<span class="item-ficha-nome">' + esc(item.nome) + "</span>" +
+            '<button type="button" class="item-abrir" data-ver="' + i + '" title="Ver o texto">' +
+            esc(item.nome) + "</button>" +
             '<span class="item-ficha-cat">' + esc(item.categoria) + "</span>" +
-            '<span class="chips">' + chips + "</span>" +
-            '<button type="button" class="btn-mini" data-ver="' + i + '">texto</button>' +
             '<button type="button" class="btn-mini" data-add-mod="' + i + '">+ mod</button>' +
             '<button type="button" class="btn-mini perigo" data-remover-item="' + i +
-            '" title="Remover item">&times;</button>' +
+            '" title="Remover">&times;</button>' +
             "</div>" +
+            (chips ? '<div class="chips">' + chips + "</div>" : "") +
             '<div class="item-ficha-texto hidden" data-texto="' + i + '">' +
             "<p><i>" + (item.descricao || "") + "</i></p>" +
             (item.bullets || []).map(function (b) { return "<p>" + b + "</p>"; }).join("") +
@@ -238,7 +249,7 @@ function desenhar_itens() {
         '<div class="acoes-itens">' +
         '<button type="button" class="btn" id="btn-abrir-catalogo">+ Adicionar do livro</button>' +
         '<button type="button" class="btn" id="btn-abrir-homebrew">+ Homebrew</button>' +
-        '<span class="contagem-itens">' + F.itens.length + " item(ns)</span>" +
+        '<span class="contagem-itens">' + F.itens.length + "</span>" +
         "</div>" +
         '<div id="painel-catalogo" class="painel hidden"></div>' +
         '<div id="painel-homebrew" class="painel hidden"></div>' +
@@ -264,23 +275,21 @@ function desenhar_catalogo() {
     var painel = document.getElementById("painel-catalogo");
     var q = normalize(CATALOGO_FILTRO.trim());
     var achados = q ? CATALOGO.filter(function (c) { return c.busca.indexOf(q) !== -1; }) : [];
-    var linhas = achados.slice(0, 60).map(function (c) {
+    var linhas = achados.slice(0, 50).map(function (c) {
         var efeitos = ler_efeitos(c);
         return '<div class="linha-catalogo">' +
             "<div><b>" + esc(c.nome) + '</b> <span class="item-ficha-cat">' + esc(c.categoria) + "</span>" +
             '<div class="cat-sub">' + esc(c.subtitulo) + "</div>" +
             (efeitos.length ? '<div class="cat-efeitos">' + efeitos.map(function (ef) {
                 return esc(rotuloAlvo(ef.alvo)) + " " + fmt(ef.valor);
-            }).join(" · ") + "</div>" : "") +
-            "</div>" +
+            }).join(" · ") + "</div>" : "") + "</div>" +
             '<button type="button" class="btn-mini" data-add-catalogo="' +
-            CATALOGO.indexOf(c) + '">adicionar</button>' +
-            "</div>";
+            CATALOGO.indexOf(c) + '">+</button></div>';
     }).join("");
 
     painel.innerHTML =
         '<input type="search" id="busca-catalogo" placeholder="Buscar entre ' + CATALOGO.length +
-        ' itens do livro…" value="' + esc(CATALOGO_FILTRO) + '">' +
+        ' itens…" value="' + esc(CATALOGO_FILTRO) + '">' +
         (q ? '<p class="dica">' + achados.length + " resultado(s)</p>" : "") +
         '<div class="lista-catalogo">' + linhas + "</div>";
 
@@ -297,7 +306,7 @@ function desenhar_catalogo() {
 function desenhar_homebrew() {
     document.getElementById("painel-homebrew").innerHTML =
         '<div class="campos">' +
-        '<label class="campo"><span>Nome</span><input type="text" id="hb-nome" placeholder="Ex.: Punho de Brasa"></label>' +
+        '<label class="campo"><span>Nome</span><input type="text" id="hb-nome" placeholder="Punho de Brasa"></label>' +
         '<label class="campo"><span>Categoria</span><input type="text" id="hb-cat" value="Homebrew"></label>' +
         '<label class="campo largo"><span>Descrição</span><input type="text" id="hb-desc"></label>' +
         "</div>" +
@@ -305,7 +314,7 @@ function desenhar_homebrew() {
         '<p class="dica">Depois use <b>+ mod</b> no item para dizer o que ele altera.</p>';
 }
 
-/* --------------------------------------------------------- foco/render --- */
+/* ------------------------------------------------------- foco/render ---- */
 
 function seletorDe(el) {
     if (!el || !el.dataset) { return null; }
@@ -336,6 +345,8 @@ function desenhar() {
     if (anot && anot.value !== F.anotacoes) { anot.value = F.anotacoes || ""; }
     desenhar_identidade();
     desenhar_atributos();
+    desenhar_recursos();
+    desenhar_valores();
     desenhar_aptidoes();
     desenhar_pericias();
     desenhar_testes();
@@ -344,11 +355,12 @@ function desenhar() {
     salvar();
 }
 
-/* recalcula só o que depende de números — não reconstrói a lista de itens */
 function recalcular() {
     comFoco(function () {
         desenhar_identidade();
         desenhar_atributos();
+        desenhar_recursos();
+        desenhar_valores();
         desenhar_aptidoes();
         desenhar_pericias();
         desenhar_testes();
@@ -357,7 +369,16 @@ function recalcular() {
     });
 }
 
-/* -------------------------------------------------------------- eventos -- */
+/* ------------------------------------------------------------- eventos -- */
+
+function trocar_aba(nome) {
+    document.querySelectorAll(".aba-btn").forEach(function (b) {
+        b.classList.toggle("ativa", b.dataset.aba === nome);
+    });
+    document.querySelectorAll(".aba-painel").forEach(function (p) {
+        p.classList.toggle("hidden", p.dataset.painel !== nome);
+    });
+}
 
 function ligar_eventos() {
     var raiz = document.getElementById("ficha");
@@ -405,6 +426,14 @@ function ligar_eventos() {
         if (!el) { return; }
         var d = el.dataset;
 
+        if (d.aba) { trocar_aba(d.aba); return; }
+
+        if (d.rec) {
+            F[d.rec] = Math.max(0, (Number(F[d.rec]) || 0) + Number(d.delta));
+            desenhar_recursos();
+            salvar();
+            return;
+        }
         if (el.id === "btn-abrir-catalogo") {
             var p = document.getElementById("painel-catalogo");
             p.classList.toggle("hidden");

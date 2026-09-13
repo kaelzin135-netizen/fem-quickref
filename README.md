@@ -126,9 +126,21 @@ que serviu de base): atributos, PV / PE / Integridade, Defesa, Atenção, Inicia
 Deslocamento, CD de Especialização, as 3 jogadas de ataque, os 5 testes de resistência,
 as 20 perícias com T/M e os níveis de aptidão.
 
-O layout é um **painel denso em três colunas** — cabeçalho com os oito números principais
-em blocos compactos, depois atributos/aptidões/assistente, perícias e ataques/resistências
-lado a lado. Uma ficha de 5º nível cabe em menos de duas telas.
+O layout segue a estrutura do [C.R.I.S.](https://crisordemparanormal.com/) (a ficha digital
+de Ordem Paranormal): **três colunas que ocupam uma tela só**, cada uma rolando por dentro,
+com a terceira em abas.
+
+| | C.R.I.S. | aqui |
+| --- | --- | --- |
+| Coluna 1 | 424 px — atributos, vida, defesa | 430 px — identidade, atributos, barras, valores, aptidões |
+| Coluna 2 | 356 px — perícias | 370 px — perícias |
+| Coluna 3 | 500 px — abas | 588 px — abas |
+| Linha de perícia | ~30 px | 28 px |
+| Altura da página | uma tela | uma tela |
+
+As abas da terceira coluna são **Habilidades · Ataques e TRs · Assistente · Anotações**.
+PV, PE e Integridade são barras com botões −5 −1 +1 +5, e as perícias treinadas ficam
+destacadas na cor da seção. Abaixo de 1100 px o layout volta ao empilhamento normal.
 
 **Toda conta fica à vista, sem tomar a tela.** Embaixo de cada número vem a conta resumida
 (`10+3+2+2`); passando o mouse aparece a versão nomeada, e o botão **Contas resumidas /
