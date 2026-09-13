@@ -126,13 +126,18 @@ que serviu de base): atributos, PV / PE / Integridade, Defesa, Atenção, Inicia
 Deslocamento, CD de Especialização, as 3 jogadas de ataque, os 5 testes de resistência,
 as 20 perícias com T/M e os níveis de aptidão.
 
-**Toda conta fica à vista.** Nenhum número aparece sozinho — cada um mostra as parcelas
-que o formaram e de onde vieram:
+O layout é um **painel denso em três colunas** — cabeçalho com os oito números principais
+em blocos compactos, depois atributos/aptidões/assistente, perícias e ataques/resistências
+lado a lado. Uma ficha de 5º nível cabe em menos de duas telas.
+
+**Toda conta fica à vista, sem tomar a tela.** Embaixo de cada número vem a conta resumida
+(`10+3+2+2`); passando o mouse aparece a versão nomeada, e o botão **Contas resumidas /
+detalhadas** no topo abre todas de uma vez:
 
 ```
-Defesa 17 = 10 base + 3 Destreza + 2 ½ nível + 2 Estilo Defensivo
-Acrobacia +8 = 3 Destreza + 2 ½ nível + 3 treinado (+3)
-CD 17 = 10 base + 2 ½ nível + 0 Força + 3 treinamento + 2 Implemento Marcial
+Defesa 17   10+3+2+2   → 10 base + 3 Destreza + 2 ½ nível + 2 Estilo Defensivo
+Acrobacia +8   2+2+3    → 2 Destreza + 2 ½ nível + 3 treinado (+3)
+CD 20   10+2+3+3+2      → 10 base + 2 ½ nível + 3 Força + 3 treinamento + 2 Implemento Marcial
 ```
 
 **Um clique adiciona o conteúdo do livro.** O catálogo tem os 564 itens das outras abas
