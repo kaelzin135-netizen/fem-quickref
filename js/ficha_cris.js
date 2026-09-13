@@ -160,7 +160,7 @@ function desenhar_assistente() {
         '<div class="acoes-itens">' +
         '<button type="button" class="btn" id="btn-aplicar-base"' + (faltaBase ? "" : " disabled") + ">" +
         (faltaBase ? "Aplicar " + faltaBase + " habilidade(s) base" : "Habilidades base em dia") + "</button>" +
-        '<button type="button" class="btn" id="btn-subir-nivel"' +
+        '<button type="button" class="btn secundario" id="btn-subir-nivel"' +
         (F.nivel >= 20 ? " disabled" : "") + ">Subir para o " + Math.min(F.nivel + 1, 20) + "º nível</button>" +
         "</div>" +
         '<ul class="pendencias">' + pendencias().map(function (p) {
