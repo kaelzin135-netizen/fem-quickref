@@ -813,6 +813,7 @@ p:first-child {
     --tinta-tenue: rgba(255, 255, 255, .38);
     --vermelho: #d9534f;
     --verde: #3d8b40;
+    --realce: rgba(255, 255, 255, .07);
 
     background: var(--chao);
     background-image: none;
@@ -830,11 +831,12 @@ p:first-child {
     --tinta: #16151a;
     --tinta-fraca: rgba(0, 0, 0, .58);
     --tinta-tenue: rgba(0, 0, 0, .36);
+    --realce: rgba(0, 0, 0, .06);
 }
 
 .ficha-app {
     display: grid;
-    grid-template-columns: minmax(340px, 424px) minmax(300px, 356px) minmax(340px, 1fr);
+    grid-template-columns: minmax(340px, 424px) minmax(340px, 404px) minmax(320px, 1fr);
     gap: 0;
     max-width: 1440px;
     width: 100%;
@@ -861,10 +863,10 @@ p:first-child {
 .col::-webkit-scrollbar-thumb { background: var(--linha-forte); }
 .col::-webkit-scrollbar-track { background: transparent; }
 
-/* as colunas se separam por um fio, como as deles */
-.col-2 { padding: 0 16px; border-left: 1px solid var(--linha); border-right: 1px solid var(--linha); }
-.col-1 { padding-right: 16px; }
-.col-3 { padding-left: 16px; }
+/* sem fio entre as colunas: quem separa e o espaco */
+.col-2 { padding: 0 20px; }
+.col-1 { padding-right: 20px; }
+.col-3 { padding-left: 20px; }
 
 .col-2 .cartao.alto, .col-3 .cartao.alto { display: flex; flex-direction: column; min-height: 0; flex: 1; }
 
@@ -873,15 +875,14 @@ p:first-child {
 .cartao {
     background: none;
     border: 0;
-    border-bottom: 1px solid var(--linha);
     border-radius: 0;
     box-shadow: none;
-    padding: 0 0 14px;
-    margin-bottom: 14px;
+    padding: 0;
+    margin-bottom: 24px;
     color: var(--tinta);
 }
 
-.cartao:last-child, .cartao.alto { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
+.cartao:last-child, .cartao.alto { margin-bottom: 0; }
 
 /* titulo centralizado em versalete, como o PERICIAS / VIDA deles.
    Grade de 3 colunas: vazio | titulo | nota, para o titulo ficar no
@@ -927,9 +928,7 @@ p:first-child {
 .rodape-col {
     font-size: 10px;
     color: var(--tinta-tenue);
-    margin: 10px 0 0;
-    padding-top: 8px;
-    border-top: 1px solid var(--linha);
+    margin: 12px 0 0;
 }
 
 /* --- faixa de identidade (largura total, no topo) --- */
@@ -1282,17 +1281,17 @@ p:first-child {
 .rec-ctrl { display: flex; align-items: center; gap: 4px; margin-top: 5px; }
 
 .passo {
-    padding: 0 6px;
-    border: 1px solid var(--linha-forte);
+    padding: 1px 7px;
+    border: 0;
     background: none;
-    color: var(--tinta-fraca);
+    color: var(--tinta-tenue);
     font-family: inherit;
     font-size: 11px;
     cursor: pointer;
-    transition: all .1s ease;
+    transition: color .1s ease, background-color .1s ease;
 }
 
-.passo:hover { color: var(--tinta); border-color: var(--accent); }
+.passo:hover { color: var(--tinta); background-color: var(--realce); }
 
 .rec-ctrl input {
     width: 40px;
@@ -1378,15 +1377,11 @@ body.mostrar-contas .conta-longa { display: inline; }
 .linha {
     display: flex;
     align-items: center;
-    gap: 7px;
+    gap: 6px;
     padding: 0 2px;
-    /* border-box para a linha fechar em 28px cheios, como no C.R.I.S. */
     box-sizing: border-box;
     min-height: 28px;
-    border-bottom: 1px solid var(--linha);
 }
-
-.linha:last-child { border-bottom: 0; }
 .linha:hover { background-color: rgba(255, 255, 255, .04); }
 :root[data-tema="dia"] .linha:hover { background-color: rgba(0, 0, 0, .04); }
 
@@ -1417,15 +1412,14 @@ body.mostrar-contas .conta-longa { display: inline; }
 .linha.treinada .linha-marca { stroke: var(--tinta-fraca); }
 .linha.mestre .linha-marca { fill: var(--accent); stroke: var(--accent); }
 
-.linha-attr { flex: 0 0 26px; font-size: 10px; font-weight: 700; color: var(--tinta-tenue); }
+.linha-attr { flex: 0 0 24px; font-size: 10px; font-weight: 700; color: var(--tinta-tenue); }
 
 /* cabecalho da tabela, como PERICIA / DADOS / BONUS / Treino / Outros */
 .linha-cab {
     display: flex;
     align-items: center;
-    gap: 7px;
-    padding: 0 2px 5px;
-    border-bottom: 1px solid var(--linha-forte);
+    gap: 6px;
+    padding: 0 2px 6px;
     font-size: 9px;
     font-weight: 700;
     text-transform: uppercase;
@@ -1434,12 +1428,13 @@ body.mostrar-contas .conta-longa { display: inline; }
 }
 
 .linha-marca-vazia { flex: 0 0 13px; }
+.linha-cab .linha-attr { flex: 0 0 24px; }
 .linha-cab .linha-nome,
 .linha-cab .linha-attr,
 .linha-cab .linha-total { font-size: 9px; font-weight: 700; color: inherit; }
 .cab-tm { flex: 0 0 24px; text-align: center; }
 .cab-outros { flex: 0 0 38px; text-align: center; }
-.cab-conta { flex: 0 0 auto; min-width: 44px; text-align: right; }
+.cab-conta { flex: 0 0 auto; min-width: 38px; text-align: right; }
 
 .tm {
     display: inline-flex;
@@ -1482,13 +1477,13 @@ select.micro { flex: 0 0 48px; width: 48px; text-align: left; }
     color: var(--tinta);
 }
 
-.linha .conta { flex: 0 0 auto; text-align: right; min-width: 44px; }
+.linha .conta { flex: 0 0 auto; text-align: right; min-width: 38px; font-size: 9px; }
 body.mostrar-contas .linha { flex-wrap: wrap; min-height: 40px; padding-bottom: 3px; }
 body.mostrar-contas .linha .conta { flex: 1 1 100%; text-align: left; }
 
 /* --- abas: 14px, ativa com borda de 2px no acento --- */
 
-.abas { display: flex; gap: 8px; border-bottom: 1px solid var(--linha); margin-bottom: 14px; }
+.abas { display: flex; gap: 8px; margin-bottom: 14px; }
 
 .aba-btn {
     padding: 2px 8px 5px;
@@ -1516,20 +1511,21 @@ body.mostrar-contas .linha .conta { flex: 1 1 100%; text-align: left; }
 
 .btn-topo {
     flex: 0 0 auto;
-    padding: 3px 10px;
+    padding: 3px 9px;
     border-radius: 0;
-    border: 1px solid #3f3f46;
+    border: 0;
     background: none;
     color: var(--chrome-dim);
     font-family: Roboto, inherit;
     font-size: 12px;
     cursor: pointer;
     white-space: nowrap;
+    transition: color .1s ease, background-color .1s ease;
 }
 
-.btn-topo:hover { border-color: var(--gold); color: #fff; }
+.btn-topo:hover { color: #fff; background-color: var(--chrome-hover); }
 .btn-topo.ligado { border-color: var(--gold); color: var(--gold); }
-.btn-topo.perigo:hover { border-color: var(--vermelho); color: #fca5a5; }
+.btn-topo.perigo:hover { color: #fca5a5; background-color: rgba(217, 83, 79, .16); }
 
 /* Icones dos botoes: SVG na grade de 24 do Material, como no C.R.I.S.,
    desenhados em currentColor para seguir o botao nos dois temas. */
@@ -1546,36 +1542,42 @@ body.mostrar-contas .linha .conta { flex: 1 1 100%; text-align: left; }
     gap: 6px;
     padding: 0 12px;
     min-height: 28px;
+    border: 0;
     border-radius: 0;
-    border: 1px solid var(--linha-forte);
     background: none;
-    color: var(--tinta);
+    color: var(--tinta-fraca);
     font-family: inherit;
     font-size: 12px;
     cursor: pointer;
-    transition: border-color .1s ease;
+    transition: color .1s ease, background-color .1s ease;
 }
 
-.btn:hover { border-color: var(--accent); }
+/* sem moldura em repouso - o C.R.I.S. chama isso de naked-button */
+.btn:hover { color: var(--tinta); background-color: var(--realce); }
+.btn .ico { opacity: .7; }
+.btn:hover .ico { opacity: 1; }
 .btn[disabled] { opacity: .4; cursor: default; }
-.btn[disabled]:hover { border-color: var(--linha-forte); }
+.btn[disabled]:hover { background: none; color: var(--tinta-fraca); }
 
 .btn-mini {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 3px;
-    padding: 0 6px;
+    padding: 0 5px;
     min-height: 20px;
+    border: 0;
     border-radius: 0;
-    border: 1px solid var(--linha-forte);
     background: none;
-    color: var(--tinta-fraca);
+    color: var(--tinta-tenue);
     font-family: inherit;
     font-size: 11px;
     cursor: pointer;
     white-space: nowrap;
+    transition: color .1s ease, background-color .1s ease;
 }
+
+.btn-mini:hover { color: var(--tinta); background-color: var(--realce); }
 
 .btn-mini .ico { width: 13px; height: 13px; }
 .btn-mini.perigo .ico { opacity: .7; }
@@ -1597,8 +1599,8 @@ body.mostrar-contas .linha .conta { flex: 1 1 100%; text-align: left; }
     margin-bottom: 6px;
 }
 
-/* aberto, ganha o fio de acento no topo, como o ritual expandido deles */
-.item-ficha:has(.item-ficha-texto:not(.hidden)) { border-top: 2px solid var(--accent); }
+/* aberto, so escurece um tom - sem fio de acento marcando o topo */
+.item-ficha:has(.item-ficha-texto:not(.hidden)) { background: var(--fundo-fundo); }
 .item-ficha-topo { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; }
 
 .item-abrir {
@@ -1659,14 +1661,15 @@ body.mostrar-contas .linha .conta { flex: 1 1 100%; text-align: left; }
 
 /* --- catálogo, homebrew, assistente --- */
 
-.painel { margin-bottom: 10px; padding: 9px 10px; border: 1px solid var(--linha); background: var(--elevado); }
+.painel { margin-bottom: 10px; padding: 10px 12px; border: 0; background: var(--elevado); }
 #caixa-json { background: var(--fundo-fundo); }
 
 #painel-catalogo input[type="search"] {
     width: 100%;
     box-sizing: border-box;
-    padding: 4px 8px;
-    border: 1px solid var(--linha-forte);
+    padding: 3px 0 5px;
+    border: 0;
+    border-bottom: 1px solid var(--linha-forte);
     background: none;
     color: var(--tinta);
     font-family: inherit;
@@ -1676,8 +1679,7 @@ body.mostrar-contas .linha .conta { flex: 1 1 100%; text-align: left; }
 .dica { font-size: 11px; color: var(--tinta-tenue); margin: 5px 0; }
 .lista-catalogo { max-height: 250px; overflow-y: auto; }
 
-.linha-catalogo { display: flex; align-items: center; gap: 8px; padding: 4px 0; border-bottom: 1px solid var(--linha); }
-.linha-catalogo:last-child { border-bottom: 0; }
+.linha-catalogo { display: flex; align-items: center; gap: 8px; padding: 5px 0; }
 .linha-catalogo > div { flex: 1; min-width: 0; }
 .linha-catalogo b { font-size: 13px; font-weight: 500; color: var(--tinta); }
 .cat-sub { font-size: 11px; color: var(--tinta-tenue); }
@@ -1691,10 +1693,7 @@ body.mostrar-contas .linha .conta { flex: 1 1 100%; text-align: left; }
     line-height: 1.45;
     font-size: 12px;
     color: var(--tinta-fraca);
-    border-bottom: 1px solid var(--linha);
 }
-
-.pendencias li:last-child { border-bottom: 0; }
 .pendencias li b { color: var(--tinta); font-weight: 500; }
 .pendencias li::before { position: absolute; left: 1px; top: 5px; font-weight: 700; }
 .pendencias li.ok::before { content: "✓"; color: var(--verde); }
