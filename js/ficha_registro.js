@@ -89,12 +89,6 @@ function desenhar_perfil() {
             'data-i="' + i + '">' + icone("fechar") + "</button></div>";
     }).join("");
 
-    var feiticos = NIVEIS_FEITICO.map(function (n) {
-        var lista = (F.feiticos && F.feiticos["n" + n]) || [];
-        return '<div class="coluna-feitico"><h4>Nível ' + n + "</h4>" +
-            '<textarea data-feitico="' + n + '" rows="4" placeholder="um por linha">' +
-            esc(lista.join("\n")) + "</textarea></div>";
-    }).join("");
 
     var votos = (F.votos || []).map(function (v, i) {
         return '<div class="voto">' +
@@ -113,8 +107,7 @@ function desenhar_perfil() {
         '<button type="button" class="btn secundario" data-add-lista="aptidoesAmaldicoadas">' +
         icone("add") + "Aptidão</button>" +
 
-        "<h2>Lista de feitiços</h2>" +
-        '<div class="grade-feiticos">' + feiticos + "</div>" +
+        desenhoFeiticos() +
 
         "<h2>Expansão de domínio</h2>" +
         campoCaminho("expansao.nome", "Nome", F.expansao && F.expansao.nome) +
@@ -129,6 +122,89 @@ function desenhar_perfil() {
         '<div class="lista-votos">' + votos + "</div>" +
         '<button type="button" class="btn secundario" data-add-lista="votos">' +
         icone("add") + "Voto</button>";
+}
+
+
+/* ---------------------------------------------------------- feiticos ---- */
+
+var FILTRO_FEITICO = "";
+var FEITICO_ABERTO = -1;
+
+var CAMPOS_FEITICO = [
+    { id: "execucao", nome: "Execução" },
+    { id: "alcance", nome: "Alcance" },
+    { id: "alvo", nome: "Alvo" },
+    { id: "duracao", nome: "Duração" },
+    { id: "custo", nome: "Custo" }
+];
+
+/* Um cartao por feiticio, agrupado por nivel, com o chevron abrindo os
+   detalhes — o desenho da aba Rituais do C.R.I.S. */
+function cartaoFeitico(f, i) {
+    var aberto = FEITICO_ABERTO === i;
+    return '<div class="feitico' + (aberto ? " aberto" : "") + '">' +
+        '<div class="feitico-topo">' +
+        '<button type="button" class="feitico-seta" data-abrir-feitico="' + i +
+        '" aria-expanded="' + (aberto ? "true" : "false") + '">' +
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg></button>' +
+        '<input type="text" class="feitico-nome" data-lista="feiticos" data-i="' + i +
+        '" data-chave="nome" value="' + esc(f.nome || "") + '" placeholder="nome do feitiço">' +
+        '<button type="button" class="btn-mini perigo" data-remover-lista="feiticos" data-i="' + i +
+        '">' + icone("fechar") + "</button>" +
+        "</div>" +
+        (aberto
+            ? '<div class="feitico-corpo">' +
+              '<span class="feitico-nivel">Nível ' + (Number(f.nivel) || 0) + "</span>" +
+              '<label class="feitico-sel"><span>Nível</span>' +
+              '<select data-lista="feiticos" data-i="' + i + '" data-chave="nivel">' +
+              NIVEIS_FEITICO.map(function (n) {
+                  return '<option value="' + n + '"' +
+                      (Number(f.nivel) === n ? " selected" : "") + ">" + n + "</option>";
+              }).join("") + "</select></label>" +
+              CAMPOS_FEITICO.map(function (c) {
+                  return '<div class="feitico-campo"><span>' + esc(c.nome) + ":</span>" +
+                      '<input type="text" data-lista="feiticos" data-i="' + i +
+                      '" data-chave="' + c.id + '" value="' + esc(f[c.id] || "") + '"></div>';
+              }).join("") +
+              '<textarea data-lista="feiticos" data-i="' + i + '" data-chave="descricao" rows="4" ' +
+              'placeholder="o que o feitiço faz">' + esc(f.descricao || "") + "</textarea>" +
+              "</div>"
+            : "") +
+        "</div>";
+}
+
+function desenhoFeiticos() {
+    var lista = F.feiticos || [];
+    var busca = FILTRO_FEITICO.toLowerCase();
+    var cartoes = "";
+
+    NIVEIS_FEITICO.forEach(function (n) {
+        var doNivel = lista
+            .map(function (f, i) { return { f: f, i: i }; })
+            .filter(function (x) {
+                return (Number(x.f.nivel) || 0) === n &&
+                    (!busca || (x.f.nome || "").toLowerCase().indexOf(busca) >= 0);
+            });
+        if (!doNivel.length) { return; }
+        cartoes += '<h4 class="feitico-grupo">Nível ' + n +
+            ' <span>' + doNivel.length + "</span></h4>" +
+            doNivel.map(function (x) { return cartaoFeitico(x.f, x.i); }).join("");
+    });
+
+    if (!cartoes) {
+        cartoes = '<p class="aviso">' +
+            (busca ? "Nenhum feitiço com esse nome." : "Nenhum feitiço anotado ainda.") + "</p>";
+    }
+
+    return '<h2>Feitiços <span class="h2-nota">' + lista.length + " no total</span></h2>" +
+        '<div class="feitico-barra">' +
+        '<input type="search" id="filtro-feitico" placeholder="Filtrar feitiços" value="' +
+        esc(FILTRO_FEITICO) + '">' +
+        '<div class="feitico-cd"><span>CD de feitiço</span><b>' + cdEspec().total + "</b></div>" +
+        "</div>" +
+        '<div class="lista-feiticos">' + cartoes + "</div>" +
+        '<button type="button" class="btn secundario" data-add-lista="feiticos">' +
+        icone("add") + "Feitiço</button>";
 }
 
 /* ------------------------------------------------------------ treinos ---- */

@@ -24,7 +24,7 @@ function ficha_nova() {
         dadosVidaGastos: {},
         inventario: [], limiteEspacos: 6,
         armas: [],
-        feiticos: {}, aptidoesAmaldicoadas: [],
+        feiticos: [], aptidoesAmaldicoadas: [],
         expansao: { nome: "", tipo: "", descricao: "" },
         tecnicaMaxima: { nome: "", descricao: "" },
         votos: [],
@@ -36,7 +36,6 @@ function ficha_nova() {
     MARCAS_PV.forEach(function (m) { f.marcas[m.id] = false; });
     TIPOS_DANO_RD.forEach(function (t) { f.rds[t.id] = 0; });
     DADOS_VIDA.forEach(function (d) { f.dadosVidaGastos[d] = 0; });
-    NIVEIS_FEITICO.forEach(function (n) { f.feiticos["n" + n] = []; });
     TREINAMENTOS.forEach(function (t) {
         f.treinos[t.id] = [false, false, false, false];
         f.treinosInstrutor[t.id] = "";
@@ -59,6 +58,22 @@ function salvar() {
         ENVELOPE.titulo = F.nome || ENVELOPE.titulo;
         if (typeof mesa_gravar === "function") { mesa_gravar(); }
     }
+}
+
+/* o formato antigo guardava {n0:[nome], n1:[...]}; vira lista de objetos */
+function migrarFeiticos(f) {
+    if (!f.feiticos || Array.isArray(f.feiticos)) { return; }
+    var lista = [];
+    Object.keys(f.feiticos).forEach(function (chave) {
+        var n = Number(String(chave).replace("n", "")) || 0;
+        (f.feiticos[chave] || []).forEach(function (nome) {
+            lista.push({
+                nome: nome, nivel: n, execucao: "", alcance: "",
+                alvo: "", duracao: "", custo: "", descricao: ""
+            });
+        });
+    });
+    f.feiticos = lista;
 }
 
 function carregar() {

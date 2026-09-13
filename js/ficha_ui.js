@@ -488,6 +488,9 @@ function comFoco(fn) {
 }
 
 function desenhar() {
+    /* a ficha pode chegar pelo localStorage, pela mesa ou pelo Importar;
+       normalizar aqui pega os tres caminhos */
+    if (typeof migrarFeiticos === "function") { migrarFeiticos(F); }
     var anot = document.querySelector('[data-campo="anotacoes"]');
     if (anot && anot.value !== F.anotacoes) { anot.value = F.anotacoes || ""; }
     desenhar_identidade();
@@ -582,11 +585,9 @@ function ligar_eventos() {
             }
             return;
         }
-        /* feiticos: um por linha */
-        if (el.dataset.feitico !== undefined) {
-            F.feiticos["n" + el.dataset.feitico] =
-                el.value.split("\n").map(function (x) { return x.trim(); }).filter(Boolean);
-            salvar();
+        if (el.id === "filtro-feitico") {
+            FILTRO_FEITICO = el.value;
+            comFoco(desenhar_perfil);
             return;
         }
         if (el.dataset.instrutor) {
@@ -668,6 +669,12 @@ function ligar_eventos() {
     }
 
     raiz.addEventListener("change", function (e) {
+        if (e.target.dataset.lista === "feiticos" && e.target.dataset.chave === "nivel") {
+            F.feiticos[Number(e.target.dataset.i)].nivel = Number(e.target.value);
+            salvar();
+            desenhar_perfil();
+            return;
+        }
         if (e.target.id === "retrato-arquivo") {
             guardar_retrato(e.target.files && e.target.files[0]);
             return;
@@ -687,10 +694,15 @@ function ligar_eventos() {
 
         if (d.addLista) {
             if (!F[d.addLista]) { F[d.addLista] = []; }
-            F[d.addLista].push(d.addLista === "inventario"
-                ? { nome: "", quant: 1, peso: 0, preco: "" }
-                : d.addLista === "votos" ? { nome: "", descricao: "" }
-                : { nome: "", atual: "", max: "", custo: "" });
+            F[d.addLista].push(
+                d.addLista === "inventario" ? { nome: "", quant: 1, peso: 0, preco: "" } :
+                d.addLista === "votos" ? { nome: "", descricao: "" } :
+                d.addLista === "feiticos" ? {
+                    nome: "", nivel: 0, execucao: "", alcance: "",
+                    alvo: "", duracao: "", custo: "", descricao: ""
+                } :
+                { nome: "", atual: "", max: "", custo: "" });
+            if (d.addLista === "feiticos") { FEITICO_ABERTO = F.feiticos.length - 1; }
             desenhar();
             return;
         }
@@ -700,6 +712,13 @@ function ligar_eventos() {
             return;
         }
         if (d.tirarRetrato) { F.retrato = ""; desenhar(); return; }
+
+        if (d.abrirFeitico !== undefined) {
+            var n = Number(d.abrirFeitico);
+            FEITICO_ABERTO = (FEITICO_ABERTO === n) ? -1 : n;
+            desenhar_perfil();
+            return;
+        }
 
         if (d.morteSet) {
             F.testesMorte[d.morteSet] = Number(d.valor);

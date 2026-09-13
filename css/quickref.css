@@ -1848,10 +1848,14 @@ body.mostrar-contas .linha .conta { flex: 1 1 100%; text-align: left; }
 
 /* --- abas: 14px, ativa com borda de 2px no acento --- */
 
-.abas { display: flex; gap: 8px; margin-bottom: 14px; }
+/* sao sete abas: o espacamento aperta para caberem numa linha, e o
+   flex-wrap segura se a coluna ficar estreita demais */
+.abas { display: flex; flex-wrap: wrap; gap: 2px 11px; margin-bottom: 14px; }
 
 .aba-btn {
-    padding: 2px 8px 5px;
+    /* sem folga lateral: sao sete abas e o sublinhado fica colado no
+       texto, como no C.R.I.S. */
+    padding: 2px 1px 5px;
     border: 0;
     border-bottom: 2px solid transparent;
     background: none;
@@ -1861,7 +1865,7 @@ body.mostrar-contas .linha .conta { flex: 1 1 100%; text-align: left; }
     font-weight: 400;
     font-size: 13px;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: .6px;
     padding-bottom: 7px;
     cursor: pointer;
     white-space: nowrap;
@@ -2210,3 +2214,42 @@ input:focus, select:focus, textarea:focus, .aba-btn:focus-visible {
 .retrato-acoes .btn { cursor: pointer; }
 .cab-campo.limite { margin-top: 10px; }
 .cab-campo.limite > span { flex: 0 0 130px; }
+
+/* feitiços, no molde da aba Rituais do C.R.I.S. */
+.feitico-barra { display: flex; align-items: flex-end; gap: 16px; margin-bottom: 14px; }
+.feitico-barra input[type="search"] {
+    flex: 1 1 auto; min-width: 0; padding: 3px 0 5px; border: 0;
+    border-bottom: 1px solid var(--linha-forte); background: none;
+    color: var(--tinta); font-family: inherit; font-size: 14px;
+}
+.feitico-barra input[type="search"]:focus { outline: none; border-bottom-color: var(--accent); }
+.feitico-cd { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; }
+.feitico-cd span { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .9px; color: var(--tinta-fraca); }
+.feitico-cd b { display: inline-flex; align-items: center; justify-content: center; min-width: 42px; height: 30px; border: 1px solid var(--linha-forte); font-size: 15px; font-weight: 400; color: var(--tinta); }
+
+.feitico-grupo { display: flex; align-items: baseline; gap: 7px; margin: 16px 0 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--tinta-fraca); }
+.feitico-grupo span { font-weight: 400; color: var(--tinta-tenue); }
+.feitico-grupo:first-child { margin-top: 0; }
+
+.feitico { background: var(--elevado); margin-bottom: 6px; }
+.feitico.aberto { border-top: 2px solid var(--accent); }
+.feitico-topo { display: flex; align-items: center; gap: 8px; padding: 8px 12px 9px; }
+
+.feitico-seta { flex: 0 0 auto; width: 24px; height: 24px; padding: 0; border: 0; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.feitico-seta svg { width: 20px; height: 20px; fill: var(--accent); transition: transform .12s ease; }
+.feitico.aberto .feitico-seta svg { transform: rotate(180deg); }
+
+.feitico-nome { flex: 1 1 auto; min-width: 0; padding: 1px 0 2px; border: 0; background: none; color: var(--tinta); font-family: inherit; font-size: 14px; font-weight: 700; }
+.feitico-nome:focus { outline: none; border-bottom: 1px solid var(--accent); }
+
+.feitico-corpo { padding: 2px 12px 13px 44px; }
+.feitico-nivel { display: inline-block; padding: 2px 9px; margin-bottom: 10px; background: var(--accent); color: #fff; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .9px; }
+.feitico-sel { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .9px; color: var(--tinta-fraca); }
+.feitico-sel select { padding: 1px 0 2px; border: 0; border-bottom: 1px solid var(--linha-forte); background: none; color: var(--tinta); font-family: inherit; font-size: 13px; cursor: pointer; }
+.feitico-campo { display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px; }
+.feitico-campo > span { flex: 0 0 74px; font-size: 13px; color: var(--accent); }
+.feitico-campo input { flex: 1 1 auto; min-width: 0; padding: 1px 0 2px; border: 0; border-bottom: 1px solid var(--linha); background: none; color: var(--tinta); font-family: inherit; font-size: 13px; }
+.feitico-campo input:focus { outline: none; border-bottom-color: var(--accent); }
+.feitico-corpo textarea { width: 100%; box-sizing: border-box; margin-top: 8px; padding: 7px 9px; border: 0; border-left: 2px solid var(--linha-forte); background: rgba(255,255,255,.04); color: var(--tinta-fraca); font-family: inherit; font-size: 13px; line-height: 1.55; resize: vertical; }
+:root[data-tema="dia"] .feitico-corpo textarea { background: rgba(0,0,0,.04); }
+.feitico-corpo textarea:focus { outline: none; border-left-color: var(--accent); }

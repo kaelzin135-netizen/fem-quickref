@@ -436,16 +436,18 @@
       "custo": ""
     }
   ],
-  "feiticos": {
-    "n0": [
-      "Florescimento"
-    ],
-    "n1": [],
-    "n2": [],
-    "n3": [],
-    "n4": [],
-    "n5": []
-  },
+  "feiticos": [
+    {
+      "nome": "Florescimento",
+      "nivel": 0,
+      "execucao": "",
+      "alcance": "",
+      "alvo": "",
+      "duracao": "",
+      "custo": "",
+      "descricao": ""
+    }
+  ],
   "expansao": {
     "nome": "",
     "tipo": "",
