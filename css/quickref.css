@@ -786,3 +786,400 @@ p:first-child {
     .main-title, .description { color: black; }
     .section-container { box-shadow: none; }
 }
+
+/* ------------------------------------------------------------------------- */
+/* Ficha de personagem                                                         */
+/* ------------------------------------------------------------------------- */
+
+#sec-identidade { --accent: #1e40af; }
+#sec-atributos  { --accent: #52525b; }
+#sec-valores    { --accent: #0f766e; }
+#sec-testes     { --accent: #831843; }
+#sec-pericias   { --accent: #a16207; }
+#sec-aptidoes   { --accent: #5b21b6; }
+#sec-itens      { --accent: #b45309; }
+#sec-anotacoes  { --accent: #334155; }
+
+.espaco { flex: 1; }
+
+.barra-ficha {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.btn {
+    padding: 6px 14px;
+    border-radius: 5px;
+    border: 1px solid #3f3f46;
+    background-color: var(--field-bg);
+    color: var(--chrome-ink);
+    font-family: inherit;
+    font-size: 10.5pt;
+    cursor: pointer;
+}
+
+.btn:hover { border-color: var(--gold); color: #fff; }
+.btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+.btn.perigo:hover { border-color: #b91c1c; color: #fca5a5; }
+
+.btn-mini {
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--rule);
+    background: none;
+    color: var(--ink-soft);
+    font-family: inherit;
+    font-size: .82em;
+    cursor: pointer;
+}
+
+.btn-mini:hover { color: var(--ink); border-color: var(--accent); }
+.btn-mini.perigo:hover { color: #b91c1c; border-color: #b91c1c; }
+
+.painel {
+    margin: 8px 0 12px;
+    padding: 10px 12px;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    background-color: var(--surface-alt);
+}
+
+#caixa-json { background-color: var(--field-bg); border-color: var(--chrome-line); }
+
+textarea, .anotacoes {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid var(--rule);
+    background-color: var(--surface);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 10.5pt;
+    line-height: 1.45;
+    resize: vertical;
+}
+
+#area-json {
+    background-color: #101015;
+    color: #e7e5e4;
+    border-color: #3f3f46;
+    font-family: Consolas, Menlo, monospace;
+    font-size: 9.5pt;
+}
+
+/* --- campos --- */
+
+.campos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+    margin-bottom: 10px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1 1 190px;
+    min-width: 0;
+}
+
+.campo.curto { flex: 0 0 130px; }
+.campo.largo { flex: 1 1 100%; }
+
+.campo > span {
+    font-size: .78em;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: var(--ink-soft);
+}
+
+.campo input, .campo select, input.mini, select.mini {
+    padding: 5px 7px;
+    border-radius: 4px;
+    border: 1px solid var(--rule);
+    background-color: var(--surface);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 10.5pt;
+    min-width: 0;
+}
+
+input.mini, select.mini { padding: 2px 4px; width: 62px; font-size: .9em; }
+
+.campo input:focus, .campo select:focus, input.mini:focus, select.mini:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px color-mix(in oklab, var(--accent) 30%, transparent);
+}
+
+.linha-resumo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    padding: 8px 0 10px;
+    border-top: 1px solid var(--rule);
+    color: var(--ink);
+    font-size: .95em;
+}
+
+.conta-inline { color: var(--ink-soft); font-size: .85em; font-style: italic; }
+.nota-origem { flex: 1 1 100%; color: var(--ink-soft); font-style: italic; font-size: .88em; }
+
+/* --- atributos --- */
+
+.grade-atributos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    padding-bottom: 10px;
+}
+
+.atributo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    background-color: var(--surface-alt);
+}
+
+.atributo-nome {
+    font-family: Lora, Georgia, serif;
+    font-variant: small-caps;
+    font-weight: bold;
+    color: var(--accent);
+}
+
+:root[data-tema="noite"] .atributo-nome {
+    color: color-mix(in oklab, var(--accent) 45%, #fafaf9);
+}
+
+.atributo input {
+    width: 70px;
+    text-align: center;
+    padding: 4px;
+    border-radius: 4px;
+    border: 1px solid var(--rule);
+    background-color: var(--surface);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 13pt;
+}
+
+.atributo-mod {
+    font-size: 17pt;
+    font-weight: bold;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+}
+
+.atributo-conta { font-size: .78em; color: var(--ink-soft); text-align: center; }
+
+/* --- blocos de valor --- */
+
+.grade-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+    gap: 10px;
+    padding-bottom: 10px;
+}
+
+.stat {
+    padding: 8px 10px;
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    background-color: var(--surface-alt);
+}
+
+.stat-rotulo {
+    font-size: .8em;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: var(--ink-soft);
+}
+
+.stat-valor {
+    font-size: 20pt;
+    font-weight: bold;
+    line-height: 1.1;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+}
+
+.stat-sufixo { font-size: 11pt; font-weight: normal; color: var(--ink-soft); }
+.stat-conta { font-size: .8em; color: var(--ink-soft); line-height: 1.35; }
+
+.atuais {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 8px 0 10px;
+    border-top: 1px solid var(--rule);
+}
+
+/* --- tabelas da ficha --- */
+
+.tabela-ficha td, .tabela-ficha th { vertical-align: middle; }
+.tabela-ficha .cel-attr { color: var(--ink-soft); font-size: .85em; }
+.tabela-ficha .cel-total { font-weight: bold; font-variant-numeric: tabular-nums; }
+
+.tabela-ficha .cel-conta {
+    white-space: normal;
+    min-width: 250px;
+    font-size: .86em;
+    font-style: italic;
+    color: var(--ink-soft);
+}
+
+/* --- aptidões --- */
+
+.grade-aptidoes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+    padding-bottom: 10px;
+}
+
+.aptidao {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 8px;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    background-color: var(--surface-alt);
+}
+
+.aptidao > span { font-size: .85em; color: var(--ink); font-weight: bold; }
+
+.aptidao input {
+    width: 70px;
+    padding: 4px;
+    border-radius: 4px;
+    border: 1px solid var(--rule);
+    background-color: var(--surface);
+    color: var(--ink);
+    font-family: inherit;
+}
+
+/* --- itens da ficha --- */
+
+.item-ficha {
+    padding: 8px 10px;
+    margin-bottom: 8px;
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    background-color: var(--surface-alt);
+}
+
+.item-ficha-topo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.item-ficha-nome { font-weight: bold; color: var(--ink); }
+
+.item-ficha-cat {
+    font-size: .78em;
+    padding: 1px 7px;
+    border-radius: 10px;
+    background-color: color-mix(in oklab, var(--accent) 18%, transparent);
+    color: var(--ink-soft);
+    white-space: nowrap;
+}
+
+.item-ficha-topo .btn-mini:first-of-type { margin-left: auto; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px; }
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 1px 4px 1px 8px;
+    border-radius: 10px;
+    background-color: color-mix(in oklab, var(--accent) 26%, transparent);
+    color: var(--ink);
+    font-size: .84em;
+    font-variant-numeric: tabular-nums;
+}
+
+.chip-x {
+    border: 0;
+    background: none;
+    color: var(--ink-soft);
+    cursor: pointer;
+    font-size: 1.1em;
+    line-height: 1;
+    padding: 0 3px;
+}
+
+.chip-x:hover { color: #b91c1c; }
+.sem-mod { color: var(--ink-soft); font-size: .84em; }
+
+.item-ficha-texto { margin-top: 6px; color: var(--ink); font-size: .95em; }
+.item-ficha-texto p { line-height: 1.45; max-width: 92ch; }
+.ref-livro { color: var(--ink-soft); font-style: italic; font-size: .9em; }
+
+.form-mod { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; align-items: center; }
+
+.form-mod .sel-alvo {
+    flex: 1 1 220px;
+    padding: 3px 5px;
+    border-radius: 4px;
+    border: 1px solid var(--rule);
+    background-color: var(--surface);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: .9em;
+}
+
+.acoes-itens { display: flex; gap: 8px; flex-wrap: wrap; padding: 4px 0 10px; }
+
+#painel-catalogo input[type="search"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 6px 9px;
+    border-radius: 4px;
+    border: 1px solid var(--rule);
+    background-color: var(--surface);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 10.5pt;
+}
+
+.lista-catalogo { max-height: 380px; overflow-y: auto; }
+
+.linha-catalogo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 2px;
+    border-bottom: 1px solid var(--rule);
+}
+
+.linha-catalogo > div { flex: 1; min-width: 0; }
+.linha-catalogo .btn-mini { flex: 0 0 auto; }
+.cat-sub { font-size: .82em; color: var(--ink-soft); font-style: italic; }
+.cat-efeitos { font-size: .82em; color: var(--accent); }
+
+:root[data-tema="noite"] .cat-efeitos {
+    color: color-mix(in oklab, var(--accent) 45%, #fafaf9);
+}
+
+.aviso {
+    color: var(--ink-soft);
+    font-style: italic;
+    padding: 4px 0 10px;
+}

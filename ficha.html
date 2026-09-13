@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ficha — Feiticeiros &amp; Maldições</title>
+    <link rel="stylesheet" type="text/css" href="css/quickref.css">
+    <link rel="stylesheet" type="text/css" href="css/icons.css">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans:400,400i,700,700i&display=swap" rel="stylesheet"
+        type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lora:700&display=swap" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/png" href="img/crowned-skull.png">
+</head>
+
+<body class="page-background">
+
+    <nav id="nav">
+        <div class="nav-inner">
+            <span class="nav-brand">F&amp;M 2.5.2</span>
+            <div class="nav-tabs">
+                <a href="index.html">Combate</a>
+                <a href="habilidades.html">Habilidades</a>
+                <a href="evolucao.html">Evolução</a>
+                <a href="ficha.html" class="active">Ficha</a>
+            </div>
+            <div class="espaco"></div>
+            <button type="button" id="btn-tema" aria-pressed="false"
+                title="Alternar modo dia/noite">☾ <span>Noite</span></button>
+        </div>
+    </nav>
+
+    <div class="layout">
+
+        <aside id="sidebar">
+            <nav id="nav-links" aria-label="Seções desta página"></nav>
+        </aside>
+
+        <div class="page fontsize" id="ficha">
+
+            <div class="main-title">Ficha de Personagem</div>
+            <div class="description">
+                Ficha automática no formato da <b>Ficha de Personagem v2.5</b>: você preenche atributos, nível e
+                especialização, adiciona habilidades do livro com um clique, e cada valor derivado mostra
+                <b>a conta inteira</b> — parcela por parcela, dizendo de onde veio cada número.
+                <br><br>
+                <span class="description-small">
+                    Pegou uma habilidade que dá +2 de Destreza? Ela entra na lista, o modificador aparece como uma
+                    etiqueta editável e o +2 passa a aparecer no valor de Destreza, na Defesa, na Iniciativa, em
+                    Acrobacia, Furtividade, Prestidigitação e no TR de Reflexos — cada um mostrando a origem.
+                    A ficha fica salva neste navegador; use Exportar para levá-la para outro lugar.
+                </span>
+            </div>
+
+            <div class="barra-ficha">
+                <button type="button" class="btn" id="btn-exportar">Exportar JSON</button>
+                <button type="button" class="btn" id="btn-importar">Importar JSON</button>
+                <button type="button" class="btn perigo" id="btn-nova">Nova ficha</button>
+            </div>
+            <div class="painel hidden" id="caixa-json">
+                <textarea id="area-json" rows="6" spellcheck="false"
+                    placeholder="O JSON da ficha aparece aqui ao exportar. Para importar, cole um JSON e clique em Importar."></textarea>
+            </div>
+
+            <div id="sec-identidade" class="section-container">
+                <div class="section-title">Identidade e Progressão</div>
+                <div class="section-content" id="ficha-identidade"></div>
+            </div>
+
+            <div id="sec-atributos" class="section-container">
+                <div class="section-title">Atributos <span class="float-right">valor · modificador</span></div>
+                <div class="section-content" id="ficha-atributos"></div>
+            </div>
+
+            <div id="sec-valores" class="section-container">
+                <div class="section-title">Valores Derivados <span class="float-right">com a conta à vista</span>
+                </div>
+                <div class="section-content" id="ficha-valores"></div>
+            </div>
+
+            <div id="sec-testes" class="section-container">
+                <div class="section-title">Ataques e Testes de Resistência</div>
+                <div class="section-content" id="ficha-testes"></div>
+            </div>
+
+            <div id="sec-pericias" class="section-container">
+                <div class="section-title">Perícias <span class="float-right">20 perícias</span></div>
+                <div class="section-content" id="ficha-pericias"></div>
+            </div>
+
+            <div id="sec-aptidoes" class="section-container">
+                <div class="section-title">Aptidões Amaldiçoadas <span class="float-right">nível 0 a 5</span></div>
+                <div class="section-content" id="ficha-aptidoes"></div>
+            </div>
+
+            <div id="sec-itens" class="section-container">
+                <div class="section-title">Habilidades, Talentos e Aptidões <span class="float-right">do livro ou
+                        homebrew</span></div>
+                <div class="section-content" id="ficha-itens"></div>
+            </div>
+
+            <div id="sec-anotacoes" class="section-container">
+                <div class="section-title">Anotações</div>
+                <div class="section-content">
+                    <textarea data-campo="anotacoes" rows="6" class="anotacoes"
+                        placeholder="Equipamento, feitiços, votos, ganchos de história…"></textarea>
+                </div>
+            </div>
+
+            <div class="footer">
+                Referência não-oficial · Feiticeiros &amp; Maldições — Livro de Regras v2.5.2 ·
+                estrutura baseada na Ficha de Personagem v2.5
+            </div>
+
+        </div>
+
+    </div>
+
+    <script type="text/javascript" src="js/data_hab_base.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/data_hab_lutador.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/data_hab_combate.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/data_hab_tecnica.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/data_hab_controlador.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/data_hab_suporte.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/data_hab_restringido.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/data_hab_talento.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/data_hab_aptidao.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/data_evolucao.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/data_ficha.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/engine.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/ficha.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/ficha_ui.js" charset="utf-8"></script>
+</body>
+
+</html>
