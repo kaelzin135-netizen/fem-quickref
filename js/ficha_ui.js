@@ -176,8 +176,8 @@ function desenhar_aptidoes() {
 
 /* ------------------------------------------------ coluna 2 e abas -------- */
 
-function linhaTeste(nome, curto, controles, res, treinado) {
-    return '<div class="linha' + (treinado ? " treinada" : "") + '">' +
+function linhaTeste(nome, curto, controles, res, treinado, mestre) {
+    return '<div class="linha' + (treinado ? " treinada" : "") + (mestre ? " mestre" : "") + '">' +
         '<span class="linha-nome">' + esc(nome) + "</span>" +
         '<span class="linha-attr">' + esc(curto) + "</span>" +
         controles +
@@ -199,7 +199,7 @@ function desenhar_pericias() {
         PERICIAS.map(function (p) {
             var reg = F.pericias[p.id];
             return linhaTeste(p.nome + (p.exigeTreino ? " *" : ""), p.attr.toUpperCase(),
-                ctrlTM("pericias", p.id, reg), pericia(p.id), reg.t || reg.m);
+                ctrlTM("pericias", p.id, reg), pericia(p.id), reg.t || reg.m, reg.m);
         }).join("");
 }
 
@@ -208,7 +208,7 @@ function desenhar_testes() {
         RESISTENCIAS.map(function (r) {
             var reg = F.resistencias[r.id];
             return linhaTeste(r.nome, r.attr.toUpperCase(),
-                ctrlTM("resistencias", r.id, reg), resistencia(r.id), reg.t || reg.m);
+                ctrlTM("resistencias", r.id, reg), resistencia(r.id), reg.t || reg.m, reg.m);
         }).join("");
 
     document.getElementById("ficha-ataques").innerHTML =
