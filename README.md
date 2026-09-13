@@ -8,11 +8,42 @@ seções coloridas, cards com ícone e modal com os detalhes ao clicar.
 
 Abra o `index.html` no navegador — não precisa de servidor, todos os caminhos são relativos.
 
-Se quiser servir por HTTP (útil para publicar depois):
+Se quiser servir por HTTP:
 
 ```bash
 python -m http.server 8767 --directory C:/Users/kaelz/fem-quickref
 ```
+
+## Como compartilhar
+
+### Link pronto (Artifact do Claude)
+
+https://claude.ai/code/artifact/0e208d7b-f5b4-4216-9ae7-5504c8c376c0
+
+O artifact nasce **privado**: para os amigos abrirem, é preciso liberar o acesso pelo
+**menu de compartilhamento da própria página** uma vez. Depois disso o link funciona para
+quem você mandar.
+
+Para atualizar esse mesmo link depois de mexer no site, é só pedir — o endereço não muda.
+
+### Link público (GitHub Pages)
+
+Faça o login uma única vez (abre o navegador):
+
+```bash
+gh auth login
+```
+
+Depois rode:
+
+```bash
+bash publicar-github.sh
+```
+
+O script cria o repositório público, envia os arquivos, liga o GitHub Pages e mostra o
+endereço final — algo como `https://SEU-USUARIO.github.io/fem-quickref/`. Rodando de novo
+depois de qualquer mudança, ele só envia o que mudou. Esse link é público de verdade:
+qualquer pessoa abre, sem login e sem conta.
 
 São três páginas, ligadas pelas abas no topo:
 
