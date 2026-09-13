@@ -119,6 +119,42 @@ As duas tabelas são **calculadas em JavaScript** a partir das regras (`js/evolu
 digitadas à mão — a de valores máximos assume o melhor atributo possível (15 na criação + 2 da
 origem, subindo com os pontos de atributo até o teto natural de 20) e nenhuma habilidade.
 
+## Ficha
+
+`ficha.html` é uma ficha automática no formato da **Ficha de Personagem v2.5** (a planilha
+que serviu de base): atributos, PV / PE / Integridade, Defesa, Atenção, Iniciativa,
+Deslocamento, CD de Especialização, as 3 jogadas de ataque, os 5 testes de resistência,
+as 20 perícias com T/M e os níveis de aptidão.
+
+**Toda conta fica à vista.** Nenhum número aparece sozinho — cada um mostra as parcelas
+que o formaram e de onde vieram:
+
+```
+Defesa 17 = 10 base + 3 Destreza + 2 ½ nível + 2 Estilo Defensivo
+Acrobacia +8 = 3 Destreza + 2 ½ nível + 3 treinado (+3)
+CD 17 = 10 base + 2 ½ nível + 0 Força + 3 treinamento + 2 Implemento Marcial
+```
+
+**Um clique adiciona o conteúdo do livro.** O catálogo tem os 564 itens das outras abas
+(habilidades base, escolhas de especialização, talentos, aptidões e treinos). Ao adicionar,
+os efeitos numéricos escritos no texto são detectados e aplicados — pegou algo que dá
++2 de Destreza e o +2 entra em Destreza, Defesa, Iniciativa, Acrobacia, Furtividade,
+Prestidigitação e no TR de Reflexos, cada um nomeando a origem. Os modificadores ficam
+como etiquetas editáveis: dá para remover ou acrescentar outros à mão.
+
+**Assistente.** Escolhida a especialização, um botão anota de uma vez todas as
+**habilidades base** que o livro entrega sozinho até o seu nível, e o botão de **subir de
+nível** faz isso de novo a cada nível. Abaixo, uma lista diz o que ainda falta escolher:
+habilidades/talentos, aptidões amaldiçoadas, níveis de aptidão, Feitiços, pontos de atributo
+e a maestria do 10º nível.
+
+**Homebrew.** Crie um item com nome e descrição e pendure nele quantos modificadores
+quiser, mirando qualquer alvo da ficha — ele passa a entrar nas contas como qualquer
+habilidade do livro.
+
+A ficha fica salva no navegador; **Exportar/Importar JSON** leva o personagem para outro
+aparelho ou guarda uma cópia.
+
 ## Como abrir um item
 
 Clicar em um card **abre o texto ali mesmo**, num painel que nasce logo abaixo da linha

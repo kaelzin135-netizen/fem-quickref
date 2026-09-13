@@ -341,6 +341,7 @@ function desenhar() {
     desenhar_pericias();
     desenhar_aptidoes();
     desenhar_itens();
+    if (typeof desenhar_assistente === "function") { desenhar_assistente(); }
     salvar();
 }
 
@@ -524,9 +525,11 @@ window.addEventListener("DOMContentLoaded", function () {
     carregar();
     desenhar();
     ligar_eventos();
+    ligar_assistente();
 
     build_sidebar([
         ["sec-identidade", "Identidade"],
+        ["sec-assistente", "Assistente"],
         ["sec-atributos", "Atributos"],
         ["sec-valores", "Valores"],
         ["sec-testes", "Ataques e TRs"],
