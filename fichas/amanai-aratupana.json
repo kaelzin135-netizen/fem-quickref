@@ -1,0 +1,309 @@
+{
+  "nome": "Amanaí Aratupana",
+  "jogador": "Kael",
+  "campanha": "Pétalas Manchadas",
+  "tecnica": "Tempestade Espinhenta",
+  "nivel": 2,
+  "origem": "herdado",
+  "especializacao": "lutador",
+  "atributosBase": {
+    "for": 8,
+    "des": 20,
+    "con": 16,
+    "int": 14,
+    "sab": 13,
+    "pre": 12
+  },
+  "atribCD": "des",
+  "atribJujutsu": "des",
+  "pericias": {
+    "acrobacia": {
+      "t": true,
+      "m": false,
+      "outros": 0
+    },
+    "atletismo": {
+      "t": false,
+      "m": false,
+      "outros": 0
+    },
+    "direcao": {
+      "t": false,
+      "m": false,
+      "outros": 0
+    },
+    "enganacao": {
+      "t": false,
+      "m": false,
+      "outros": 0
+    },
+    "feiticaria": {
+      "t": true,
+      "m": true,
+      "outros": 0
+    },
+    "furtividade": {
+      "t": false,
+      "m": false,
+      "outros": 0
+    },
+    "historia": {
+      "t": true,
+      "m": false,
+      "outros": 0
+    },
+    "intimidacao": {
+      "t": false,
+      "m": false,
+      "outros": 0
+    },
+    "intuicao": {
+      "t": false,
+      "m": false,
+      "outros": 0
+    },
+    "investigacao": {
+      "t": false,
+      "m": false,
+      "outros": 0
+    },
+    "medicina": {
+      "t": false,
+      "m": false,
+      "outros": 0
+    },
+    "ocultismo": {
+      "t": false,
+      "m": false,
+      "outros": 0
+    },
+    "oficio": {
+      "t": true,
+      "m": false,
+      "outros": 0
+    },
+    "percepcao": {
+      "t": false,
+      "m": false,
+      "outros": 0
+    },
+    "performance": {
+      "t": false,
+      "m": false,
+      "outros": 0
+    },
+    "persuasao": {
+      "t": false,
+      "m": false,
+      "outros": 0
+    },
+    "prestidigitacao": {
+      "t": false,
+      "m": false,
+      "outros": 0
+    },
+    "sobrevivencia": {
+      "t": false,
+      "m": false,
+      "outros": 0
+    },
+    "tecnologia": {
+      "t": false,
+      "m": false,
+      "outros": 0
+    },
+    "teologia": {
+      "t": false,
+      "m": false,
+      "outros": 0
+    }
+  },
+  "resistencias": {
+    "astucia": {
+      "t": false,
+      "m": false,
+      "outros": 0
+    },
+    "fortitude": {
+      "t": true,
+      "m": false,
+      "outros": 0
+    },
+    "integridade": {
+      "t": false,
+      "m": false,
+      "outros": 0
+    },
+    "reflexos": {
+      "t": true,
+      "m": false,
+      "outros": 0
+    },
+    "vontade": {
+      "t": true,
+      "m": false,
+      "outros": 0
+    }
+  },
+  "ataques": {
+    "corpo": {
+      "attr": "des",
+      "t": true,
+      "outros": 0
+    },
+    "distancia": {
+      "attr": "des",
+      "t": false,
+      "outros": 0
+    },
+    "amaldicoado": {
+      "attr": "des",
+      "t": true,
+      "outros": 0
+    }
+  },
+  "aptidoes": {
+    "au": 0,
+    "cl": 1,
+    "bar": 0,
+    "dom": 0,
+    "er": 0
+  },
+  "itens": [
+    {
+      "nome": "Características de Lutador",
+      "categoria": "Lutador · base",
+      "descricao": "Especialista no combate físico: rápido, destruidor e resistente",
+      "bullets": [
+        "<b>PV.</b> 12 + mod. de Constituição no 1º nível; <b>1d10</b> (ou 6 fixo) + mod. de Constituição nos seguintes.",
+        "<b>Treinamentos.</b> Armas Simples, Armas Marciais e Escudo Leve. Um TR entre Fortitude ou Reflexos. Uma perícia de Ofício, Atletismo ou Acrobacia e outras três quaisquer.",
+        "<b>PE.</b> 4 pontos de energia por nível.",
+        "<b>Atributo-chave.</b> Força ou Destreza. <b>Multiclasse:</b> Força ou Destreza 16.",
+        "Bons exemplos de Lutadores são Yuuji Itadori, Kinji Hakari e Hajime Kashimo."
+      ],
+      "referencia": "Livro de Regras, pg. 49.",
+      "mods": []
+    },
+    {
+      "nome": "Empolgação",
+      "categoria": "Lutador · base",
+      "descricao": "Uma boa luta é empolgante e te motiva a se arriscar mais e mais",
+      "bullets": [
+        "Você começa um combate com <b>Nível de Empolgação 1</b>. Se acertar pelo menos um ataque ou manobra (agarrar, empurrar etc.) durante seu turno, sobe um nível no começo do próximo turno, até o máximo de <b>5</b>.",
+        "<b>Dado de Empolgação:</b> Nível 2 → 1d4 · Nível 3 → 1d6 · Nível 4 → 2d4 · Nível 5 → 2d6.",
+        "Cada manobra pode ser realizada <b>apenas uma vez por rodada</b>. Passando uma rodada sem acertar um ataque, você desce um nível.",
+        "Você aprende <b>duas manobras</b> no 1º nível e outras nos níveis <b>6, 12 e 18</b>."
+      ],
+      "referencia": "Livro de Regras, pg. 50.",
+      "mods": []
+    },
+    {
+      "nome": "Manobra: Ajuste",
+      "categoria": "Lutador · escolha",
+      "descricao": "Às vezes um bom golpe só precisa de um ajuste",
+      "bullets": [
+        "Uma vez por rodada, ao realizar um ataque, você pode adicionar seu <b>dado de empolgação na rolagem de acerto e no dano</b>.",
+        "Você pode escolher adicionar o bônus <b>antes ou depois</b> de saber o resultado da rolagem de acerto."
+      ],
+      "referencia": "Livro de Regras, pg. 50.",
+      "mods": []
+    },
+    {
+      "nome": "Manobra: Trabalho de Pés",
+      "categoria": "Lutador · escolha",
+      "descricao": "Você usa da sua empolgação para trabalhar o seu movimento",
+      "bullets": [
+        "Como uma <b>ação bônus</b>, aumente sua Defesa em um valor igual ao seu <b>dado de empolgação</b>, até o começo do seu próximo turno."
+      ],
+      "referencia": "Livro de Regras, pg. 50.",
+      "mods": []
+    },
+    {
+      "nome": "Corpo Treinado",
+      "categoria": "Lutador · base",
+      "descricao": "Você treinou o seu corpo para que ele seja sua própria arma",
+      "bullets": [
+        "Ao realizar um ataque desarmado ou com uma arma marcial, você pode realizar um <b>ataque desarmado como uma ação bônus</b>.",
+        "O dano dos seus ataques desarmados se torna <b>1d8</b> e, nos níveis 5, 9, 13 e 17, aumenta para <b>1d10, 1d12 e 2d12</b>, respectivamente.",
+        "Você pode escolher usar tanto <b>Força quanto Destreza</b> nos seus ataques desarmados e com armas marciais."
+      ],
+      "referencia": "Livro de Regras, pg. 49.",
+      "mods": []
+    },
+    {
+      "nome": "Reflexo Evasivo",
+      "categoria": "Lutador · base",
+      "descricao": "Você desenvolve um reflexo para evitar danos",
+      "bullets": [
+        "Você recebe <b>redução de dano a todo tipo, exceto alma</b>, igual a metade do seu nível de Lutador."
+      ],
+      "referencia": "Livro de Regras, pg. 50.",
+      "mods": []
+    },
+    {
+      "nome": "Ataque Inconsequente",
+      "categoria": "Lutador",
+      "descricao": "Você baixa a guarda para atacar de maneira inconsequente, aumentando seu potencial de dano.",
+      "bullets": [
+        "Uma vez por rodada, ao realizar um ataque, você pode escolher receber vantagem na jogada de ataque e +5 na rolagem de dano dele. Porém, ao realizar um ataque inconsequente, você fica Desprevenido por 1 rodada."
+      ],
+      "referencia": "Livro de Regras, pg. 53.",
+      "mods": []
+    },
+    {
+      "nome": "Cacique",
+      "categoria": "Herdado · clã Aratupana",
+      "descricao": "Habilidade de clã anotada na ficha original.",
+      "bullets": [
+        "A planilha lista \"Cacique - Herdado\" sem texto. O clã Aratupana é criação da mesa, então não há verbete no Livro de Regras."
+      ],
+      "referencia": "Sem página — conteúdo de mesa.",
+      "mods": []
+    },
+    {
+      "nome": "Ajustes de Defesa (planilha)",
+      "categoria": "Homebrew",
+      "descricao": "Parcelas de Defesa registradas na planilha original.",
+      "bullets": [
+        "A ficha do Google traz Equipamento +2 e Outros −2 na Defesa. Somam zero, mas ficam aqui para a conta bater termo a termo."
+      ],
+      "referencia": "Planilha original.",
+      "mods": [
+        {
+          "alvo": "defesa",
+          "valor": 2
+        },
+        {
+          "alvo": "defesa",
+          "valor": -2
+        }
+      ]
+    },
+    {
+      "nome": "Aura Elemental",
+      "categoria": "Aptidão de Aura",
+      "descricao": "Você converte as propriedades da sua aura, imbuindo-a com um elemento, para assim ser capaz de alterar o tipo de dano causado pelos seus ataques com armas.",
+      "bullets": [
+        "Ao obter essa habilidade, você pode escolher um tipo de dano da categoria Elementais para ser o novo tipo de dano dos seus ataques que não sejam de técnica amaldiçoada. Além disso, seus ataques causam 1d4 de dano adicional do tipo escolhido nesta aptidão.",
+        "Com Nível de Aptidão em Aura 2, o dano adicional se torna 1d6; com nível de aptidão 3, se torna 1d8 e, com nível de aptidão 5, se torna 1d10. Dentro de combate, como uma ação livre, você pode desabilitar a aura elemental, retornando os seus ataques ao tipo de dano padrão.",
+        "<b>Pré-requisito:</b> Nível 6"
+      ],
+      "referencia": "Livro de Regras, pg. 175.",
+      "mods": []
+    },
+    {
+      "nome": "Cobrir-Se",
+      "categoria": "Aptidão de Controle e Leitura",
+      "descricao": "Você se torna capaz de concentrar sua energia amaldiçoada em seu corpo, assim amenizando os impactos em troca de um consumo imediato de energia.",
+      "bullets": [
+        "Como uma Reação, quando receber dano, você pode gastar uma quantidade de PE igual a 2 + o dobro do seu CL para receber pontos de vida temporários: para cada ponto gasto, você recebe 4 PVs temporários. Estes PVs temporários são avulsos a outras fontes e não seguem o limite comum para PVs temporários, durando até o final do turno da criatura contra a qual você usou a Reação."
+      ],
+      "referencia": "Livro de Regras, pg. 178.",
+      "mods": []
+    }
+  ],
+  "anotacoes": "═══ APARÊNCIA ═══\nIdade 17 · Altura 1,85 · Peso 80kg · Gênero Masculino\nCabelos Azuis · Olhos: um olho azul e o outro prato · Pele Branquinho\nMarca: Cicatrizes no corpo todo, porém uma em destaque na testa\n\n═══ TRAÇOS DE PERSONALIDADE ═══\nAmanaí por tudo que ele viveu decidiu seguir mais a si mesmo, todo passado de bullying e julgamento que ele sofreu sem ter chances de se impor da maneira que ele queria deixou ele revoltado, é uma pessoa explosiva que gostaria de pensar mais nas consequências, mas quando ele para pra ver, ele já fez escolhas que não tem volta\n\n═══ IDEAIS ═══\nAmanaí tem um ideal simples, ele odeia qualquer traço de injustiça, qualquer mínimo deslize com ele é algo que ele vai lembrar pra sempre, todo rancor que ele sente, uma hora ou outra, ele vai ir atrás de cobrar.\n\n═══ COMPLICAÇÕES ═══\nEle odeia críticas, ele não consegue entender elas, ele sempre pensa que tão afrontando ele, e ele sempre quer rebater, causa de uma sindrome do impostor que ele carregou por toda sua vida, além de nunca se ver como capaz.\n\n═══ LIGAÇÕES ═══\nEle tem muito apreço pelo pai dele e por uma prima que ele conheceu nos poucos momentos que as crianças tentavam se aproximar, a petyngua que ele achou no sótão que ele fuma e as faixas são objetos importante para ele.\n\n═══ TÉCNICA AMALDIÇOADA — TEMPESTADE ESPINHENTA ═══\nTempestade Espinhenta é uma técnica do clã Aratupana que foi perdida após a extinção do clã, primordialmente se envolvendo somente com os aspectos das tempestades, após longos períodos de adaptação, se desenvolveu o suficiente pelos seus usuários a ponto de quase se tornar uma coexistência de duas técnicas em uma, também agora tendo a capacidade de geração de flores – visivelmente, camélias.\n\nEmbora tenha sido descrito como quase se tonar uma coexistência, isso só é possível por conta da própria energia amaldiçoada e aura que possuem propriedades únicas elétricas que se manifestam constantemente e o concedem certas capacidades. Você recebe a aptidão amaldiçoada \"Aura Elemental\" do tipo Chocante\n\nCD Técnica 18 · CD Amaldiçoada 18 (atributo Destreza)\n\n═══ APTIDÕES AMALDIÇOADAS ═══\n• Aura elemental (Chocante)\n• Cobrir-se\n\n═══ FEITIÇOS ═══\nFeitiços conhecidos: 2\nNível 0: Florescimento\n(Níveis 1 a 5 em branco na planilha)\n\n═══ VOTOS RESTRITIVOS ═══\nOVERCLOCK — A técnica de amanaí desde o momento do nascimento dele já tinha impostas regras para ele, tudo começando com as marcas que ele tinha no corpo, o corpo dele nunca conseguiu ter de fato um aperfeiçoamento dela, a Tempestade Espinhenta ela não é fraca, mas ela consegue se aprimorar ainda mais em troca do desgaste físico e a perca da sanidade do usuário\n\nMENTE INSTÁVEL — Assim que Imanaí despertou, ele mudou completamente, tanto físico quanto psicológicamente, tendo perdas severas nas inibições da sua própria cabeça e do seu corpo - também resultando na liberação do overclock\n\n═══ DOMÍNIO INATO ═══\nUma cidade completamente vazia, com escombros voando aos céus, ao mesmo tempo que nela ocorre uma chuva de de raio, alagando o chão, com o centro da cidade sendo coberta por uma contra árvore com camélias vermelhas enormes por elas\n(Expansão de Domínio e Técnica Máxima: em branco na planilha)\n\n═══ ATAQUES ═══\nFaixas — bônus +7 · dano 1d8+1d4 · tipo Impacto · alcance C&C\n\n═══ INVENTÁRIO ═══\n• uniforme comum ×1 — preço 0\n• kit de ferramentas ×1 — preço 1\n• Petyngua ×1 — preço 0\nEspaços ocupados 1 de 6\n\n═══ OUTROS DA PLANILHA ═══\nEstado atual: Estável · RD 0 · RDs por tipo (COR IMP PER CON QUE CHO SON ENE PSI RAD NEC VEN): todas em branco\nDados de vida: d8 / d10 / d12 — nenhum gasto\nTestes de morte: nenhum sucesso ou falha marcado\nExperiência: 0 · Grau 4\nDefesa detalhada: base 10 + Equip. 2 + Destreza 5 + Nível/2 1 + Outros −2 = 16\nTreinamentos (aba própria): nenhuma etapa concluída em nenhuma trilha — Agilidade, Barreiras (Helena), Compreensão (Augusto), Controle de Energia (Victor), Domínios (Helena), Energia Reversa, Luta (Francisco), Manejo de Arma (Tatiana), Treino de Perícia, Treino de Resistência\n",
+  "pvPerdidos": 0,
+  "pePerdidos": 0,
+  "integridadePerdida": 0
+}
