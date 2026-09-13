@@ -1341,8 +1341,21 @@ body.mostrar-contas .linha .conta { flex: 1 1 100%; text-align: left; }
 .btn-topo.ligado { border-color: var(--gold); color: var(--gold); }
 .btn-topo.perigo:hover { border-color: var(--vermelho); color: #fca5a5; }
 
+/* Icones dos botoes: SVG na grade de 24 do Material, como no C.R.I.S.,
+   desenhados em currentColor para seguir o botao nos dois temas. */
+.ico {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+    flex: 0 0 auto;
+}
+
 .btn {
-    padding: 4px 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 12px;
+    min-height: 28px;
     border-radius: 0;
     border: 1px solid var(--linha-forte);
     background: none;
@@ -1358,7 +1371,12 @@ body.mostrar-contas .linha .conta { flex: 1 1 100%; text-align: left; }
 .btn[disabled]:hover { border-color: var(--linha-forte); }
 
 .btn-mini {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
     padding: 0 6px;
+    min-height: 20px;
     border-radius: 0;
     border: 1px solid var(--linha-forte);
     background: none;
@@ -1368,6 +1386,10 @@ body.mostrar-contas .linha .conta { flex: 1 1 100%; text-align: left; }
     cursor: pointer;
     white-space: nowrap;
 }
+
+.btn-mini .ico { width: 13px; height: 13px; }
+.btn-mini.perigo .ico { opacity: .7; }
+.btn-mini.perigo:hover .ico { opacity: 1; }
 
 .btn-mini:hover { color: var(--tinta); border-color: var(--accent); }
 .btn-mini.perigo:hover { color: var(--vermelho); border-color: var(--vermelho); }
@@ -1417,7 +1439,9 @@ body.mostrar-contas .linha .conta { flex: 1 1 100%; text-align: left; }
     font-variant-numeric: tabular-nums;
 }
 
-.chip-x { border: 0; background: none; color: var(--tinta-tenue); cursor: pointer; font-size: 13px; line-height: 1; padding: 0 2px; }
+.chip-x { display: inline-flex; align-items: center; border: 0; background: none; color: var(--tinta-tenue); cursor: pointer; line-height: 1; padding: 0 1px; }
+.chip-x .ico { width: 12px; height: 12px; opacity: .56; }
+.chip-x:hover .ico { opacity: 1; }
 .chip-x:hover { color: var(--vermelho); }
 
 .item-ficha-texto { margin-top: 6px; font-size: 12px; color: var(--tinta-fraca); }

@@ -9,6 +9,23 @@ function esc(s) {
         .replace(/"/g, "&quot;");
 }
 
+/* Ícones Material Design (filled, viewBox 24) — o mesmo conjunto que o C.R.I.S.
+   usa. Lá eles são <img> com data-URI de cor fixa; aqui vão inline com
+   fill: currentColor, que segue o botão e não precisa de versão clara. */
+var ICONES = {
+    /* "add" e "close" são os do Material, iguais aos do C.R.I.S. */
+    add: "M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z",
+    fechar: "M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 " +
+        "17.59 19 19 17.59 13.41 12z",
+    /* frasco desenhado na mesma grade de 24, para separar homebrew de catálogo */
+    frasco: "M9 2h6v2h-1v5.2l4.9 8.5A2 2 0 0 1 17.2 21H6.8a2 2 0 0 1-1.7-3.3L10 9.2V4H9V2z"
+};
+
+function icone(nome) {
+    return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+        '<path d="' + ICONES[nome] + '"/></svg>';
+}
+
 function formula(res) {
     if (!res.partes.length) { return "sem parcelas"; }
     return res.partes.map(function (p, i) {
@@ -237,16 +254,17 @@ function desenhar_itens() {
         var chips = (item.mods || []).map(function (m, j) {
             return '<span class="chip">' + esc(rotuloAlvo(m.alvo)) + " " + fmt(m.valor) +
                 '<button type="button" class="chip-x" data-remover-mod="' + i + ":" + j +
-                '" title="Remover">&times;</button></span>';
+                '" title="Remover">' + icone("fechar") + "</button></span>";
         }).join("");
         return '<div class="item-ficha">' +
             '<div class="item-ficha-topo">' +
             '<button type="button" class="item-abrir" data-ver="' + i + '" title="Ver o texto">' +
             esc(item.nome) + "</button>" +
             '<span class="item-ficha-cat">' + esc(item.categoria) + "</span>" +
-            '<button type="button" class="btn-mini" data-add-mod="' + i + '">+ mod</button>' +
+            '<button type="button" class="btn-mini" data-add-mod="' + i + '">' + icone("add") +
+            "mod</button>" +
             '<button type="button" class="btn-mini perigo" data-remover-item="' + i +
-            '" title="Remover">&times;</button>' +
+            '" title="Remover">' + icone("fechar") + "</button>" +
             "</div>" +
             (chips ? '<div class="chips">' + chips + "</div>" : "") +
             '<div class="item-ficha-texto hidden" data-texto="' + i + '">' +
@@ -260,8 +278,10 @@ function desenhar_itens() {
 
     document.getElementById("ficha-itens").innerHTML =
         '<div class="acoes-itens">' +
-        '<button type="button" class="btn" id="btn-abrir-catalogo">+ Adicionar do livro</button>' +
-        '<button type="button" class="btn" id="btn-abrir-homebrew">+ Homebrew</button>' +
+        '<button type="button" class="btn" id="btn-abrir-catalogo">' + icone("add") +
+        "Adicionar do livro</button>" +
+        '<button type="button" class="btn" id="btn-abrir-homebrew">' + icone("frasco") +
+        "Homebrew</button>" +
         '<span class="contagem-itens">' + F.itens.length + "</span>" +
         "</div>" +
         '<div id="painel-catalogo" class="painel hidden"></div>' +
@@ -297,7 +317,7 @@ function desenhar_catalogo() {
                 return esc(rotuloAlvo(ef.alvo)) + " " + fmt(ef.valor);
             }).join(" · ") + "</div>" : "") + "</div>" +
             '<button type="button" class="btn-mini" data-add-catalogo="' +
-            CATALOGO.indexOf(c) + '">+</button></div>';
+            CATALOGO.indexOf(c) + '">' + icone("add") + "</button></div>";
     }).join("");
 
     painel.innerHTML =
