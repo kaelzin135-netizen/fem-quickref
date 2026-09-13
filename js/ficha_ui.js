@@ -466,7 +466,10 @@ function desenhar_homebrew() {
 function seletorDe(el) {
     if (!el || !el.dataset) { return null; }
     var partes = [];
-    ["campo", "atributo", "aptidao", "treino", "id", "ataque"].forEach(function (k) {
+    ["campo", "atributo", "aptidao", "treino", "id", "ataque",
+     "trilha", "etapa", "caminho", "lista", "i", "chave",
+     "rd", "marca", "escolha", "instrutor", "atual", "dadoVida",
+     "feitico"].forEach(function (k) {
         if (el.dataset[k] !== undefined) { partes.push("[data-" + k + '="' + el.dataset[k] + '"]'); }
     });
     return partes.length ? partes.join("") : null;
@@ -520,6 +523,12 @@ function recalcular() {
         desenhar_aptidoes();
         desenhar_pericias();
         desenhar_testes();
+        /* os paineis novos tambem dependem dos numeros: a trilha mostra o
+           selo do que ela concede, e o perfil mostra a CD de feitico */
+        if (typeof desenhar_marcas === "function") { desenhar_marcas(); }
+        if (typeof desenhar_perfil === "function") { desenhar_perfil(); }
+        if (typeof desenhar_treinos === "function") { desenhar_treinos(); }
+        if (typeof desenhar_registro === "function") { desenhar_registro(); }
         if (typeof desenhar_assistente === "function") { desenhar_assistente(); }
         salvar();
     });
@@ -590,6 +599,12 @@ function ligar_eventos() {
             comFoco(desenhar_perfil);
             return;
         }
+        if (el.dataset.escolha) {
+            if (!F.treinosEscolha) { F.treinosEscolha = {}; }
+            F.treinosEscolha[el.dataset.escolha] = el.value;
+            recalcular();
+            return;
+        }
         if (el.dataset.instrutor) {
             if (!F.treinosInstrutor) { F.treinosInstrutor = {}; }
             F.treinosInstrutor[el.dataset.instrutor] = el.value;
@@ -600,9 +615,9 @@ function ligar_eventos() {
             if (!F.treinos[el.dataset.trilha]) { F.treinos[el.dataset.trilha] = [false, false, false, false]; }
             F.treinos[el.dataset.trilha][Number(el.dataset.etapa)] = el.checked;
             salvar();
-            /* atualiza so esta trilha: redesenhar a lista inteira tiraria o
-               foco da caixa que a pessoa acabou de clicar */
-            atualizar_trilha(el.dataset.trilha);
+            /* a trilha pode conceder deslocamento, PV ou nível de aptidão:
+               recalcular para o ganho entrar (e sair) na hora */
+            recalcular();
             return;
         }
         if (el.dataset.marca) {
@@ -669,6 +684,12 @@ function ligar_eventos() {
     }
 
     raiz.addEventListener("change", function (e) {
+        if (e.target.dataset.escolha) {
+            if (!F.treinosEscolha) { F.treinosEscolha = {}; }
+            F.treinosEscolha[e.target.dataset.escolha] = e.target.value;
+            recalcular();
+            return;
+        }
         if (e.target.dataset.lista === "feiticos" && e.target.dataset.chave === "nivel") {
             F.feiticos[Number(e.target.dataset.i)].nivel = Number(e.target.value);
             salvar();

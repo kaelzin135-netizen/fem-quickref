@@ -29,7 +29,8 @@ function ficha_nova() {
         tecnicaMaxima: { nome: "", descricao: "" },
         votos: [],
         treinos: {},                       /* por trilha: [bool, bool, bool, bool] */
-        treinosInstrutor: {}               /* quem ensina cada trilha */
+        treinosInstrutor: {},              /* quem ensina cada trilha */
+        treinosEscolha: {}                 /* trilhas que pedem uma escolha */
     };
     CAMPOS_APARENCIA.forEach(function (c) { f.aparencia[c.id] = ""; });
     CAMPOS_HISTORIA.forEach(function (c) { f.historia[c.id] = ""; });
@@ -112,6 +113,25 @@ function mods(alvo) {
             }
         });
     });
+    /* trilha concluida entra na conta como qualquer outra fonte, e sai
+       sozinha quando a pessoa desmarca uma etapa */
+    if (typeof TREINAMENTOS !== "undefined") {
+        TREINAMENTOS.forEach(function (t) {
+            if (!treinoCompleto(t.id)) { return; }
+            (t.efeitos || []).forEach(function (e) {
+                if (e.alvo === alvo) {
+                    saida.push({ rotulo: "Treino: " + t.nome, valor: Number(e.valor) });
+                }
+            });
+            /* Compreensão sobe uma aptidão à escolha */
+            if (t.escolhaAptidao) {
+                var escolha = (F.treinosEscolha || {})[t.id];
+                if (escolha && alvo === "aptidao." + escolha) {
+                    saida.push({ rotulo: "Treino: " + t.nome, valor: 1 });
+                }
+            }
+        });
+    }
     return saida;
 }
 

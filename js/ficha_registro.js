@@ -235,8 +235,39 @@ function desenhar_treinos() {
                 }).join("") + "</span>" +
                 "</div>" +
                 '<p class="trilha-premio">' + esc(t.recompensa) + "</p>" +
+                rodapeTrilha(t, completo) +
                 "</div>";
         }).join("");
+}
+
+/* O que a trilha faz sozinha na ficha, e o que continua na mao. */
+function rodapeTrilha(t, completo) {
+    var linhas = [];
+
+    (t.efeitos || []).forEach(function (e) {
+        var alvo = ALVOS.filter(function (a) { return a.id === e.alvo; })[0];
+        linhas.push('<span class="trilha-efeito' + (completo ? " ativo" : "") + '">' +
+            (e.valor > 0 ? "+" : "") + e.valor + " " + esc(alvo ? alvo.rotulo : e.alvo) + "</span>");
+    });
+
+    if (t.escolhaAptidao) {
+        var escolha = (F.treinosEscolha || {})[t.id] || "";
+        linhas.push('<span class="trilha-efeito' + (completo && escolha ? " ativo" : "") +
+            '">+1 nível de aptidão em</span>' +
+            '<select class="trilha-escolha" data-escolha="' + t.id + '">' +
+            '<option value="">escolher…</option>' +
+            APTIDOES_NIVEL.map(function (a) {
+                return '<option value="' + a.id + '"' + (escolha === a.id ? " selected" : "") +
+                    ">" + esc(a.nome) + "</option>";
+            }).join("") + "</select>");
+    }
+
+    var manual = t.manual
+        ? '<span class="trilha-manual">na mão: ' + esc(t.manual) + "</span>"
+        : "";
+
+    if (!linhas.length && !manual) { return ""; }
+    return '<div class="trilha-rodape">' + linhas.join("") + manual + "</div>";
 }
 
 /* Atualiza uma trilha sem redesenhar a lista, para nao roubar o foco. */

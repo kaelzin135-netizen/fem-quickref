@@ -2253,3 +2253,18 @@ input:focus, select:focus, textarea:focus, .aba-btn:focus-visible {
 .feitico-corpo textarea { width: 100%; box-sizing: border-box; margin-top: 8px; padding: 7px 9px; border: 0; border-left: 2px solid var(--linha-forte); background: rgba(255,255,255,.04); color: var(--tinta-fraca); font-family: inherit; font-size: 13px; line-height: 1.55; resize: vertical; }
 :root[data-tema="dia"] .feitico-corpo textarea { background: rgba(0,0,0,.04); }
 .feitico-corpo textarea:focus { outline: none; border-left-color: var(--accent); }
+
+/* o que a trilha concede */
+.trilha-rodape { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-top: 7px; }
+.trilha-efeito {
+    display: inline-flex; align-items: center; padding: 1px 7px;
+    border: 1px solid var(--linha-forte); border-radius: 2px;
+    font-size: 11px; font-variant-numeric: tabular-nums; color: var(--tinta-tenue);
+}
+.trilha-efeito.ativo { border-color: var(--verde); color: var(--verde); }
+.trilha-escolha {
+    padding: 1px 0 2px; border: 0; border-bottom: 1px solid var(--linha-forte);
+    background: none; color: var(--tinta); font-family: inherit; font-size: 12px; cursor: pointer;
+}
+.trilha-escolha:focus { outline: none; border-bottom-color: var(--accent); }
+.trilha-manual { margin-left: auto; font-size: 11px; font-style: italic; color: var(--tinta-tenue); }
