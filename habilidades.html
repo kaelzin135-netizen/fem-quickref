@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Habilidades — Feiticeiros &amp; Maldições</title>
+    <link rel="stylesheet" type="text/css" href="css/quickref.css">
+    <link rel="stylesheet" type="text/css" href="css/icons.css">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans:400,400i,700,700i&display=swap" rel="stylesheet"
+        type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lora:700&display=swap" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/png" href="img/crowned-skull.png">
+</head>
+
+<body class="page-background">
+
+    <nav id="nav">
+        <div class="nav-inner">
+            <span class="nav-brand">F&amp;M 2.5.2</span>
+            <div class="nav-tabs">
+                <a href="index.html">Combate</a>
+                <a href="habilidades.html" class="active">Habilidades</a>
+                <a href="evolucao.html">Evolução</a>
+            </div>
+            <div class="nav-links" id="nav-links"></div>
+            <input type="search" id="search" placeholder="Buscar…" autocomplete="off" spellcheck="false">
+        </div>
+    </nav>
+
+    <div class="page fontsize">
+
+        <div class="main-title">Habilidades — Feiticeiros &amp; Maldições</div>
+        <div class="description">
+            Todas as <b>habilidades de especialização</b>, <b>talentos</b> e <b>aptidões amaldiçoadas</b> do sistema
+            — <b id="item-count">…</b> itens, cada um com a página do Livro de Regras v2.5.2 onde está descrito.
+            <br><br>
+            Dentro de cada especialização os itens estão agrupados como no livro: primeiro as <b>características e
+            habilidades base</b> (recebidas automaticamente), depois as <b>listas de escolha</b> daquela
+            especialização e, por fim, as habilidades por <b>nível de aquisição</b>.
+            O subtítulo de cada card resume o tipo de ação, o custo em PE e se há pré-requisito.
+            <br><br>
+            <span class="description-small">
+                Ao subir de nível você escolhe <b>uma habilidade de especialização ou um talento</b>, e recebe também
+                uma aptidão amaldiçoada (exceto Restringido). A cada 4 níveis, 2 pontos de atributo; nos níveis 5, 9,
+                13 e 17 o bônus de treinamento sobe +1; no nível 10 você se torna mestre em uma perícia.
+                Ícones por <a href="https://game-icons.net/">game-icons.net</a> (CC BY 3.0).
+            </span>
+        </div>
+
+        <div id="section-lutador" class="section-container">
+            <div class="section-title">Lutador <span class="float-right">12 PV · 1d10 · 4 PE · Força ou
+                    Destreza</span></div>
+            <div class="section-content" id="content-lutador"></div>
+        </div>
+
+        <div id="section-combate" class="section-container">
+            <div class="section-title">Especialista em Combate <span class="float-right">12 PV · 1d10 · 4 PE ·
+                    For/Des/Sab</span></div>
+            <div class="section-content" id="content-combate"></div>
+        </div>
+
+        <div id="section-tecnica" class="section-container">
+            <div class="section-title">Especialista em Técnica <span class="float-right">10 PV · 1d8 · 6 PE · Int ou
+                    Sab</span></div>
+            <div class="section-content" id="content-tecnica"></div>
+        </div>
+
+        <div id="section-controlador" class="section-container">
+            <div class="section-title">Controlador <span class="float-right">10 PV · 1d8 · 5 PE · Pre ou Sab</span>
+            </div>
+            <div class="section-content" id="content-controlador"></div>
+        </div>
+
+        <div id="section-suporte" class="section-container">
+            <div class="section-title">Suporte <span class="float-right">10 PV · 1d8 · 5 PE · Pre ou Sab</span></div>
+            <div class="section-content" id="content-suporte"></div>
+        </div>
+
+        <div id="section-restringido" class="section-container">
+            <div class="section-title">Restringido <span class="float-right">16 PV · 1d12 · Estamina · sem
+                    multiclasse</span></div>
+            <div class="section-content" id="content-restringido"></div>
+        </div>
+
+        <div id="section-talento" class="section-container">
+            <div class="section-title">Talentos <span class="float-right">no lugar de uma habilidade</span></div>
+            <div class="section-content" id="content-talento"></div>
+        </div>
+
+        <div id="section-aptidao" class="section-container">
+            <div class="section-title">Aptidões Amaldiçoadas <span class="float-right">uma por nível</span></div>
+            <div class="section-content" id="content-aptidao"></div>
+        </div>
+
+        <div class="no-results" id="no-results">Nenhum resultado para a busca.</div>
+
+        <div class="footer">
+            Referência não-oficial · Feiticeiros &amp; Maldições — Livro de Regras v2.5.2
+        </div>
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="modal" tabindex="-1">
+        <div class="modal-backdrop" id="modal-backdrop"></div>
+        <div class="modal-dialog modalsize">
+            <div class="section-container modal-container" id="modal-container">
+                <div class="section-title" id="modal-title"></div>
+                <div class="section-content">
+                    <div class="section-row section-subtitle text" id="modal-subtitle"></div>
+                    <div class="section-row text">
+                        <div id="modal-bullets"></div>
+                    </div>
+                    <div class="section-row text" id="modal-reference"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="js/data_hab_base.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/data_hab_lutador.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/data_hab_combate.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/data_hab_tecnica.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/data_hab_controlador.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/data_hab_suporte.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/data_hab_restringido.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/data_hab_talento.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/data_hab_aptidao.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/engine.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/habilidades.js" charset="utf-8"></script>
+</body>
+
+</html>

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Referência Rápida — Feiticeiros &amp; Maldições</title>
+    <link rel="stylesheet" type="text/css" href="css/quickref.css">
+    <link rel="stylesheet" type="text/css" href="css/icons.css">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans:400,400i,700,700i&display=swap" rel="stylesheet"
+        type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lora:700&display=swap" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/png" href="img/crowned-skull.png">
+</head>
+
+<body class="page-background">
+
+    <nav id="nav">
+        <div class="nav-inner">
+            <span class="nav-brand">F&amp;M 2.5.2</span>
+            <div class="nav-tabs">
+                <a href="index.html" class="active">Combate</a>
+                <a href="habilidades.html">Habilidades</a>
+                <a href="evolucao.html">Evolução</a>
+            </div>
+            <div class="nav-links" id="nav-links"></div>
+            <input type="search" id="search" placeholder="Buscar…" autocomplete="off" spellcheck="false">
+        </div>
+    </nav>
+
+    <div class="page fontsize">
+
+        <div class="main-title">Referência Rápida — Feiticeiros &amp; Maldições</div>
+        <div class="description">
+            Este guia apresenta, de maneira resumida e intuitiva, as principais ações, valores e regras de combate
+            de <b>Feiticeiros &amp; Maldições</b>, o RPG de mesa ambientado no universo de <i>Jujutsu Kaisen</i>.
+            As páginas citadas em cada descrição referem-se ao <b>Livro de Regras, versão 2.5.2</b>.
+            <br><br>
+            Clique em qualquer item para abrir os detalhes completos — são <b id="item-count">…</b> aqui.
+            Use a busca no topo para filtrar, e a aba <a href="habilidades.html">Habilidades</a> para as
+            especializações, talentos e aptidões amaldiçoadas.
+            <br><br>
+            <span class="description-small">
+                Estrutura e layout inspirados na <a href="https://diogoan.github.io/dnd5e-quickref/">Referência Rápida
+                    de D&amp;D 5e</a> de <a href="https://github.com/diogoan">diogoan</a>, por sua vez baseada no
+                trabalho de <a href="https://github.com/crobi">crobi</a>. Ícones por
+                <a href="https://game-icons.net/">game-icons.net</a> (CC BY 3.0).
+                Feiticeiros &amp; Maldições é um projeto de fãs criado por Setsugiri, Parker, Jou e Kame;
+                todos os créditos da obra original a Gege Akutami.
+            </span>
+        </div>
+
+        <!-- Atributos -->
+        <div id="section-atributo" class="section-container">
+            <div class="section-title">Atributos <span class="float-right">valor 1–30 · média 10</span></div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    Os seis atributos medem os aspectos do seu personagem. O modificador aumenta +1 a cada 2 pontos
+                    acima de 10.
+                </div>
+                <div class="section-row" id="atributo-lista"></div>
+                <div class="section-row section-subtitle text fontsize">
+                    Métodos para definir os valores na criação de personagem e a conversão em modificadores.
+                </div>
+                <div class="section-row" id="atributo-metodos"></div>
+            </div>
+        </div>
+
+        <!-- Valores derivados -->
+        <div id="section-valor" class="section-container">
+            <div class="section-title">Valores Derivados</div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    Valores da ficha calculados a partir dos atributos e do seu nível.
+                </div>
+                <div class="section-row" id="valor-lista"></div>
+            </div>
+        </div>
+
+        <!-- Testes -->
+        <div id="section-teste" class="section-container">
+            <div class="section-title">Testes <span class="float-right">d20 + modificadores vs. CD</span></div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    Os três tipos principais de teste do sistema.
+                </div>
+                <div class="section-row" id="teste-tipos"></div>
+                <div class="section-row section-subtitle text fontsize">
+                    Os cinco testes de resistência, usados para resistir a efeitos nocivos.
+                </div>
+                <div class="section-row" id="teste-resistencias"></div>
+                <div class="section-row section-subtitle text fontsize">
+                    Fatores que alteram uma rolagem ou o seu grau de sucesso.
+                </div>
+                <div class="section-row" id="teste-mods"></div>
+            </div>
+        </div>
+
+        <!-- Perícias -->
+        <div id="section-pericia" class="section-container">
+            <div class="section-title">Perícias <span class="float-right">20 perícias</span></div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    Bônus = mod. do atributo-chave + metade do nível + bônus de treinamento (se treinado; 1,5× se
+                    mestre).
+                </div>
+                <div class="section-row" id="pericia-lista"></div>
+            </div>
+        </div>
+
+        <!-- Movimento -->
+        <div id="section-movimento" class="section-container">
+            <div class="section-title">Movimento e Posicionamento <span class="float-right">deslocamento padrão: 9
+                    m</span></div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    Ações de movimento: o deslocamento pode ser dividido entre as suas outras ações no turno.
+                </div>
+                <div class="section-row" id="movimento-acoes"></div>
+                <div class="section-row section-subtitle text fontsize">
+                    Tipos de deslocamento e regras de terreno, queda e posicionamento.
+                </div>
+                <div class="section-row" id="movimento-regras"></div>
+            </div>
+        </div>
+
+        <!-- Ação comum -->
+        <div id="section-acao" class="section-container">
+            <div class="section-title">Ação Comum <span class="float-right">1/turno</span></div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    A ação básica do turno, normalmente gasta para atacar ou conjurar um Feitiço.
+                </div>
+                <div class="section-row" id="acao-lista"></div>
+            </div>
+        </div>
+
+        <!-- Ação bônus -->
+        <div id="section-bonus" class="section-container">
+            <div class="section-title">Ação Bônus <span class="float-right">1/turno</span></div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    Uma ação extra no seu turno, normalmente concedida por habilidades de Especialização ou Técnica.
+                </div>
+                <div class="section-row" id="bonus-lista"></div>
+            </div>
+        </div>
+
+        <!-- Reação -->
+        <div id="section-reacao" class="section-container">
+            <div class="section-title">Reação <span class="float-right">1/rodada · resposta a um gatilho</span></div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    Usada em resposta a um gatilho, no seu turno ou no de outro. Mesmo com mais de uma Reação, cada
+                    Reação só pode ser usada uma vez por rodada.
+                </div>
+                <div class="section-row" id="reacao-lista"></div>
+            </div>
+        </div>
+
+        <!-- Completa e livre -->
+        <div id="section-completa" class="section-container">
+            <div class="section-title">Ação Completa e Ação Livre</div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    A ação completa ocupa a ação comum e a ação bônus do mesmo turno.
+                </div>
+                <div class="section-row" id="completa-lista"></div>
+                <div class="section-row section-subtitle text fontsize">
+                    Ações livres não consomem ações — cada ação livre pode ser usada uma vez por turno.
+                </div>
+                <div class="section-row" id="livre-lista"></div>
+            </div>
+        </div>
+
+        <!-- Ataques e dano -->
+        <div id="section-ataque" class="section-container">
+            <div class="section-title">Ataques e Dano</div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    Regras de manejo e resolução de ataques.
+                </div>
+                <div class="section-row" id="ataque-lista"></div>
+                <div class="section-row section-subtitle text fontsize">
+                    Fatores que alteram a rolagem de dano.
+                </div>
+                <div class="section-row" id="ataque-dano"></div>
+                <div class="section-row section-subtitle text fontsize">
+                    Os quinze tipos de dano, divididos em físicos, elementais, etéreos e biológicos.
+                </div>
+                <div class="section-row" id="ataque-tipos"></div>
+            </div>
+        </div>
+
+        <!-- Condições -->
+        <div id="section-condicao" class="section-container">
+            <div class="section-title">Condições</div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    Condições com os mesmos efeitos não se acumulam — aplique apenas o mais severo.
+                    <b>Físicas:</b> afetam a integridade física do corpo.
+                </div>
+                <div class="section-row" id="condicao-fisica"></div>
+                <div class="section-row section-subtitle text fontsize">
+                    <b>Incapacitação:</b> impedem a criatura de realizar alguns tipos de ação.
+                </div>
+                <div class="section-row" id="condicao-incapacitacao"></div>
+                <div class="section-row section-subtitle text fontsize">
+                    <b>Mentais:</b> prejudicam o raciocínio e o controle emocional.
+                </div>
+                <div class="section-row" id="condicao-mental"></div>
+                <div class="section-row section-subtitle text fontsize">
+                    <b>Movimento:</b> restringem a mobilidade e o deslocamento.
+                </div>
+                <div class="section-row" id="condicao-movimento"></div>
+                <div class="section-row section-subtitle text fontsize">
+                    <b>Sensoriais:</b> ligadas aos cinco sentidos e à orientação.
+                </div>
+                <div class="section-row" id="condicao-sensorial"></div>
+                <div class="section-row section-subtitle text fontsize">
+                    <b>Vulnerabilidade:</b> reduzem a sua guarda ou o deixam exposto.
+                </div>
+                <div class="section-row" id="condicao-vulnerabilidade"></div>
+            </div>
+        </div>
+
+        <!-- Ambiente -->
+        <div id="section-ambiente" class="section-container">
+            <div class="section-title">Ambiente e Percepção</div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    Obstáculos podem conceder cobertura, e efeitos que atrapalham a visão concedem camuflagem.
+                    Não são cumulativos: vale apenas o de maior valor.
+                </div>
+                <div class="section-row" id="ambiente-cobertura"></div>
+                <div class="section-row section-subtitle text fontsize">
+                    A iluminação do ambiente e os sentidos especiais que permitem contorná-la.
+                </div>
+                <div class="section-row" id="ambiente-visao"></div>
+                <div class="section-row section-subtitle text fontsize">
+                    Como habilidades definem quem e o que podem atingir.
+                </div>
+                <div class="section-row" id="ambiente-alcance"></div>
+            </div>
+        </div>
+
+        <!-- Alma e morte -->
+        <div id="section-alma" class="section-container">
+            <div class="section-title">A Alma, a Morte e a Exaustão</div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    A alma é o corpo e o corpo é a alma. Conforme a Integridade cai, o seu ser se deteriora.
+                </div>
+                <div class="section-row" id="alma-lista"></div>
+                <div class="section-row section-subtitle text fontsize">
+                    Estados da Alma, conforme a porcentagem de Integridade restante.
+                </div>
+                <div class="section-row" id="alma-estados"></div>
+                <div class="section-row section-subtitle text fontsize">
+                    Ao chegar a 0 PV você vai para as Portas da Morte.
+                </div>
+                <div class="section-row" id="alma-morte"></div>
+                <div class="section-row section-subtitle text fontsize">
+                    Níveis de exaustão são cumulativos e cada um reduz 1,5 m de deslocamento.
+                </div>
+                <div class="section-row" id="alma-exaustao"></div>
+            </div>
+        </div>
+
+        <!-- Energia amaldiçoada -->
+        <div id="section-energia" class="section-container">
+            <div class="section-title">Energia Amaldiçoada <span class="float-right">aptidões de nível 0 a 5</span>
+            </div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    As cinco aptidões do seu Perfil Amaldiçoado. Você sobe uma aptidão em todo nível par (e uma extra
+                    nos níveis 10 e 20).
+                </div>
+                <div class="section-row" id="energia-aptidoes"></div>
+                <div class="section-row section-subtitle text fontsize">
+                    Regras de conjuração, domínios e barreiras.
+                </div>
+                <div class="section-row" id="energia-regras"></div>
+            </div>
+        </div>
+
+        <!-- Descanso -->
+        <div id="section-descanso" class="section-container">
+            <div class="section-title">Descanso e Recuperação</div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    Como um feiticeiro recupera pontos de vida, energia e usos de habilidade.
+                </div>
+                <div class="section-row" id="descanso-lista"></div>
+            </div>
+        </div>
+
+        <div class="no-results" id="no-results">Nenhum resultado para a busca.</div>
+
+        <div class="footer">
+            Referência não-oficial · Feiticeiros &amp; Maldições — Livro de Regras v2.5.2
+        </div>
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="modal" tabindex="-1">
+        <div class="modal-backdrop" id="modal-backdrop"></div>
+        <div class="modal-dialog modalsize">
+            <div class="section-container modal-container" id="modal-container">
+                <div class="section-title" id="modal-title"></div>
+                <div class="section-content">
+                    <div class="section-row section-subtitle text" id="modal-subtitle"></div>
+                    <div class="section-row text">
+                        <div id="modal-bullets"></div>
+                    </div>
+                    <div class="section-row text" id="modal-reference"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="js/data_atributo.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/data_teste.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/data_pericia.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/data_acao.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/data_ataque.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/data_condicao.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/data_ambiente.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/data_alma.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/engine.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/quickref.js" charset="utf-8"></script>
+</body>
+
+</html>

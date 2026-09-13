@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Evolução — Feiticeiros &amp; Maldições</title>
+    <link rel="stylesheet" type="text/css" href="css/quickref.css">
+    <link rel="stylesheet" type="text/css" href="css/icons.css">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans:400,400i,700,700i&display=swap" rel="stylesheet"
+        type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lora:700&display=swap" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/png" href="img/crowned-skull.png">
+</head>
+
+<body class="page-background">
+
+    <nav id="nav">
+        <div class="nav-inner">
+            <span class="nav-brand">F&amp;M 2.5.2</span>
+            <div class="nav-tabs">
+                <a href="index.html">Combate</a>
+                <a href="habilidades.html">Habilidades</a>
+                <a href="evolucao.html" class="active">Evolução</a>
+            </div>
+            <div class="nav-links" id="nav-links"></div>
+            <input type="search" id="search" placeholder="Buscar…" autocomplete="off" spellcheck="false">
+        </div>
+    </nav>
+
+    <div class="page fontsize">
+
+        <div class="main-title">Evolução — Passo a Passo</div>
+        <div class="description">
+            Do 1º ao 20º nível: o que você recebe em cada nível, quando pega habilidades, aptidões e Feitiços,
+            como funcionam os treinos de interlúdio e até onde os seus números chegam usando só as regras básicas.
+            <b id="item-count">…</b> itens, com as páginas do Livro de Regras v2.5.2.
+            <br><br>
+            <span class="description-small">
+                A regra curta: <b>todo nível</b> você escolhe uma habilidade de especialização ou um talento, ganha
+                PV, ganha PE e recebe uma aptidão amaldiçoada. <b>Todo nível par</b> sobe um nível de aptidão e
+                recebe um Feitiço. <b>A cada 4 níveis</b>, 2 pontos de atributo. Nos níveis <b>5, 9, 13 e 17</b>, o
+                bônus de treinamento sobe +1. No <b>10º</b>, mestre em uma perícia. Restringidos trocam aptidões e
+                Feitiços por Dádivas do Céu e técnicas marciais.
+            </span>
+        </div>
+
+        <div id="section-criacao" class="section-container">
+            <div class="section-title">Criação de Personagem <span class="float-right">nível 1</span></div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    Os seis passos do guia do livro, na ordem em que a ficha é preenchida.
+                </div>
+                <div class="section-row" id="criacao-lista"></div>
+            </div>
+        </div>
+
+        <div id="section-nivel" class="section-container">
+            <div class="section-title">Subindo de Nível <span class="float-right">o que entra na ficha</span></div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    Tudo que um personagem recebe ao evoluir — o que vem todo nível, o que vem em níveis pares e o
+                    que vem em níveis específicos.
+                </div>
+                <div class="section-row" id="nivel-lista"></div>
+            </div>
+        </div>
+
+        <div id="section-tabela" class="section-container">
+            <div class="section-title">Tabela de Níveis <span class="float-right">1º ao 20º</span></div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    Experiência necessária, bônus de treinamento e todos os recursos acumulados em cada nível.
+                </div>
+                <div class="section-row static text" id="tabela-niveis"></div>
+            </div>
+        </div>
+
+        <div id="section-feitico" class="section-container">
+            <div class="section-title">Feitiços e Aptidões <span class="float-right">as duas trilhas</span></div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    Quantos Feitiços você tem, até que nível pode criá-los, e a diferença entre receber uma aptidão
+                    amaldiçoada e subir um nível de aptidão.
+                </div>
+                <div class="section-row" id="feitico-lista"></div>
+            </div>
+        </div>
+
+        <div id="section-maximos" class="section-container">
+            <div class="section-title">Valores Máximos por Nível <span class="float-right">sem habilidades</span>
+            </div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    Até onde cada número da ficha chega usando apenas as regras básicas — sem habilidades de
+                    especialização, talentos, aptidões ou itens.
+                </div>
+                <div class="section-row static text" id="tabela-maximos"></div>
+                <div class="section-row section-subtitle text fontsize">
+                    O detalhe de cada valor, com as fórmulas e o que soma por cima.
+                </div>
+                <div class="section-row" id="maximos-lista"></div>
+            </div>
+        </div>
+
+        <div id="section-multiclasse" class="section-container">
+            <div class="section-title">Multiclasse</div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    É possível colocar níveis em mais de uma especialização — com regras próprias.
+                </div>
+                <div class="section-row" id="multiclasse-lista"></div>
+            </div>
+        </div>
+
+        <div id="section-interludio" class="section-container">
+            <div class="section-title">Interlúdio e Treinos <span class="float-right">evolução fora do nível</span>
+            </div>
+            <div class="section-content" id="content-interludio"></div>
+        </div>
+
+        <div id="section-regras" class="section-container">
+            <div class="section-title">Cálculos e Acúmulos</div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    As regras do apêndice que decidem como os números se combinam.
+                </div>
+                <div class="section-row" id="regras-lista"></div>
+            </div>
+        </div>
+
+        <div class="no-results" id="no-results">Nenhum resultado para a busca.</div>
+
+        <div class="footer">
+            Referência não-oficial · Feiticeiros &amp; Maldições — Livro de Regras v2.5.2
+        </div>
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="modal" tabindex="-1">
+        <div class="modal-backdrop" id="modal-backdrop"></div>
+        <div class="modal-dialog modalsize">
+            <div class="section-container modal-container" id="modal-container">
+                <div class="section-title" id="modal-title"></div>
+                <div class="section-content">
+                    <div class="section-row section-subtitle text" id="modal-subtitle"></div>
+                    <div class="section-row text">
+                        <div id="modal-bullets"></div>
+                    </div>
+                    <div class="section-row text" id="modal-reference"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="js/data_evolucao.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/engine.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/evolucao.js" charset="utf-8"></script>
+</body>
+
+</html>
