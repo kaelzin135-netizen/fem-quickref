@@ -2,7 +2,9 @@
 /* Tela da mesa: escolher, criar e destrancar fichas                           */
 /* ------------------------------------------------------------------------- */
 
-var ENVELOPE = null;   /* a ficha aberta no momento */
+var ENVELOPE = null;     /* a ficha aberta no momento */
+var SOU_MESTRE = false;  /* entrou como mestre nesta sessao */
+var LEITURA = false;     /* mestre olhando a ficha de outra pessoa */
 
 function _esc(s) {
     return String(s == null ? "" : s)
@@ -22,8 +24,8 @@ function mesa_esconder() {
 
 function _cartaoFicha(env, podeAbrir) {
     var trancada = !!(env.pin && env.pin.sal);
-    return '<div class="mesa-vaga ocupada' + (env.papel === "mestre" ? " mestre" : "") + '">' +
-        '<div class="mesa-vaga-papel">' + (env.papel === "mestre" ? "Mestre" : "Jogador") + "</div>" +
+    return '<div class="mesa-vaga ocupada">' +
+        '<div class="mesa-vaga-papel">Jogador</div>' +
         '<div class="mesa-vaga-nome">' + _esc(env.titulo || "Sem nome") + "</div>" +
         (env.jogador ? '<div class="mesa-vaga-jogador">' + _esc(env.jogador) + "</div>" : "") +
         '<div class="mesa-vaga-sub">' +
@@ -32,8 +34,9 @@ function _cartaoFicha(env, podeAbrir) {
         (trancada ? " · trancada" : " · sem PIN") + "</div>" +
         '<div class="mesa-vaga-acoes">' +
         (podeAbrir
-            ? '<button type="button" class="btn" data-abrir-ficha="' + env.id + '">Abrir</button>'
-            : '<span class="mesa-bloqueada">só o mestre</span>') +
+            ? '<button type="button" class="btn" data-abrir-ficha="' + env.id + '">' +
+              (SOU_MESTRE ? "Ver" : "Abrir") + "</button>"
+            : '<span class="mesa-bloqueada">trancada</span>') +
         '<button type="button" class="btn-mini" data-pin-ficha="' + env.id + '">' +
         (trancada ? "trocar PIN" : "definir PIN") + "</button>" +
         '<button type="button" class="btn-mini perigo" data-apagar-ficha="' + env.id +
@@ -42,12 +45,12 @@ function _cartaoFicha(env, podeAbrir) {
 }
 
 function desenhar_mesa() {
-    var jogadores = MESA.fichas.filter(function (f) { return f.papel !== "mestre"; });
-    var mestre = MESA.fichas.filter(function (f) { return f.papel === "mestre"; })[0] || null;
-    var souMestre = !!(ENVELOPE && ENVELOPE.papel === "mestre");
+    var jogadores = MESA.fichas;
+    var mestre = MESA.mestre;
 
     var vagas = jogadores.map(function (e) {
-        return _cartaoFicha(e, souMestre || !ENVELOPE || ENVELOPE.id === e.id);
+        /* o mestre ve todas; um jogador so abre a que ja destrancou */
+        return _cartaoFicha(e, SOU_MESTRE || !ENVELOPE || ENVELOPE.id === e.id);
     });
     for (var i = jogadores.length; i < mesa_lugares(); i++) {
         vagas.push('<div class="mesa-vaga vazia"><div class="mesa-vaga-papel">Jogador ' + (i + 1) +
@@ -67,12 +70,19 @@ function desenhar_mesa() {
         '<div class="mesa-grade">' + vagas.join("") + "</div>" +
         '<h3 class="mesa-titulo">Mestre</h3>' +
         '<div class="mesa-grade">' +
-        (mestre ? _cartaoFicha(mestre, true)
-            : '<div class="mesa-vaga vazia"><div class="mesa-vaga-papel">Mestre</div>' +
-              '<div class="mesa-vaga-nome">vaga livre</div>' +
-              '<div class="mesa-vaga-acoes"><button type="button" class="btn secundario" ' +
-              'data-nova-ficha="mestre">Criar ficha do mestre</button></div></div>') +
-        "</div>" +
+        '<div class="mesa-vaga mestre">' +
+        '<div class="mesa-vaga-papel">Mestre</div>' +
+        '<div class="mesa-vaga-nome">' + _esc(mestre ? mestre.nome : "—") + "</div>" +
+        '<div class="mesa-vaga-sub">sem ficha própria · lê as ' + jogadores.length + " fichas" +
+        (mestre && mestre.pin ? " · trancado" : " · sem PIN") + "</div>" +
+        '<div class="mesa-vaga-acoes">' +
+        (SOU_MESTRE
+            ? '<span class="mesa-bloqueada">acesso ligado</span>' +
+              '<button type="button" class="btn-mini" data-sair-mestre="1">sair</button>'
+            : '<button type="button" class="btn" data-entrar-mestre="1">Entrar como mestre</button>') +
+        '<button type="button" class="btn-mini" data-pin-ficha="mestre">' +
+        (mestre && mestre.pin ? "trocar PIN" : "definir PIN") + "</button>" +
+        "</div></div></div>" +
         '<div class="mesa-form hidden" id="mesa-form"></div>';
 }
 
@@ -137,6 +147,42 @@ function desenhar_pin(env) {
     (document.getElementById("pin-atual") || document.getElementById("pin-novo")).focus();
 }
 
+function desenhar_entrar_mestre() {
+    var alvo = document.getElementById("mesa-form");
+    alvo.classList.remove("hidden");
+    alvo.innerHTML =
+        "<h3>Entrar como mestre</h3>" +
+        '<p class="mesa-nota">O mestre não tem ficha própria: entrar aqui libera a leitura ' +
+        "das fichas de jogador.</p>" +
+        '<label class="cab-campo"><span>PIN</span>' +
+        '<input type="password" id="mesa-pin" inputmode="numeric" autocomplete="current-password"></label>' +
+        '<div class="mesa-form-acoes">' +
+        '<button type="button" class="btn" data-confirmar-mestre="1">Entrar</button>' +
+        '<button type="button" class="btn secundario" data-cancelar-form="1">Cancelar</button>' +
+        '</div><p class="mesa-erro hidden" id="mesa-erro"></p>';
+    var c = document.getElementById("mesa-pin");
+    c.focus();
+    c.onkeydown = function (e) {
+        if (e.key === "Enter") { document.querySelector("[data-confirmar-mestre]").click(); }
+    };
+}
+
+/* Com o mestre a ficha abre em leitura: ele acompanha, nao edita por cima
+   do jogador. O botao no aviso libera a edicao quando ele quiser. */
+function aplicar_leitura() {
+    var app = document.getElementById("ficha");
+    if (!app) { return; }
+    document.body.classList.toggle("somente-leitura", LEITURA);
+    app.querySelectorAll("input, select, textarea").forEach(function (el) { el.disabled = LEITURA; });
+    app.querySelectorAll("button").forEach(function (el) {
+        /* abas e o nome da pericia seguem clicaveis: so leem */
+        if (el.classList.contains("aba-btn") || el.dataset.periciaVer || el.dataset.ver) { return; }
+        el.disabled = LEITURA;
+    });
+    var faixa = document.getElementById("aviso-leitura");
+    if (faixa) { faixa.classList.toggle("hidden", !LEITURA); }
+}
+
 function _erro(msg) {
     var p = document.getElementById("mesa-erro");
     if (!p) { return; }
@@ -145,8 +191,9 @@ function _erro(msg) {
 }
 
 /* Abre a ficha: joga o conteúdo do envelope em F e volta para a ficha. */
-function abrir_envelope(env) {
+function abrir_envelope(env, comoMestre) {
     ENVELOPE = env;
+    LEITURA = !!comoMestre;
     var base = ficha_nova();
     Object.keys(base).forEach(function (k) {
         if (env.ficha && env.ficha[k] !== undefined && env.ficha[k] !== null) { base[k] = env.ficha[k]; }
@@ -156,9 +203,10 @@ function abrir_envelope(env) {
     desenhar();
     var faixa = document.getElementById("faixa-papel");
     if (faixa) {
-        faixa.textContent = env.papel === "mestre" ? "Mestre" : "Jogador";
-        faixa.className = "pilula-papel " + env.papel;
+        faixa.textContent = SOU_MESTRE ? "Mestre · " + env.titulo : env.titulo;
+        faixa.className = "pilula-papel " + (SOU_MESTRE ? "mestre" : "jogador");
     }
+    aplicar_leitura();
 }
 
 function ligar_mesa() {
@@ -179,15 +227,17 @@ function ligar_mesa() {
             var pin = document.getElementById("mesa-pin").value;
             var r = await mesa_adicionar(nome, d.criarFicha, pin || null);
             if (!r.ok) { _erro(r.erro); return; }
-            abrir_envelope(r.envelope);
+            abrir_envelope(r.envelope, false);
             return;
         }
 
         if (d.abrirFicha) {
             var env = mesa_buscar(d.abrirFicha);
             if (!env) { return; }
+            /* o mestre ja provou quem e ao entrar: nao pede o PIN do jogador */
+            if (SOU_MESTRE) { abrir_envelope(env, true); return; }
             if (env.pin && env.pin.sal) { desenhar_destrancar(env); return; }
-            abrir_envelope(env);
+            abrir_envelope(env, false);
             return;
         }
 
@@ -195,11 +245,29 @@ function ligar_mesa() {
             var alvo = mesa_buscar(d.destrancar);
             var ok = await conferirPin(document.getElementById("mesa-pin").value, alvo.pin);
             if (!ok) { _erro("PIN incorreto."); return; }
-            abrir_envelope(alvo);
+            abrir_envelope(alvo, false);
             return;
         }
 
-        if (d.pinFicha) { desenhar_pin(mesa_buscar(d.pinFicha)); return; }
+        if (d.entrarMestre) { desenhar_entrar_mestre(); return; }
+
+        if (d.confirmarMestre) {
+            var res = await mesa_entrar_mestre(document.getElementById("mesa-pin").value);
+            if (!res.ok) { _erro(res.erro); return; }
+            SOU_MESTRE = true;
+            ENVELOPE = null;
+            desenhar_mesa();
+            return;
+        }
+
+        if (d.sairMestre) { SOU_MESTRE = false; LEITURA = false; desenhar_mesa(); return; }
+
+        if (d.pinFicha) {
+            desenhar_pin(d.pinFicha === "mestre"
+                ? { id: "mestre", titulo: MESA.mestre.nome, pin: MESA.mestre.pin }
+                : mesa_buscar(d.pinFicha));
+            return;
+        }
 
         if (d.salvarPin) {
             var atualEl = document.getElementById("pin-atual");

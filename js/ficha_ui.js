@@ -500,6 +500,8 @@ function desenhar() {
     desenhar_itens();
     if (typeof desenhar_assistente === "function") { desenhar_assistente(); }
     salvar();
+    /* o redesenho recria os campos, entao a trava precisa voltar */
+    if (typeof aplicar_leitura === "function") { aplicar_leitura(); }
 }
 
 function recalcular() {
@@ -727,6 +729,10 @@ window.addEventListener("DOMContentLoaded", async function () {
         ligar_mesa();
         document.getElementById("mesa-fechar").onclick = function () {
             if (ENVELOPE) { mesa_esconder(); }
+        };
+        document.getElementById("btn-liberar-edicao").onclick = function () {
+            LEITURA = false;
+            aplicar_leitura();
         };
         /* primeira visita: cria os lugares da mesa */
         if (!MESA.fichas.length) { await mesa_semear(); }

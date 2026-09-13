@@ -28,9 +28,11 @@ var MESA_PADRAO = [
     { personagem: "Miyu",        jogador: "Akiis",   papel: "jogador" },
     { personagem: "Woo Ji Sang", jogador: "Delta",   papel: "jogador" },
     { personagem: "Aanarsi",     jogador: "Kentaro", papel: "jogador" },
-    { personagem: "Evelyn",      jogador: "Koha",    papel: "jogador" },
-    { personagem: "Mestre",      jogador: "Kian",    papel: "mestre"  }
+    { personagem: "Evelyn",      jogador: "Koha",    papel: "jogador" }
 ];
+
+/* O mestre nao tem ficha: e uma credencial que destranca as dos outros. */
+var MESA_MESTRE = { nome: "Kian" };
 
 /* --------------------------------------------------------- PIN ---------- */
 
@@ -172,7 +174,7 @@ var MESA = null;
 var ARMAZEM = null;
 
 function mesa_nova() {
-    return { versao: 1, nome: "Minha mesa", fichas: [], mestrePin: null };
+    return { versao: 2, nome: "Minha mesa", fichas: [], mestre: null };
 }
 
 function armazemAtual() {
@@ -196,11 +198,10 @@ async function mesa_gravar() {
    se a ficha do personagem existir como arquivo, ela vem junto. */
 async function mesa_semear() {
     var criou = 0;
+    if (!MESA.mestre) { MESA.mestre = { nome: MESA_MESTRE.nome, pin: null }; criou++; }
     for (var i = 0; i < MESA_PADRAO.length; i++) {
         var lugar = MESA_PADRAO[i];
-        var jaTem = MESA.fichas.some(function (f) {
-            return f.titulo === lugar.personagem && f.papel === lugar.papel;
-        });
+        var jaTem = MESA.fichas.some(function (f) { return f.titulo === lugar.personagem; });
         if (jaTem) { continue; }
 
         var ficha = ficha_nova();
@@ -237,8 +238,8 @@ async function mesa_semear() {
 /* Definir ou trocar o PIN. Para trocar e preciso o PIN atual — quem ja
    trancou a ficha e o unico que pode destrancar. */
 async function mesa_definir_pin(id, pinAtual, pinNovo) {
-    var env = mesa_buscar(id);
-    if (!env) { return { ok: false, erro: "ficha não encontrada" }; }
+    var env = (id === "mestre") ? MESA.mestre : mesa_buscar(id);
+    if (!env) { return { ok: false, erro: "não encontrado" }; }
     if (env.pin && env.pin.sal) {
         if (!await conferirPin(pinAtual, env.pin)) { return { ok: false, erro: "PIN atual incorreto." }; }
     }
@@ -247,27 +248,31 @@ async function mesa_definir_pin(id, pinAtual, pinNovo) {
     return { ok: true, removido: !pinNovo };
 }
 
+/* Entrar como mestre nao abre ficha nenhuma: liga o acesso as seis. */
+async function mesa_entrar_mestre(pin) {
+    if (!MESA.mestre) { return { ok: false, erro: "esta mesa não tem mestre" }; }
+    if (!await conferirPin(pin, MESA.mestre.pin)) { return { ok: false, erro: "PIN incorreto." }; }
+    return { ok: true };
+}
+
 function mesa_lugares() {
     return MESA_CONFIG.maxJogadores;
 }
 
 function mesa_cheia() {
-    return MESA.fichas.filter(function (f) { return f.papel !== "mestre"; }).length >= mesa_lugares();
+    return MESA.fichas.length >= mesa_lugares();
 }
 
 /* Cada ficha na mesa é um envelope: quem é, que papel tem, o PIN e a ficha
    em si no mesmo formato que o Exportar já produz. */
 async function mesa_adicionar(nome, papel, pin) {
-    if (papel !== "mestre" && mesa_cheia()) {
+    if (mesa_cheia()) {
         return { ok: false, erro: "A mesa já tem " + mesa_lugares() + " jogadores." };
-    }
-    if (papel === "mestre" && MESA.fichas.some(function (f) { return f.papel === "mestre"; })) {
-        return { ok: false, erro: "A mesa já tem um mestre." };
     }
     var env = {
         id: "f" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
         titulo: nome || "Sem nome",
-        papel: papel === "mestre" ? "mestre" : "jogador",
+        papel: "jogador",
         dono: "eu",
         criadaEm: new Date().toISOString(),
         pin: pin ? await criarSegredoPin(pin) : null,
@@ -290,8 +295,7 @@ async function mesa_remover(id) {
 
 /* O mestre enxerga todas; um jogador enxerga a própria. No modo local isso
    é só a interface se comportando — no modo nuvem quem decide é o banco. */
-function mesa_visiveis(envelopeAtivo) {
-    if (envelopeAtivo && envelopeAtivo.papel === "mestre") { return MESA.fichas; }
-    if (!envelopeAtivo) { return MESA.fichas; }
+function mesa_visiveis(souMestre, envelopeAtivo) {
+    if (souMestre || !envelopeAtivo) { return MESA.fichas; }
     return MESA.fichas.filter(function (f) { return f.id === envelopeAtivo.id; });
 }

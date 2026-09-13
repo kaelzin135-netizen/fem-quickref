@@ -1508,6 +1508,39 @@ body.mostrar-contas .conta-longa { display: inline; }
 .linha-nome-btn:hover { color: var(--accent); }
 .linha-nome-btn[aria-expanded="true"] { color: var(--accent); font-weight: 500; }
 
+.aviso-leitura {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 9px 20px;
+    box-sizing: border-box;
+    flex: 0 0 auto;
+    font-family: Roboto, 'Noto Sans', Arial, sans-serif;
+    font-size: 13px;
+    color: var(--tinta-fraca);
+    background: color-mix(in oklab, #a16207 22%, transparent);
+    border-bottom: 1px solid color-mix(in oklab, #a16207 55%, transparent);
+}
+
+.aviso-leitura b { color: var(--tinta); font-weight: 500; }
+.aviso-leitura .btn-mini { margin-left: auto; color: var(--tinta); }
+
+/* campo travado nao deve parecer apagado a ponto de nao dar para ler */
+body.somente-leitura .ficha-app input:disabled,
+body.somente-leitura .ficha-app select:disabled,
+body.somente-leitura .ficha-app textarea:disabled {
+    color: var(--tinta);
+    -webkit-text-fill-color: var(--tinta);
+    opacity: 1;
+    cursor: default;
+}
+
+body.somente-leitura .ficha-app button:disabled { opacity: .35; cursor: default; }
+
 /* --- tela da mesa --- */
 
 .pilula-papel {
