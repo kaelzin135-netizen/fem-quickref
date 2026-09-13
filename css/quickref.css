@@ -1324,14 +1324,14 @@ p:first-child {
     padding: 1px 7px;
     border: 0;
     background: none;
-    color: var(--tinta-tenue);
+    color: var(--tinta-fraca);
     font-family: inherit;
-    font-size: 11px;
+    font-size: 13px;
     cursor: pointer;
-    transition: color .1s ease, background-color .1s ease;
+    transition: color .1s ease;
 }
 
-.passo:hover { color: var(--tinta); background-color: var(--realce); }
+.passo:hover { color: var(--accent); }
 
 .rec-ctrl input {
     width: 40px;
@@ -1461,7 +1461,7 @@ body.mostrar-contas .conta-longa { display: inline; }
     align-items: center;
     justify-content: center;
     padding: 24px;
-    background: rgba(0, 0, 0, .62);
+    background: rgba(0, 0, 0, .6);
 }
 
 .modal-caixa {
@@ -1472,7 +1472,7 @@ body.mostrar-contas .conta-longa { display: inline; }
     flex-direction: column;
     background: var(--elevado);
     border: 1px solid var(--linha-forte);
-    border-radius: 6px;
+    border-radius: 4px;
     box-shadow: 0 18px 50px rgba(0, 0, 0, .5);
 }
 
@@ -1670,9 +1670,9 @@ body.mostrar-contas .linha .conta { flex: 1 1 100%; text-align: left; }
     transition: color .1s ease, background-color .1s ease;
 }
 
-.btn-topo:hover { color: #fff; background-color: var(--chrome-hover); }
+.btn-topo:hover { color: var(--gold); }
 .btn-topo.ligado { border-color: var(--gold); color: var(--gold); }
-.btn-topo.perigo:hover { color: #fca5a5; background-color: rgba(217, 83, 79, .16); }
+.btn-topo.perigo:hover { color: #fca5a5; }
 
 /* Icones dos botoes: SVG na grade de 24 do Material, como no C.R.I.S.,
    desenhados em currentColor para seguir o botao nos dois temas. */
@@ -1686,49 +1686,62 @@ body.mostrar-contas .linha .conta { flex: 1 1 100%; text-align: left; }
 .btn {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 0 12px;
-    min-height: 28px;
+    justify-content: center;
+    gap: 7px;
+    padding: 0 14px;
+    height: 36px;
     border: 0;
-    border-radius: 0;
-    background: none;
-    color: var(--tinta-fraca);
+    border-radius: 2px;
+    background-color: var(--accent);
+    color: #fff;
     font-family: inherit;
-    font-size: 13px;
+    font-size: 14px;
+    font-weight: 600;
     cursor: pointer;
-    transition: color .1s ease, background-color .1s ease;
+    transition: filter .1s ease, background-color .1s ease, color .1s ease;
 }
 
-/* sem moldura em repouso - o C.R.I.S. chama isso de naked-button */
-.btn:hover { color: var(--tinta); background-color: var(--realce); }
-.btn .ico { opacity: .7; }
-.btn:hover .ico { opacity: 1; }
-.btn[disabled] { opacity: .4; cursor: default; }
-.btn[disabled]:hover { background: none; color: var(--tinta-fraca); }
+/* Lido do CSS do C.R.I.S.: altura 2.25rem, raio 2px, 14px/600, em tres
+   variantes - principal preenchida no acento, secundaria so com o fio,
+   e a nua, que no hover troca a cor do texto e nao o fundo. */
+.btn:hover { filter: brightness(90%); }
+
+.btn.secundario {
+    background-color: transparent;
+    border: 1px solid var(--accent);
+    color: var(--tinta-fraca);
+}
+
+.btn.secundario:hover { filter: none; background-color: var(--realce); color: var(--tinta); }
+.btn[disabled] { background-color: var(--elevado); color: var(--tinta-fraca); cursor: auto; }
+.btn[disabled]:hover { filter: none; }
 
 .btn-mini {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 3px;
+    gap: 4px;
     padding: 0 5px;
-    min-height: 20px;
+    min-height: 22px;
     border: 0;
-    border-radius: 0;
+    border-radius: 2px;
     background: none;
-    color: var(--tinta-tenue);
+    color: var(--tinta-fraca);
     font-family: inherit;
-    font-size: 12px;
+    font-size: 13px;
     cursor: pointer;
     white-space: nowrap;
-    transition: color .1s ease, background-color .1s ease;
+    transition: color .1s ease;
 }
 
-.btn-mini:hover { color: var(--tinta); background-color: var(--realce); }
+/* nua: no hover quem muda e a cor do texto, nao o fundo */
+.btn-mini:hover { color: var(--accent); }
 
-.btn-mini .ico { width: 13px; height: 13px; }
-.btn-mini.perigo .ico { opacity: .7; }
-.btn-mini.perigo:hover .ico { opacity: 1; }
+.btn-mini .ico { width: 14px; height: 14px; }
+
+/* remover: vermelho, sem moldura, so escurece no hover */
+.btn-mini.perigo { color: var(--vermelho); font-size: 12px; }
+.btn-mini.perigo:hover { color: var(--vermelho); filter: brightness(85%); }
 
 .btn-mini:hover { color: var(--tinta); border-color: var(--accent); }
 .btn-mini.perigo:hover { color: var(--vermelho); border-color: var(--vermelho); }
@@ -1786,7 +1799,8 @@ body.mostrar-contas .linha .conta { flex: 1 1 100%; text-align: left; }
 }
 
 .chip-x { display: inline-flex; align-items: center; border: 0; background: none; color: var(--tinta-tenue); cursor: pointer; line-height: 1; padding: 0 1px; }
-.chip-x .ico { width: 12px; height: 12px; opacity: .56; }
+.chip-x { color: var(--vermelho); }
+.chip-x .ico { width: 12px; height: 12px; opacity: .7; }
 .chip-x:hover .ico { opacity: 1; }
 .chip-x:hover { color: var(--vermelho); }
 

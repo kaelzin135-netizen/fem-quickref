@@ -380,7 +380,7 @@ function desenhar_itens() {
         '<div class="acoes-itens">' +
         '<button type="button" class="btn" id="btn-abrir-catalogo">' + icone("add") +
         "Adicionar do livro</button>" +
-        '<button type="button" class="btn" id="btn-abrir-homebrew">' + icone("frasco") +
+        '<button type="button" class="btn secundario" id="btn-abrir-homebrew">' + icone("frasco") +
         "Homebrew</button>" +
         '<span class="contagem-itens">' + F.itens.length + "</span>" +
         "</div>" +
