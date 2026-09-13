@@ -221,10 +221,15 @@ function marcaLinha() {
         '<polygon points="12,2 21,7 21,17 12,22 3,17 3,7"/></svg>';
 }
 
-function linhaTeste(nome, curto, controles, res, treinado, mestre) {
+function linhaTeste(nome, curto, controles, res, treinado, mestre, verId) {
+    /* quando ha texto no livro, o nome vira botao que abre o detalhe */
+    var rotulo = verId
+        ? '<button type="button" class="linha-nome linha-nome-btn" data-pericia-ver="' +
+          esc(verId) + '" aria-expanded="false" title="Ver para que serve">' + esc(nome) + "</button>"
+        : '<span class="linha-nome">' + esc(nome) + "</span>";
     return '<div class="linha' + (treinado ? " treinada" : "") + (mestre ? " mestre" : "") + '">' +
         marcaLinha() +
-        '<span class="linha-nome">' + esc(nome) + "</span>" +
+        rotulo +
         '<span class="linha-attr">' + esc(curto) + "</span>" +
         controles +
         '<span class="linha-total" title="' + esc(formula(res)) + '">' + fmt(res.total) + "</span>" +
@@ -252,13 +257,36 @@ function ctrlTM(tipo, id, reg) {
         '" data-id="' + id + '" data-campo="outros" value="' + (Number(reg.outros) || 0) + '">';
 }
 
+/* o que a pericia faz vem da mesma fonte da aba Combate */
+function textoDaPericia(nome) {
+    if (typeof data_pericia === "undefined") { return null; }
+    for (var i = 0; i < data_pericia.length; i++) {
+        if (data_pericia[i].title === nome) { return data_pericia[i]; }
+    }
+    return null;
+}
+
+function detalhePericia(p) {
+    var d = textoDaPericia(p.nome);
+    if (!d) { return ""; }
+    return '<div class="linha-detalhe hidden" data-det="' + esc(p.id) + '">' +
+        "<p><i>" + esc(d.description) + "</i></p>" +
+        (d.bullets || []).map(function (b) { return "<p>" + b + "</p>"; }).join("") +
+        (d.reference ? '<p class="ref-livro">' + esc(d.reference) + "</p>" : "") +
+        "</div>";
+}
+
 function desenhar_pericias() {
     document.getElementById("ficha-pericias").innerHTML =
         cabecalhoLinhas("Perícia") +
         PERICIAS.map(function (p) {
             var reg = F.pericias[p.id];
-            return linhaTeste(p.nome + (p.exigeTreino ? " *" : ""), p.attr.toUpperCase(),
-                ctrlTM("pericias", p.id, reg), pericia(p.id), reg.t || reg.m, reg.m);
+            var temTexto = !!textoDaPericia(p.nome);
+            return '<div class="linha-grupo">' +
+                linhaTeste(p.nome + (p.exigeTreino ? " *" : ""), p.attr.toUpperCase(),
+                    ctrlTM("pericias", p.id, reg), pericia(p.id), reg.t || reg.m, reg.m,
+                    temTexto ? p.id : null) +
+                detalhePericia(p) + "</div>";
         }).join("");
 }
 
@@ -512,6 +540,16 @@ function ligar_eventos() {
         var d = el.dataset;
 
         if (d.aba) { trocar_aba(d.aba); return; }
+
+        if (d.periciaVer) {
+            var det = document.querySelector('.linha-detalhe[data-det="' + d.periciaVer + '"]');
+            if (det) {
+                var abrindo = det.classList.contains("hidden");
+                det.classList.toggle("hidden", !abrindo);
+                el.setAttribute("aria-expanded", abrindo ? "true" : "false");
+            }
+            return;
+        }
 
         if (d.rec) {
             F[d.rec] = Math.max(0, (Number(F[d.rec]) || 0) + Number(d.delta));

@@ -836,7 +836,7 @@ p:first-child {
 
 .ficha-app {
     display: grid;
-    grid-template-columns: minmax(340px, 424px) minmax(340px, 404px) minmax(320px, 1fr);
+    grid-template-columns: minmax(330px, 420px) minmax(360px, 440px) minmax(300px, 1fr);
     gap: 0;
     max-width: 1440px;
     width: 100%;
@@ -895,7 +895,7 @@ p:first-child {
     font-family: inherit;
     font-variant: normal;
     font-weight: 700;
-    font-size: 12px;
+    font-size: 13px;
     text-transform: uppercase;
     letter-spacing: 1.5px;
     text-align: center;
@@ -911,7 +911,7 @@ p:first-child {
 .h2-nota {
     text-align: right;
     font-weight: 400;
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: .3px;
     text-transform: none;
     color: var(--tinta-tenue);
@@ -926,7 +926,7 @@ p:first-child {
 #sec-abas       { --accent: #be185d; }
 
 .rodape-col {
-    font-size: 10px;
+    font-size: 11px;
     color: var(--tinta-tenue);
     margin: 12px 0 0;
 }
@@ -958,7 +958,7 @@ p:first-child {
 
 .sel-op {
     padding: 8px 16px;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.2;
     color: var(--tinta);
     cursor: pointer;
@@ -1005,9 +1005,9 @@ p:first-child {
 .cab-campo { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
 
 .cab-campo > span {
-    flex: 0 0 86px;
+    flex: 0 0 92px;
     text-align: right;
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: .9px;
@@ -1024,7 +1024,7 @@ p:first-child {
     background: none;
     color: var(--tinta);
     font-family: inherit;
-    font-size: 14px;
+    font-size: 15px;
 }
 
 .cab-campo input:focus,
@@ -1048,7 +1048,7 @@ p:first-child {
     background: none;
     color: var(--tinta);
     font-family: inherit;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 400;
     text-align: center;
 }
@@ -1302,14 +1302,14 @@ p:first-child {
 .rec-topo { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 4px; }
 
 .rec-rot {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1.1px;
     color: var(--tinta-fraca);
 }
 
-.rec-num { font-size: 17px; font-weight: 500; font-variant-numeric: tabular-nums; color: var(--tinta); }
+.rec-num { font-size: 18px; font-weight: 500; font-variant-numeric: tabular-nums; color: var(--tinta); }
 .rec-num i { font-size: 12px; font-weight: 400; font-style: normal; color: var(--tinta-fraca); }
 
 .rec-barra { height: 6px; background-color: var(--linha); overflow: hidden; }
@@ -1370,7 +1370,7 @@ p:first-child {
 .tile .conta { order: 3; }
 
 .tile-rot {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: .6px;
@@ -1378,10 +1378,10 @@ p:first-child {
     white-space: nowrap;
 }
 
-.tile-val { font-size: 21px; font-weight: 500; line-height: 1.15; color: var(--tinta); font-variant-numeric: tabular-nums; }
+.tile-val { font-size: 22px; font-weight: 500; line-height: 1.15; color: var(--tinta); font-variant-numeric: tabular-nums; }
 .tile-val i { font-size: 11px; font-weight: 400; font-style: normal; color: var(--tinta-fraca); }
 
-.conta { font-size: 10px; color: var(--tinta-tenue); text-align: center; line-height: 1.35; }
+.conta { font-size: 11px; color: var(--tinta-tenue); text-align: center; line-height: 1.35; }
 .conta-longa { display: none; }
 body.mostrar-contas .conta-curta { display: none; }
 body.mostrar-contas .conta-longa { display: inline; }
@@ -1391,7 +1391,7 @@ body.mostrar-contas .conta-longa { display: inline; }
 .grade-apt { display: grid; grid-template-columns: repeat(auto-fit, minmax(108px, 1fr)); gap: 2px 10px; }
 
 .apt { display: flex; align-items: center; gap: 6px; padding: 2px 0; }
-.apt-sigla { flex: 0 0 26px; font-size: 10px; font-weight: 700; letter-spacing: .6px; color: var(--tinta-fraca); }
+.apt-sigla { flex: 0 0 28px; font-size: 11px; font-weight: 700; letter-spacing: .6px; color: var(--tinta-fraca); }
 
 .apt input {
     width: 34px;
@@ -1407,7 +1407,7 @@ body.mostrar-contas .conta-longa { display: inline; }
 
 .apt input:focus { outline: none; border-bottom-color: var(--accent); }
 
-.apt-total { margin-left: auto; font-size: 14px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.apt-total { margin-left: auto; font-size: 15px; font-weight: 500; font-variant-numeric: tabular-nums; }
 
 /* --- linhas: 28px, sem zebra, separadas por fio --- */
 
@@ -1419,7 +1419,7 @@ body.mostrar-contas .conta-longa { display: inline; }
     gap: 6px;
     padding: 0 2px;
     box-sizing: border-box;
-    min-height: 28px;
+    min-height: 30px;
 }
 .linha:hover { background-color: rgba(255, 255, 255, .04); }
 :root[data-tema="dia"] .linha:hover { background-color: rgba(0, 0, 0, .04); }
@@ -1430,9 +1430,35 @@ body.mostrar-contas .conta-longa { display: inline; }
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-size: 13px;
+    font-size: 14px;
     color: var(--tinta-fraca);
 }
+
+/* nome vira botao quando ha texto do livro para mostrar */
+.linha-nome-btn {
+    border: 0;
+    background: none;
+    padding: 0;
+    text-align: left;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.linha-nome-btn:hover { color: var(--accent); }
+.linha-nome-btn[aria-expanded="true"] { color: var(--accent); font-weight: 500; }
+
+.linha-detalhe {
+    padding: 2px 2px 10px 19px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--tinta-fraca);
+    border-left: 2px solid color-mix(in oklab, var(--accent) 45%, transparent);
+    margin: 0 0 6px 5px;
+}
+
+.linha-detalhe p { margin: .35em 0; }
+.linha-detalhe b { color: var(--tinta); font-weight: 500; }
+.linha-detalhe .ref-livro { font-size: 11px; color: var(--tinta-tenue); margin-top: .6em; }
 
 /* treinada em branco, mestre no acento — o realce por estado deles */
 .linha.treinada .linha-nome { color: var(--tinta); }
@@ -1451,7 +1477,7 @@ body.mostrar-contas .conta-longa { display: inline; }
 .linha.treinada .linha-marca { stroke: var(--tinta-fraca); }
 .linha.mestre .linha-marca { fill: var(--accent); stroke: var(--accent); }
 
-.linha-attr { flex: 0 0 24px; font-size: 10px; font-weight: 700; color: var(--tinta-tenue); }
+.linha-attr { flex: 0 0 26px; font-size: 11px; font-weight: 700; color: var(--tinta-tenue); }
 
 /* cabecalho da tabela, como PERICIA / DADOS / BONUS / Treino / Outros */
 .linha-cab {
@@ -1459,7 +1485,7 @@ body.mostrar-contas .conta-longa { display: inline; }
     align-items: center;
     gap: 6px;
     padding: 0 2px 6px;
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: .8px;
@@ -1467,12 +1493,12 @@ body.mostrar-contas .conta-longa { display: inline; }
 }
 
 .linha-marca-vazia { flex: 0 0 13px; }
-.linha-cab .linha-attr { flex: 0 0 24px; }
+.linha-cab .linha-attr { flex: 0 0 26px; }
 .linha-cab .linha-nome,
 .linha-cab .linha-attr,
-.linha-cab .linha-total { font-size: 9px; font-weight: 700; color: inherit; }
+.linha-cab .linha-total { font-size: 10px; font-weight: 700; color: inherit; }
 .cab-tm { flex: 0 0 24px; text-align: center; }
-.cab-outros { flex: 0 0 38px; text-align: center; }
+.cab-outros { flex: 0 0 40px; text-align: center; }
 .cab-conta { flex: 0 0 auto; min-width: 38px; text-align: right; }
 
 .tm {
@@ -1492,8 +1518,8 @@ body.mostrar-contas .conta-longa { display: inline; }
 
 /* campo sublinhado no lugar da caixa: e o padrao de campo deles */
 .micro {
-    flex: 0 0 38px;
-    width: 38px;
+    flex: 0 0 40px;
+    width: 40px;
     padding: 0 0 1px;
     border: 0;
     border-bottom: 1px solid var(--linha-forte);
@@ -1508,15 +1534,15 @@ body.mostrar-contas .conta-longa { display: inline; }
 select.micro { flex: 0 0 48px; width: 48px; text-align: left; }
 
 .linha-total {
-    flex: 0 0 34px;
+    flex: 0 0 36px;
     text-align: right;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 500;
     font-variant-numeric: tabular-nums;
     color: var(--tinta);
 }
 
-.linha .conta { flex: 0 0 auto; text-align: right; min-width: 38px; font-size: 9px; }
+.linha .conta { flex: 0 0 auto; text-align: right; min-width: 40px; font-size: 10px; }
 body.mostrar-contas .linha { flex-wrap: wrap; min-height: 40px; padding-bottom: 3px; }
 body.mostrar-contas .linha .conta { flex: 1 1 100%; text-align: left; }
 
@@ -1533,7 +1559,7 @@ body.mostrar-contas .linha .conta { flex: 1 1 100%; text-align: left; }
     font-family: inherit;
     font-variant: normal;
     font-weight: 400;
-    font-size: 12px;
+    font-size: 13px;
     text-transform: uppercase;
     letter-spacing: 1px;
     padding-bottom: 7px;
@@ -1586,7 +1612,7 @@ body.mostrar-contas .linha .conta { flex: 1 1 100%; text-align: left; }
     background: none;
     color: var(--tinta-fraca);
     font-family: inherit;
-    font-size: 12px;
+    font-size: 13px;
     cursor: pointer;
     transition: color .1s ease, background-color .1s ease;
 }
@@ -1610,7 +1636,7 @@ body.mostrar-contas .linha .conta { flex: 1 1 100%; text-align: left; }
     background: none;
     color: var(--tinta-tenue);
     font-family: inherit;
-    font-size: 11px;
+    font-size: 12px;
     cursor: pointer;
     white-space: nowrap;
     transition: color .1s ease, background-color .1s ease;
@@ -1651,7 +1677,7 @@ body.mostrar-contas .linha .conta { flex: 1 1 100%; text-align: left; }
     padding: 0;
     color: var(--tinta);
     font-family: inherit;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 700;
     cursor: pointer;
 }
@@ -1659,7 +1685,7 @@ body.mostrar-contas .linha .conta { flex: 1 1 100%; text-align: left; }
 .item-abrir:hover { color: var(--accent); }
 
 .item-ficha-cat {
-    font-size: 11px;
+    font-size: 12px;
     color: var(--accent);
     white-space: nowrap;
 }
@@ -1682,7 +1708,7 @@ body.mostrar-contas .linha .conta { flex: 1 1 100%; text-align: left; }
 .chip-x:hover .ico { opacity: 1; }
 .chip-x:hover { color: var(--vermelho); }
 
-.item-ficha-texto { margin-top: 6px; font-size: 12px; color: var(--tinta-fraca); }
+.item-ficha-texto { margin-top: 6px; font-size: 13px; color: var(--tinta-fraca); }
 .item-ficha-texto p { line-height: 1.5; margin: .4em 0; }
 .ref-livro { color: var(--tinta-tenue); font-size: 11px; }
 
