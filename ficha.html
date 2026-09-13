@@ -36,16 +36,16 @@
         </div>
     </nav>
 
+    <!-- faixa de identidade, no lugar da barra superior do C.R.I.S. -->
+    <header class="ficha-cabecalho" id="ficha-identidade"></header>
+
     <div class="ficha-app" id="ficha">
 
-        <!-- coluna 1: identidade, atributos, recursos, valores, aptidões -->
+        <!-- coluna 1: atributos, recursos, valores, aptidões -->
         <div class="col col-1">
             <div class="painel hidden" id="caixa-json">
                 <textarea id="area-json" rows="5" spellcheck="false"
                     placeholder="O JSON aparece aqui ao exportar. Para importar, cole um JSON e clique em Importar."></textarea>
-            </div>
-            <div class="cartao" id="sec-identidade">
-                <div id="ficha-identidade"></div>
             </div>
             <div class="cartao" id="sec-atributos">
                 <h2>Atributos</h2>
@@ -54,7 +54,7 @@
                     <svg class="selo-arte" viewBox="0 0 300 300" aria-hidden="true">
                         <defs>
                             <radialGradient id="brilhoSelo" cx="50%" cy="50%" r="50%">
-                                <stop offset="0%" stop-color="var(--selo-brilho)" stop-opacity=".5" />
+                                <stop offset="0%" stop-color="var(--selo-brilho)" stop-opacity=".14" />
                                 <stop offset="70%" stop-color="var(--selo-brilho)" stop-opacity="0" />
                             </radialGradient>
                         </defs>
@@ -76,6 +76,7 @@
                     <div class="selo-nos" id="ficha-atributos"></div>
                     <div class="selo-centro" id="ficha-selo-centro"></div>
                 </div>
+                <div class="chave-atrib" id="ficha-atrib-chave"></div>
             </div>
             <div class="cartao" id="sec-recursos">
                 <div id="ficha-recursos"></div>

@@ -63,36 +63,58 @@ function origemAtual() {
 
 /* --------------------------------------------------- coluna 1: topo ------ */
 
+function campoCab(rotulo, dentro, cls) {
+    return '<label class="cab-campo' + (cls ? " " + cls : "") + '">' +
+        "<span>" + esc(rotulo) + "</span>" + dentro + "</label>";
+}
+
+/* Faixa de identidade de largura total, no lugar da barra superior do
+   C.R.I.S.: rotulo em versalete pequeno e o valor sobre um fio. */
 function desenhar_identidade() {
     var e = espec();
     document.getElementById("ficha-identidade").innerHTML =
-        '<input type="text" class="campo-nome" data-campo="nome" placeholder="Nome do personagem" value="' +
-        esc(F.nome) + '">' +
-        '<div class="cabeca-linha">' +
-        '<select data-campo="especializacao"><option value="">Especialização</option>' +
-        opcoes(ESPECIALIZACOES, F.especializacao) + "</select>" +
-        '<select data-campo="origem"><option value="">Origem</option>' +
-        opcoes(ORIGENS, F.origem) + "</select>" +
+        '<div class="cab-selo" aria-hidden="true">' +
+        '<svg viewBox="0 0 100 100"><polygon points="50,6 88,28 88,72 50,94 12,72 12,28"/>' +
+        '<polygon class="cab-selo-int" points="50,26 71,38 71,62 50,74 29,62 29,38"/></svg></div>' +
+
+        '<div class="cab-campos">' +
+        campoCab("Personagem",
+            '<input type="text" data-campo="nome" placeholder="sem nome" value="' +
+            esc(F.nome) + '">', "largo") +
+        campoCab("Especialização",
+            '<select data-campo="especializacao"><option value="">—</option>' +
+            opcoes(ESPECIALIZACOES, F.especializacao) + "</select>") +
+        campoCab("Origem",
+            '<select data-campo="origem"><option value="">—</option>' +
+            opcoes(ORIGENS, F.origem) + "</select>") +
+        campoCab("Jogador",
+            '<input type="text" data-campo="jogador" value="' + esc(F.jogador) + '">') +
+        campoCab("Campanha",
+            '<input type="text" data-campo="campanha" value="' + esc(F.campanha) + '">') +
+        campoCab("Técnica",
+            '<input type="text" data-campo="tecnica" value="' + esc(F.tecnica) + '">', "largo") +
         "</div>" +
-        '<div class="cabeca-linha">' +
-        '<label class="mini-campo"><span>Nível</span>' +
-        '<input type="number" min="1" max="20" data-campo="nivel" value="' + F.nivel + '"></label>' +
-        '<span class="pilula">' + esc(grau()) + "</span>" +
-        '<span class="pilula" title="' + esc(formula(bt())) + '">Treino ' + fmt(bt().total) + "</span>" +
-        (e ? '<span class="pilula">' + esc(e.pvDado) + "×" + F.nivel + "</span>" : "") +
+
+        '<div class="cab-nivel">' +
+        '<label class="cab-caixa"><input type="number" min="1" max="20" data-campo="nivel" value="' +
+        F.nivel + '"><span>Nível</span></label>' +
+        '<div class="cab-caixa estatica"><b>' + esc(grau()) + "</b><span>Grau</span></div>" +
+        '<div class="cab-caixa estatica" title="' + esc(formula(bt())) + '"><b>' +
+        fmt(bt().total) + "</b><span>Treino</span></div>" +
+        (e ? '<div class="cab-caixa estatica"><b>' + esc(e.pvDado) + "×" + F.nivel +
+            "</b><span>Dado de PV</span></div>" : "") +
         "</div>" +
-        '<details class="mais-campos"><summary>Jogador, campanha, técnica, atributos-chave</summary>' +
-        '<div class="campos">' +
-        campoTexto("jogador", "Jogador") + campoTexto("campanha", "Campanha") +
-        campoTexto("tecnica", "Técnica") +
-        '<label class="campo"><span>Atrib. da CD</span><select data-campo="atribCD">' +
-        opcoes(e ? ATRIBUTOS.filter(function (a) { return e.chave.indexOf(a.id) >= 0; }) : ATRIBUTOS,
-            F.atribCD) + "</select></label>" +
-        '<label class="campo"><span>Atrib. de jujutsu</span><select data-campo="atribJujutsu">' +
-        opcoes(ATRIBUTOS, F.atribJujutsu) + "</select></label>" +
-        "</div>" +
-        (origemAtual() ? '<p class="nota-origem">' + esc(origemAtual().notas) + "</p>" : "") +
-        "</details>";
+        (origemAtual() ? '<p class="nota-origem">' + esc(origemAtual().notas) + "</p>" : "");
+
+    var alvo = document.getElementById("ficha-atrib-chave");
+    if (alvo) {
+        alvo.innerHTML =
+            campoCab("Atrib. da CD", '<select data-campo="atribCD">' +
+                opcoes(e ? ATRIBUTOS.filter(function (a) { return e.chave.indexOf(a.id) >= 0; }) :
+                    ATRIBUTOS, F.atribCD) + "</select>") +
+            campoCab("Atrib. de jujutsu", '<select data-campo="atribJujutsu">' +
+                opcoes(ATRIBUTOS, F.atribJujutsu) + "</select>");
+    }
 }
 
 function campoTexto(campo, rotulo) {
@@ -193,13 +215,32 @@ function desenhar_aptidoes() {
 
 /* ------------------------------------------------ coluna 2 e abas -------- */
 
+/* selo hexagonal no inicio da linha, no lugar do d20 do C.R.I.S. */
+function marcaLinha() {
+    return '<svg class="linha-marca" viewBox="0 0 24 24" aria-hidden="true">' +
+        '<polygon points="12,2 21,7 21,17 12,22 3,17 3,7"/></svg>';
+}
+
 function linhaTeste(nome, curto, controles, res, treinado, mestre) {
     return '<div class="linha' + (treinado ? " treinada" : "") + (mestre ? " mestre" : "") + '">' +
+        marcaLinha() +
         '<span class="linha-nome">' + esc(nome) + "</span>" +
         '<span class="linha-attr">' + esc(curto) + "</span>" +
         controles +
         '<span class="linha-total" title="' + esc(formula(res)) + '">' + fmt(res.total) + "</span>" +
         conta(res) + "</div>";
+}
+
+/* cabecalho da tabela, como o PERICIA / DADOS / BONUS deles */
+function cabecalhoLinhas(rotuloNome) {
+    return '<div class="linha-cab">' +
+        '<span class="linha-marca-vazia"></span>' +
+        '<span class="linha-nome">' + esc(rotuloNome) + "</span>" +
+        '<span class="linha-attr">Atr</span>' +
+        '<span class="cab-tm">T</span><span class="cab-tm">M</span>' +
+        '<span class="cab-outros">Outros</span>' +
+        '<span class="linha-total">Bônus</span>' +
+        '<span class="cab-conta">Conta</span></div>';
 }
 
 function ctrlTM(tipo, id, reg) {
@@ -213,6 +254,7 @@ function ctrlTM(tipo, id, reg) {
 
 function desenhar_pericias() {
     document.getElementById("ficha-pericias").innerHTML =
+        cabecalhoLinhas("Perícia") +
         PERICIAS.map(function (p) {
             var reg = F.pericias[p.id];
             return linhaTeste(p.nome + (p.exigeTreino ? " *" : ""), p.attr.toUpperCase(),
@@ -222,6 +264,7 @@ function desenhar_pericias() {
 
 function desenhar_testes() {
     document.getElementById("ficha-resistencias").innerHTML =
+        cabecalhoLinhas("Resistência") +
         RESISTENCIAS.map(function (r) {
             var reg = F.resistencias[r.id];
             return linhaTeste(r.nome, r.attr.toUpperCase(),
