@@ -498,6 +498,10 @@ function desenhar() {
     desenhar_pericias();
     desenhar_testes();
     desenhar_itens();
+    if (typeof desenhar_marcas === "function") { desenhar_marcas(); }
+    if (typeof desenhar_perfil === "function") { desenhar_perfil(); }
+    if (typeof desenhar_treinos === "function") { desenhar_treinos(); }
+    if (typeof desenhar_registro === "function") { desenhar_registro(); }
     if (typeof desenhar_assistente === "function") { desenhar_assistente(); }
     salvar();
     /* o redesenho recria os campos, entao a trava precisa voltar */
@@ -529,6 +533,17 @@ function trocar_aba(nome) {
     });
 }
 
+/* grava em "a.b" sem precisar de um tratador por campo */
+function gravarCaminho(caminho, valor) {
+    var partes = caminho.split(".");
+    var alvo = F;
+    for (var i = 0; i < partes.length - 1; i++) {
+        if (!alvo[partes[i]] || typeof alvo[partes[i]] !== "object") { alvo[partes[i]] = {}; }
+        alvo = alvo[partes[i]];
+    }
+    alvo[partes[partes.length - 1]] = valor;
+}
+
 function ligar_eventos() {
     /* A identidade fica numa faixa fora de #ficha, entao a delegacao precisa
        cobrir as duas raizes - sem isso os campos do cabecalho nao gravam. */
@@ -547,6 +562,66 @@ function ligar_eventos() {
         if (el.dataset.campo && !el.dataset.treino && !el.dataset.ataque) {
             F[el.dataset.campo] = el.type === "number" ? Number(el.value) : el.value;
             recalcular();
+            return;
+        }
+        /* campo ligado a um caminho aninhado: "aparencia.idade" */
+        if (el.dataset.caminho) {
+            gravarCaminho(el.dataset.caminho, el.type === "number" ? Number(el.value) : el.value);
+            salvar();
+            if (/^limiteEspacos$/.test(el.dataset.caminho)) { desenhar_registro(); }
+            return;
+        }
+        /* item de uma lista: inventario, votos, aptidoes */
+        if (el.dataset.lista) {
+            var arr = F[el.dataset.lista] || (F[el.dataset.lista] = []);
+            var reg = arr[Number(el.dataset.i)];
+            if (reg) {
+                reg[el.dataset.chave] = el.type === "number" ? Number(el.value) : el.value;
+                salvar();
+                if (el.dataset.lista === "inventario") { desenhar_registro(); }
+            }
+            return;
+        }
+        /* feiticos: um por linha */
+        if (el.dataset.feitico !== undefined) {
+            F.feiticos["n" + el.dataset.feitico] =
+                el.value.split("\n").map(function (x) { return x.trim(); }).filter(Boolean);
+            salvar();
+            return;
+        }
+        if (el.dataset.instrutor) {
+            if (!F.treinosInstrutor) { F.treinosInstrutor = {}; }
+            F.treinosInstrutor[el.dataset.instrutor] = el.value;
+            salvar();
+            return;
+        }
+        if (el.dataset.trilha) {
+            if (!F.treinos[el.dataset.trilha]) { F.treinos[el.dataset.trilha] = [false, false, false, false]; }
+            F.treinos[el.dataset.trilha][Number(el.dataset.etapa)] = el.checked;
+            salvar();
+            /* atualiza so esta trilha: redesenhar a lista inteira tiraria o
+               foco da caixa que a pessoa acabou de clicar */
+            atualizar_trilha(el.dataset.trilha);
+            return;
+        }
+        if (el.dataset.marca) {
+            F.marcas[el.dataset.marca] = el.checked;
+            salvar();
+            return;
+        }
+        if (el.dataset.rd) {
+            F.rds[el.dataset.rd] = Number(el.value) || 0;
+            salvar();
+            return;
+        }
+        if (el.dataset.morte) {
+            F.testesMorte[el.dataset.morte] = Number(el.value) || 0;
+            salvar();
+            return;
+        }
+        if (el.dataset.dadoVida) {
+            F.dadosVidaGastos[el.dataset.dadoVida] = Number(el.value) || 0;
+            salvar();
             return;
         }
         if (el.dataset.atual) {
@@ -593,6 +668,10 @@ function ligar_eventos() {
     }
 
     raiz.addEventListener("change", function (e) {
+        if (e.target.id === "retrato-arquivo") {
+            guardar_retrato(e.target.files && e.target.files[0]);
+            return;
+        }
         var el = e.target;
         if (el.tagName === "SELECT" && el.dataset.campo) { F[el.dataset.campo] = el.value; desenhar(); }
     });
@@ -605,6 +684,29 @@ function ligar_eventos() {
         if (d.aba) { trocar_aba(d.aba); return; }
 
         if (d.periciaVer) { abrir_pericia(d.periciaVer); return; }
+
+        if (d.addLista) {
+            if (!F[d.addLista]) { F[d.addLista] = []; }
+            F[d.addLista].push(d.addLista === "inventario"
+                ? { nome: "", quant: 1, peso: 0, preco: "" }
+                : d.addLista === "votos" ? { nome: "", descricao: "" }
+                : { nome: "", atual: "", max: "", custo: "" });
+            desenhar();
+            return;
+        }
+        if (d.removerLista) {
+            F[d.removerLista].splice(Number(d.i), 1);
+            desenhar();
+            return;
+        }
+        if (d.tirarRetrato) { F.retrato = ""; desenhar(); return; }
+
+        if (d.morteSet) {
+            F.testesMorte[d.morteSet] = Number(d.valor);
+            salvar();
+            desenhar_marcas();
+            return;
+        }
 
         if (d.rec) {
             var lim = Number(d.max) || 0;

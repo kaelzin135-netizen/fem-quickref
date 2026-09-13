@@ -12,8 +12,35 @@ function ficha_nova() {
         atributosBase: {}, atribCD: "for", atribJujutsu: "int",
         pericias: {}, resistencias: {}, ataques: {}, aptidoes: {},
         itens: [], anotacoes: "",
-        pvPerdidos: 0, pePerdidos: 0, integridadePerdida: 0
+        pvPerdidos: 0, pePerdidos: 0, integridadePerdida: 0,
+
+        /* --- o resto da planilha --- */
+        retrato: "",                       /* imagem do personagem, em data URL */
+        aparencia: {}, historia: {},
+        marcas: {},                        /* Kamo, Robustez, Des. Exa., Vigor Inf. */
+        rds: {}, estadoAtual: "Estável", rdGeral: 0,
+        experiencia: 0,
+        testesMorte: { sucessos: 0, falhas: 0 },
+        dadosVidaGastos: {},
+        inventario: [], limiteEspacos: 6,
+        armas: [],
+        feiticos: {}, aptidoesAmaldicoadas: [],
+        expansao: { nome: "", tipo: "", descricao: "" },
+        tecnicaMaxima: { nome: "", descricao: "" },
+        votos: [],
+        treinos: {},                       /* por trilha: [bool, bool, bool, bool] */
+        treinosInstrutor: {}               /* quem ensina cada trilha */
     };
+    CAMPOS_APARENCIA.forEach(function (c) { f.aparencia[c.id] = ""; });
+    CAMPOS_HISTORIA.forEach(function (c) { f.historia[c.id] = ""; });
+    MARCAS_PV.forEach(function (m) { f.marcas[m.id] = false; });
+    TIPOS_DANO_RD.forEach(function (t) { f.rds[t.id] = 0; });
+    DADOS_VIDA.forEach(function (d) { f.dadosVidaGastos[d] = 0; });
+    NIVEIS_FEITICO.forEach(function (n) { f.feiticos["n" + n] = []; });
+    TREINAMENTOS.forEach(function (t) {
+        f.treinos[t.id] = [false, false, false, false];
+        f.treinosInstrutor[t.id] = "";
+    });
     ATRIBUTOS.forEach(function (a) { f.atributosBase[a.id] = 10; });
     PERICIAS.forEach(function (p) { f.pericias[p.id] = { t: false, m: false, outros: 0 }; });
     RESISTENCIAS.forEach(function (r) { f.resistencias[r.id] = { t: false, m: false, outros: 0 }; });
@@ -134,6 +161,19 @@ function peMax() {
         }
     }
     return resultado(partes.concat(mods("pe")));
+}
+
+/* a planilha conta quantidade x peso */
+function espacosOcupados() {
+    return (F.inventario || []).reduce(function (soma, it) {
+        return soma + (Number(it.quant) || 0) * (Number(it.peso) || 0);
+    }, 0);
+}
+
+/* uma trilha so conta como concluida com as quatro etapas marcadas */
+function treinoCompleto(id) {
+    var e = (F.treinos && F.treinos[id]) || [];
+    return e.length === 4 && e.every(function (x) { return !!x; });
 }
 
 function integridadeMax() {

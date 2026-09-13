@@ -89,6 +89,10 @@
             <div class="cartao" id="sec-recursos">
                 <div id="ficha-recursos"></div>
             </div>
+            <div class="cartao" id="sec-marcas">
+                <h2>Marcas e reduções</h2>
+                <div id="ficha-marcas"></div>
+            </div>
             <div class="cartao" id="sec-valores">
                 <div class="tiles" id="ficha-valores"></div>
             </div>
@@ -113,6 +117,9 @@
                 <div class="abas" id="abas-ficha">
                     <button type="button" class="aba-btn ativa" data-aba="habilidades">Habilidades</button>
                     <button type="button" class="aba-btn" data-aba="testes">Ataques e TRs</button>
+                    <button type="button" class="aba-btn" data-aba="perfil">Perfil</button>
+                    <button type="button" class="aba-btn" data-aba="treinos">Treinos</button>
+                    <button type="button" class="aba-btn" data-aba="registro">Registro</button>
                     <button type="button" class="aba-btn" data-aba="assistente">Assistente</button>
                     <button type="button" class="aba-btn" data-aba="notas">Anotações</button>
                 </div>
@@ -126,6 +133,18 @@
                     <div class="linhas" id="ficha-ataques"></div>
                     <h2>Testes de Resistência</h2>
                     <div class="linhas" id="ficha-resistencias"></div>
+                </div>
+
+                <div class="aba-painel hidden" data-painel="perfil">
+                    <div id="ficha-perfil"></div>
+                </div>
+
+                <div class="aba-painel hidden" data-painel="treinos">
+                    <div id="ficha-treinos"></div>
+                </div>
+
+                <div class="aba-painel hidden" data-painel="registro">
+                    <div id="ficha-registro"></div>
                 </div>
 
                 <div class="aba-painel hidden" data-painel="assistente">
@@ -179,12 +198,14 @@
     </div>
 
     <script type="text/javascript" src="js/data_pericia.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/data_registro.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/data_ficha.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/engine.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/ficha.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/mesa.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/mesa_ui.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/ficha_cris.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/ficha_registro.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/ficha_ui.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/ficha_select.js" charset="utf-8"></script>
 </body>

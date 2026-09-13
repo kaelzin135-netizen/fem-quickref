@@ -2131,3 +2131,82 @@ input:focus, select:focus, textarea:focus, .aba-btn:focus-visible {
 }
 
 .nav-inner { flex-wrap: wrap; row-gap: 6px; }
+
+/* ------------------------------------------------------------------------- */
+/* Registro, perfil e treinos                                                  */
+/* ------------------------------------------------------------------------- */
+
+.grupo-marcas { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-bottom: 12px; }
+.marca, .etapa { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: var(--tinta-fraca); cursor: pointer; }
+.marca input, .etapa input { margin: 0; accent-color: var(--accent); cursor: pointer; }
+.marca input:checked + span { color: var(--tinta); }
+
+.linha-estado { display: flex; flex-wrap: wrap; gap: 10px 16px; margin-bottom: 14px; }
+.linha-estado .cab-campo { flex: 1 1 150px; }
+.linha-estado .cab-campo.curto { flex: 0 0 118px; }
+.linha-estado .cab-campo > span { flex: 0 0 62px; }
+
+.grade-rd { display: grid; grid-template-columns: repeat(auto-fill, minmax(56px, 1fr)); gap: 6px; margin-bottom: 6px; }
+.rd { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.rd > span { font-size: 9px; font-weight: 700; letter-spacing: .5px; color: var(--tinta-tenue); }
+.rd input { width: 100%; box-sizing: border-box; padding: 1px 0 2px; border: 0; border-bottom: 1px solid var(--linha-forte); background: none; color: var(--tinta); font-family: inherit; font-size: 13px; text-align: center; }
+
+.morte { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; font-size: 12px; color: var(--tinta-fraca); }
+.morte > span { flex: 0 0 70px; }
+.pips { display: flex; gap: 6px; }
+.pip { width: 15px; height: 15px; padding: 0; border: 1px solid var(--linha-forte); border-radius: 50%; background: none; cursor: pointer; }
+.pip.cheio { background: var(--accent); border-color: var(--accent); }
+
+.grade-dados { display: flex; gap: 12px; }
+.dado-vida { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; color: var(--tinta-fraca); }
+.dado-vida input { width: 46px; padding: 1px 0 2px; border: 0; border-bottom: 1px solid var(--linha-forte); background: none; color: var(--tinta); font-family: inherit; font-size: 13px; text-align: center; }
+
+/* listas com cabecalho de coluna */
+.cab-lista { display: flex; gap: 6px; padding: 0 2px 5px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: var(--tinta-tenue); }
+.cab-lista > span:first-child { flex: 1 1 auto; }
+.cab-lista > span:not(:first-child) { flex: 0 0 40px; text-align: center; }
+.cab-lista.inv > span:not(:first-child) { flex: 0 0 40px; }
+
+.linha-apt, .linha-item { display: flex; align-items: center; gap: 6px; min-height: 30px; }
+.linha-apt input:first-child, .linha-item input:first-child { flex: 1 1 auto; min-width: 0; padding: 1px 0 2px; border: 0; border-bottom: 1px solid var(--linha-forte); background: none; color: var(--tinta); font-family: inherit; font-size: 13px; }
+.linha-apt input:focus, .linha-item input:focus { outline: none; border-bottom-color: var(--accent); }
+
+.grade-feiticos { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 8px; }
+.coluna-feitico h4 { margin: 0 0 5px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .9px; color: var(--tinta-fraca); }
+.coluna-feitico textarea, .bloco-texto textarea, .voto textarea {
+    width: 100%; box-sizing: border-box; padding: 6px 8px; border: 0;
+    border-left: 2px solid var(--linha-forte); background: rgba(255, 255, 255, .04);
+    color: var(--tinta); font-family: inherit; font-size: 13px; line-height: 1.5; resize: vertical;
+}
+:root[data-tema="dia"] .coluna-feitico textarea,
+:root[data-tema="dia"] .bloco-texto textarea,
+:root[data-tema="dia"] .voto textarea { background: rgba(0, 0, 0, .04); }
+.coluna-feitico textarea:focus, .bloco-texto textarea:focus, .voto textarea:focus { outline: none; border-left-color: var(--accent); }
+
+.bloco-texto { margin-bottom: 12px; }
+.bloco-texto h4 { margin: 0 0 5px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .9px; color: var(--tinta-fraca); }
+
+.voto { margin-bottom: 12px; }
+.voto-nome { flex: 1 1 auto; padding: 1px 0 3px; border: 0; border-bottom: 1px solid var(--linha-forte); background: none; color: var(--tinta); font-family: inherit; font-size: 14px; font-weight: 500; margin-bottom: 6px; }
+.voto { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.voto textarea { flex: 1 1 100%; }
+
+/* trilhas de treinamento */
+.trilha { padding: 10px 0 11px; border-bottom: 1px solid var(--linha); }
+.trilha:last-child { border-bottom: 0; }
+.trilha-topo { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.trilha-nome { font-size: 14px; font-weight: 500; color: var(--tinta); }
+.trilha.completa .trilha-nome { color: var(--verde); }
+.trilha-instrutor { flex: 1 1 110px; min-width: 0; padding: 1px 0 2px; border: 0; border-bottom: 1px solid var(--linha); background: none; color: var(--tinta-fraca); font-family: inherit; font-size: 12px; }
+.trilha-etapas { display: flex; gap: 8px; margin-left: auto; }
+.trilha-premio { margin: 5px 0 0; font-size: 12px; line-height: 1.5; color: var(--tinta-fraca); }
+.trilha.completa .trilha-premio { color: var(--tinta); }
+
+/* retrato */
+.retrato { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 6px; }
+.retrato img { width: 132px; height: 132px; object-fit: cover; border: 1px solid var(--linha-forte); }
+.retrato-vazio { width: 132px; height: 132px; display: flex; align-items: center; justify-content: center; border: 1px dashed var(--linha-forte); font-size: 11px; color: var(--tinta-tenue); }
+.retrato-acoes { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+.retrato-acoes .btn { cursor: pointer; }
+.cab-campo.limite { margin-top: 10px; }
+.cab-campo.limite > span { flex: 0 0 130px; }
