@@ -728,7 +728,9 @@ window.addEventListener("DOMContentLoaded", async function () {
         document.getElementById("mesa-fechar").onclick = function () {
             if (ENVELOPE) { mesa_esconder(); }
         };
-        /* sem nenhuma ficha na mesa e sem ficha solta salva, comeca pela mesa */
-        if (!MESA.fichas.length && !F.nome) { mesa_mostrar(); }
+        /* primeira visita: cria os lugares da mesa */
+        if (!MESA.fichas.length) { await mesa_semear(); }
+        /* sem ficha aberta, comeca pela mesa */
+        if (!ENVELOPE) { mesa_mostrar(); }
     }
 });

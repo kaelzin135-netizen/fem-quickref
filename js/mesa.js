@@ -20,6 +20,18 @@ var MESA_CONFIG = {
 
 var MESA_CHAVE = "fem-mesa-v1";
 
+/* Os lugares da mesa, na ordem. Ninguem nasce com PIN: cada pessoa
+   define o seu na primeira vez que abre a propria ficha. */
+var MESA_PADRAO = [
+    { personagem: "Amanaí",      jogador: "Kael",    papel: "jogador", arquivo: "fichas/amanai-aratupana.json" },
+    { personagem: "Annalise",    jogador: "Maruh",   papel: "jogador" },
+    { personagem: "Miyu",        jogador: "Akiis",   papel: "jogador" },
+    { personagem: "Woo Ji Sang", jogador: "Delta",   papel: "jogador" },
+    { personagem: "Aanarsi",     jogador: "Kentaro", papel: "jogador" },
+    { personagem: "Evelyn",      jogador: "Koha",    papel: "jogador" },
+    { personagem: "Mestre",      jogador: "Kian",    papel: "mestre"  }
+];
+
 /* --------------------------------------------------------- PIN ---------- */
 
 /* O PIN é derivado com PBKDF2 e guardado só como hash + sal. Mesmo no modo
@@ -178,6 +190,61 @@ async function mesa_carregar() {
 async function mesa_gravar() {
     if (!MESA) { return false; }
     return await (ARMAZEM || ArmazemLocal).gravar(MESA);
+}
+
+/* Cria os lugares na primeira vez. Idempotente: nao duplica ninguem, e
+   se a ficha do personagem existir como arquivo, ela vem junto. */
+async function mesa_semear() {
+    var criou = 0;
+    for (var i = 0; i < MESA_PADRAO.length; i++) {
+        var lugar = MESA_PADRAO[i];
+        var jaTem = MESA.fichas.some(function (f) {
+            return f.titulo === lugar.personagem && f.papel === lugar.papel;
+        });
+        if (jaTem) { continue; }
+
+        var ficha = ficha_nova();
+        if (lugar.arquivo) {
+            try {
+                var r = await fetch(lugar.arquivo, { cache: "no-store" });
+                if (r.ok) {
+                    var salvo = await r.json();
+                    Object.keys(ficha).forEach(function (k) {
+                        if (salvo[k] !== undefined && salvo[k] !== null) { ficha[k] = salvo[k]; }
+                    });
+                }
+            } catch (e) { /* sem o arquivo, entra a ficha em branco */ }
+        }
+        ficha.nome = ficha.nome || lugar.personagem;
+        ficha.jogador = ficha.jogador || lugar.jogador;
+
+        MESA.fichas.push({
+            id: "f" + Date.now().toString(36) + i + Math.random().toString(36).slice(2, 6),
+            titulo: lugar.personagem,
+            jogador: lugar.jogador,
+            papel: lugar.papel,
+            dono: "eu",
+            criadaEm: new Date().toISOString(),
+            pin: null,
+            ficha: ficha
+        });
+        criou++;
+    }
+    if (criou) { await mesa_gravar(); }
+    return criou;
+}
+
+/* Definir ou trocar o PIN. Para trocar e preciso o PIN atual — quem ja
+   trancou a ficha e o unico que pode destrancar. */
+async function mesa_definir_pin(id, pinAtual, pinNovo) {
+    var env = mesa_buscar(id);
+    if (!env) { return { ok: false, erro: "ficha não encontrada" }; }
+    if (env.pin && env.pin.sal) {
+        if (!await conferirPin(pinAtual, env.pin)) { return { ok: false, erro: "PIN atual incorreto." }; }
+    }
+    env.pin = pinNovo ? await criarSegredoPin(pinNovo) : null;
+    await mesa_gravar();
+    return { ok: true, removido: !pinNovo };
 }
 
 function mesa_lugares() {

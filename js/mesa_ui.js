@@ -25,14 +25,17 @@ function _cartaoFicha(env, podeAbrir) {
     return '<div class="mesa-vaga ocupada' + (env.papel === "mestre" ? " mestre" : "") + '">' +
         '<div class="mesa-vaga-papel">' + (env.papel === "mestre" ? "Mestre" : "Jogador") + "</div>" +
         '<div class="mesa-vaga-nome">' + _esc(env.titulo || "Sem nome") + "</div>" +
+        (env.jogador ? '<div class="mesa-vaga-jogador">' + _esc(env.jogador) + "</div>" : "") +
         '<div class="mesa-vaga-sub">' +
         (env.ficha && env.ficha.especializacao ? _esc(env.ficha.especializacao) + " · " : "") +
         "nível " + ((env.ficha && env.ficha.nivel) || 1) +
-        (trancada ? " · com PIN" : "") + "</div>" +
+        (trancada ? " · trancada" : " · sem PIN") + "</div>" +
         '<div class="mesa-vaga-acoes">' +
         (podeAbrir
             ? '<button type="button" class="btn" data-abrir-ficha="' + env.id + '">Abrir</button>'
             : '<span class="mesa-bloqueada">só o mestre</span>') +
+        '<button type="button" class="btn-mini" data-pin-ficha="' + env.id + '">' +
+        (trancada ? "trocar PIN" : "definir PIN") + "</button>" +
         '<button type="button" class="btn-mini perigo" data-apagar-ficha="' + env.id +
         '" title="Remover da mesa">remover</button>' +
         "</div></div>";
@@ -110,6 +113,30 @@ function desenhar_destrancar(env) {
     };
 }
 
+function desenhar_pin(env) {
+    var trancada = !!(env.pin && env.pin.sal);
+    var alvo = document.getElementById("mesa-form");
+    alvo.classList.remove("hidden");
+    alvo.innerHTML =
+        "<h3>" + (trancada ? "Trocar o PIN de " : "Definir o PIN de ") + _esc(env.titulo) + "</h3>" +
+        (trancada
+            ? '<label class="cab-campo"><span>PIN atual</span>' +
+              '<input type="password" id="pin-atual" inputmode="numeric" autocomplete="current-password"></label>'
+            : "") +
+        '<label class="cab-campo"><span>Novo PIN</span>' +
+        '<input type="password" id="pin-novo" inputmode="numeric" autocomplete="new-password" ' +
+        'placeholder="vazio remove o PIN"></label>' +
+        '<label class="cab-campo"><span>Repita</span>' +
+        '<input type="password" id="pin-conf" inputmode="numeric" autocomplete="new-password"></label>' +
+        '<p class="mesa-nota">Guardado como hash PBKDF2 com sal, nunca em texto puro. ' +
+        "Se esquecer, não há como recuperar — só remover a ficha e criar outra.</p>" +
+        '<div class="mesa-form-acoes">' +
+        '<button type="button" class="btn" data-salvar-pin="' + env.id + '">Salvar</button>' +
+        '<button type="button" class="btn secundario" data-cancelar-form="1">Cancelar</button>' +
+        '</div><p class="mesa-erro hidden" id="mesa-erro"></p>';
+    (document.getElementById("pin-atual") || document.getElementById("pin-novo")).focus();
+}
+
 function _erro(msg) {
     var p = document.getElementById("mesa-erro");
     if (!p) { return; }
@@ -169,6 +196,19 @@ function ligar_mesa() {
             var ok = await conferirPin(document.getElementById("mesa-pin").value, alvo.pin);
             if (!ok) { _erro("PIN incorreto."); return; }
             abrir_envelope(alvo);
+            return;
+        }
+
+        if (d.pinFicha) { desenhar_pin(mesa_buscar(d.pinFicha)); return; }
+
+        if (d.salvarPin) {
+            var atualEl = document.getElementById("pin-atual");
+            var novo = document.getElementById("pin-novo").value;
+            var conf = document.getElementById("pin-conf").value;
+            if (novo !== conf) { _erro("Os dois campos do novo PIN não batem."); return; }
+            var res = await mesa_definir_pin(d.salvarPin, atualEl ? atualEl.value : null, novo || null);
+            if (!res.ok) { _erro(res.erro); return; }
+            desenhar_mesa();
             return;
         }
 

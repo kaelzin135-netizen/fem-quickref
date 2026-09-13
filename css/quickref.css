@@ -1613,6 +1613,7 @@ body.mostrar-contas .conta-longa { display: inline; }
 }
 
 .mesa-vaga-nome { font-size: 15px; font-weight: 700; color: var(--tinta); }
+.mesa-vaga-jogador { font-size: 12px; color: var(--accent); font-weight: 500; }
 .mesa-vaga-sub { font-size: 11px; color: var(--tinta-fraca); }
 .mesa-vaga-acoes { display: flex; align-items: center; gap: 8px; margin-top: auto; padding-top: 9px; }
 .mesa-bloqueada { font-size: 11px; font-style: italic; color: var(--tinta-tenue); }
