@@ -152,23 +152,37 @@ function desenhar_atributos() {
         '<span class="centro-sub">' + esc(e ? nomeAtributo(F.atribCD).slice(0, 3) : "—") + "</span>";
 }
 
-/* barras de recurso com −/+, como as de vida e determinação do C.R.I.S. */
+/* Barra de recurso no molde do info-bar do C.R.I.S.: rotulo centrado em
+   14/700, caixa de 2.5rem com fio, o preenchimento por dentro como fundo
+   e os botoes de 1.5x2rem por cima. As setas mexem no valor ATUAL - a
+   esquerda perde, a direita recupera - que e mais claro que somar em
+   "perdidos". */
+function passoRec(campo, delta, max, glifo, titulo) {
+    return '<button type="button" class="rec-bt" data-rec="' + campo +
+        '" data-delta="' + delta + '" data-max="' + max + '" title="' + esc(titulo) + '">' +
+        glifo + "</button>";
+}
+
 function barra(rotulo, res, campo) {
     var perdidos = Number(F[campo]) || 0;
     var atual = res.total - perdidos;
     var pct = res.total > 0 ? Math.max(0, Math.min(100, (atual / res.total) * 100)) : 0;
     var baixo = pct <= 25 ? " baixo" : pct <= 50 ? " meio" : "";
     return '<div class="rec">' +
-        '<div class="rec-topo"><span class="rec-rot">' + esc(rotulo) + "</span>" +
-        '<span class="rec-num">' + atual + '<i>/' + res.total + "</i></span></div>" +
-        '<div class="rec-barra"><div class="rec-fill' + baixo + '" style="width:' + pct + '%"></div></div>' +
-        '<div class="rec-ctrl">' +
-        '<button type="button" class="passo" data-rec="' + campo + '" data-delta="-5">−5</button>' +
-        '<button type="button" class="passo" data-rec="' + campo + '" data-delta="-1">−1</button>' +
-        '<input type="number" min="0" data-campo="' + campo + '" value="' + perdidos + '" title="Perdidos">' +
-        '<button type="button" class="passo" data-rec="' + campo + '" data-delta="1">+1</button>' +
-        '<button type="button" class="passo" data-rec="' + campo + '" data-delta="5">+5</button>' +
-        conta(res) + "</div></div>";
+        '<div class="rec-rot">' + esc(rotulo) + "</div>" +
+        '<div class="rec-caixa">' +
+        '<div class="rec-fill' + baixo + '" style="width:' + pct + '%"></div>' +
+        '<div class="rec-linha">' +
+        passoRec(campo, 5, res.total, "«", "−5") +
+        passoRec(campo, 1, res.total, "‹", "−1") +
+        '<span class="rec-valor">' +
+        '<input type="number" min="0" max="' + res.total + '" data-atual="' + campo +
+        '" data-max="' + res.total + '" value="' + atual + '" title="Valor atual">' +
+        "<i>/" + res.total + "</i></span>" +
+        passoRec(campo, -1, res.total, "›", "+1") +
+        passoRec(campo, -5, res.total, "»", "+5") +
+        "</div></div>" +
+        '<div class="rec-pe">' + conta(res) + "</div></div>";
 }
 
 function desenhar_recursos() {
@@ -533,6 +547,13 @@ function ligar_eventos() {
             recalcular();
             return;
         }
+        if (el.dataset.atual) {
+            var teto = Number(el.dataset.max) || 0;
+            var novo = Math.max(0, Math.min(teto, Number(el.value) || 0));
+            F[el.dataset.atual] = teto - novo;
+            recalcular();
+            return;
+        }
         if (el.dataset.atributo) {
             F.atributosBase[el.dataset.atributo] = Number(el.value);
             recalcular();
@@ -584,7 +605,8 @@ function ligar_eventos() {
         if (d.periciaVer) { abrir_pericia(d.periciaVer); return; }
 
         if (d.rec) {
-            F[d.rec] = Math.max(0, (Number(F[d.rec]) || 0) + Number(d.delta));
+            var lim = Number(d.max) || 0;
+            F[d.rec] = Math.max(0, Math.min(lim, (Number(F[d.rec]) || 0) + Number(d.delta)));
             desenhar_recursos();
             salvar();
             return;

@@ -1302,67 +1302,109 @@ p:first-child {
 
 /* --- barras de recurso --- */
 
-/* cada recurso numa caixa com fio na propria cor, como VIDA e
-   DETERMINACAO do C.R.I.S. */
-.rec {
-    border: 1px solid color-mix(in oklab, var(--accent) 50%, transparent);
-    padding: 7px 11px 9px;
-}
+/* Molde do .info-bar do C.R.I.S., lido do CSS deles:
+     .info-bar-label      14px/700, centrado, off-white
+     .info-bar            2.5rem de altura, fio de 1px, position relative
+     .info-bar-fill       absoluto, altura 100%, largura = %, transicao 1s
+     .info-bar-components flex, space-between, padding 0 .25rem
+     .info-bar-button     1.5rem x 2rem, z-index 1
+   O preenchimento vai por dentro da caixa, como fundo, num tom escuro e
+   dessaturado (o deles e rgb(98,26,26) para vida) para o texto continuar
+   legivel por cima. */
 
-.rec + .rec { margin-top: 10px; }
-#sec-recursos .rec:nth-of-type(1) { --accent: #b91c1c; }
-#sec-recursos .rec:nth-of-type(2) { --accent: #1d4ed8; }
-#sec-recursos .rec:nth-of-type(3) { --accent: #7c3aed; }
-
-.rec-topo { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 4px; }
+.rec + .rec { margin-top: 12px; }
 
 .rec-rot {
-    font-size: 11px;
+    text-align: center;
+    font-size: 14px;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.1px;
     color: var(--tinta-fraca);
+    margin-bottom: 5px;
 }
 
-.rec-num { font-size: 18px; font-weight: 500; font-variant-numeric: tabular-nums; color: var(--tinta); }
-.rec-num i { font-size: 12px; font-weight: 400; font-style: normal; color: var(--tinta-fraca); }
+.rec-caixa {
+    position: relative;
+    height: 40px;
+    box-sizing: border-box;
+    border: 1px solid var(--linha-forte);
+}
 
-.rec-barra { height: 8px; background-color: var(--linha); overflow: hidden; }
-.rec-fill { height: 100%; background-color: var(--accent); transition: width .18s ease; }
-.rec-fill.meio { background-color: #c2760c; }
-.rec-fill.baixo { background-color: var(--vermelho); }
+.rec-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    height: 100%;
+    background-color: var(--rec-cheio);
+    transition: width .5s ease-in-out;
+}
 
-.rec-ctrl { display: flex; align-items: center; gap: 2px; margin-top: 6px; }
-.rec-ctrl .passo:first-child { margin-left: -7px; }
+.rec-linha {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    padding: 0 4px;
+}
 
-.passo {
-    padding: 1px 7px;
+.rec-bt {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 32px;
+    z-index: 1;
     border: 0;
     background: none;
     color: var(--tinta-fraca);
     font-family: inherit;
-    font-size: 13px;
+    font-size: 18px;
+    line-height: 1;
     cursor: pointer;
     transition: color .1s ease;
 }
 
-.passo:hover { color: var(--accent); }
+.rec-bt:hover { color: var(--tinta); }
 
-.rec-ctrl input {
-    width: 40px;
-    padding: 0 2px 1px;
-    text-align: center;
+.rec-valor {
+    z-index: 1;
+    display: inline-flex;
+    align-items: baseline;
+    font-variant-numeric: tabular-nums;
+    color: var(--tinta);
+}
+
+.rec-valor input {
+    width: 3.2rem;
+    padding: 0;
     border: 0;
-    border-bottom: 1px solid var(--linha-forte);
     background: none;
     color: var(--tinta);
     font-family: inherit;
-    font-size: 12px;
+    font-size: 20px;
+    font-weight: 500;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
 }
 
-.rec-ctrl input:focus { outline: none; border-bottom-color: var(--accent); }
+.rec-valor input:focus { outline: none; }
+.rec-valor i { font-size: 13px; font-style: normal; color: var(--tinta-fraca); }
 
-.rec-ctrl .conta { margin-left: auto; text-align: right; font-size: 10px; }
+.rec-pe { margin-top: 3px; text-align: right; }
+.rec-pe .conta { font-size: 10px; }
+
+/* cada recurso tem o seu tom; o cheio e o acento puxado para o escuro */
+#sec-recursos .rec:nth-of-type(1) { --accent: #b91c1c; }
+#sec-recursos .rec:nth-of-type(2) { --accent: #1d4ed8; }
+#sec-recursos .rec:nth-of-type(3) { --accent: #7c3aed; }
+
+.rec { --rec-cheio: color-mix(in oklab, var(--accent) 46%, #000); }
+.rec-fill.meio { background-color: color-mix(in oklab, #c2760c 46%, #000); }
+.rec-fill.baixo { background-color: color-mix(in oklab, var(--vermelho) 46%, #000); }
+
+/* no tema claro o preenchimento clareia, senao come o texto */
+:root[data-tema="dia"] .rec { --rec-cheio: color-mix(in oklab, var(--accent) 26%, #fff); }
+:root[data-tema="dia"] .rec-fill.meio { background-color: color-mix(in oklab, #c2760c 26%, #fff); }
+:root[data-tema="dia"] .rec-fill.baixo { background-color: color-mix(in oklab, var(--vermelho) 26%, #fff); }
 
 /* --- tiles --- */
 
