@@ -132,10 +132,14 @@ com a terceira em abas.
 
 | | C.R.I.S. | aqui |
 | --- | --- | --- |
-| Coluna 1 | 424 px — atributos, vida, defesa | 430 px — identidade, atributos, barras, valores, aptidões |
-| Coluna 2 | 356 px — perícias | 370 px — perícias |
-| Coluna 3 | 500 px — abas | 588 px — abas |
+| Coluna 1 | 424 px — atributos, vida, defesa | 424 px — identidade, atributos, barras, valores, aptidões |
+| Coluna 2 | 356 px — perícias | 356 px — perícias |
+| Coluna 3 | 500 px — abas | resto da tela — abas |
 | Linha de perícia | ~30 px | 28 px |
+| Fundo / réguas | `#121212` / `rgba(255,255,255,.1)` | iguais no modo noite |
+| Fonte | Roboto | Roboto |
+| Título de seção | 14 px / 700 | 14 px / 700 |
+| Rótulo | 10 px / 700 | 10 px / 700 |
 | Altura da página | uma tela | uma tela |
 
 As abas da terceira coluna são **Habilidades · Ataques e TRs · Assistente · Anotações**.
@@ -147,10 +151,11 @@ desenhado em SVG: seis vértices, um por atributo, com o véu externo tracejado 
 devagar e a CD de Especialização no núcleo. Hexágono porque são seis atributos e porque
 barreira e domínio são a geometria da casa em *Jujutsu Kaisen*.
 
-O acabamento também segue o C.R.I.S.: campos sublinhados em vez de caixas, o acento da
-seção como um traço curto antes do título em vez de moldura colorida, e cantos e sombras
-suaves. **Só a aba Ficha usa essa linguagem** — Combate, Habilidades e Evolução seguem no
-formato da referência de D&D, com as molduras coloridas.
+O acabamento também segue o C.R.I.S., e segue **plano**: nada de cartão, canto arredondado
+ou sombra. As seções são separadas por réguas de 1 px, os campos são sublinhados em vez de
+caixas, e as abas levam um sublinhado de 2 px na cor de acento. O modo dia usa um espelho
+claro dos mesmos tokens. **Só a aba Ficha usa essa linguagem** — Combate, Habilidades e
+Evolução seguem no formato da referência de D&D, com as molduras coloridas.
 
 **Toda conta fica à vista, sem tomar a tela.** Embaixo de cada número vem a conta resumida
 (`10+3+2+2`); passando o mouse aparece a versão nomeada, e o botão **Contas resumidas /

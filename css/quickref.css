@@ -1233,6 +1233,8 @@ body.mostrar-contas .conta-longa { display: inline; }
     align-items: center;
     gap: 7px;
     padding: 0 2px;
+    /* border-box para a linha fechar em 28px cheios, como no C.R.I.S. */
+    box-sizing: border-box;
     min-height: 28px;
     border-bottom: 1px solid var(--linha);
 }
