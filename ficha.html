@@ -27,6 +27,8 @@
                 <a href="ficha.html" class="active">Ficha</a>
             </div>
             <div class="espaco"></div>
+            <button type="button" class="btn-topo" id="btn-mesa">Mesa</button>
+            <span class="pilula-papel" id="faixa-papel"></span>
             <button type="button" class="btn-topo" id="btn-contas">Contas resumidas</button>
             <button type="button" class="btn-topo" id="btn-exportar">Exportar</button>
             <button type="button" class="btn-topo" id="btn-importar">Importar</button>
@@ -144,6 +146,17 @@
     <script type="text/javascript" src="js/data_hab_talento.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/data_hab_aptidao.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/data_evolucao.js" charset="utf-8"></script>
+    <!-- tela da mesa: seis jogadores e um mestre -->
+    <div class="tela-mesa hidden" id="tela-mesa">
+        <div class="mesa-caixa">
+            <div class="mesa-topo">
+                <h2>Mesa</h2>
+                <button type="button" class="modal-x" id="mesa-fechar" aria-label="Fechar"></button>
+            </div>
+            <div id="mesa-corpo"></div>
+        </div>
+    </div>
+
     <!-- pop-up de detalhe (perícia, por enquanto) -->
     <div class="modal-fundo hidden" id="modal-ficha" role="dialog" aria-modal="true"
         aria-labelledby="modal-titulo">
@@ -163,6 +176,8 @@
     <script type="text/javascript" src="js/data_ficha.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/engine.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/ficha.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/mesa.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/mesa_ui.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/ficha_cris.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/ficha_ui.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/ficha_select.js" charset="utf-8"></script>

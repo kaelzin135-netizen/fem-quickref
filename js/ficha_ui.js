@@ -712,11 +712,23 @@ function ligar_eventos() {
     };
 }
 
-window.addEventListener("DOMContentLoaded", function () {
+window.addEventListener("DOMContentLoaded", async function () {
     init_tema();
     montar_catalogo();
     carregar();
     desenhar();
     ligar_eventos();
     ligar_assistente();
+
+    /* a mesa e opcional: se mesa.js nao estiver carregado, a ficha
+       funciona sozinha como sempre funcionou */
+    if (typeof mesa_carregar === "function") {
+        await mesa_carregar();
+        ligar_mesa();
+        document.getElementById("mesa-fechar").onclick = function () {
+            if (ENVELOPE) { mesa_esconder(); }
+        };
+        /* sem nenhuma ficha na mesa e sem ficha solta salva, comeca pela mesa */
+        if (!MESA.fichas.length && !F.nome) { mesa_mostrar(); }
+    }
 });

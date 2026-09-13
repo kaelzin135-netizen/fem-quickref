@@ -26,6 +26,12 @@ var F = ficha_nova();
 
 function salvar() {
     try { localStorage.setItem(CHAVE_FICHA, JSON.stringify(F)); } catch (e) { /* sem storage */ }
+    /* se a ficha veio de uma mesa, o envelope dela tambem precisa acompanhar */
+    if (typeof ENVELOPE !== "undefined" && ENVELOPE) {
+        ENVELOPE.ficha = F;
+        ENVELOPE.titulo = F.nome || ENVELOPE.titulo;
+        if (typeof mesa_gravar === "function") { mesa_gravar(); }
+    }
 }
 
 function carregar() {
