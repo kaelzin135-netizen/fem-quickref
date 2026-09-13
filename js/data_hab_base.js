@@ -26,7 +26,7 @@ data_base_lutador = [
         reference: "Livro de Regras, pg. 49.",
         bullets: [
             "Ao realizar um ataque desarmado ou com uma arma marcial, você pode realizar um <b>ataque desarmado como uma ação bônus</b>.",
-            "O dano dos seus ataques desarmados se torna <b>1d8</b> e, nos níveis 5, 9, 13 e 17, aumenta para <b>1d10, 1d12 e 2d12</b>, respectivamente.",
+            "O dano dos seus ataques desarmados se torna <b>1d8</b> e, nos níveis 5, 9, 13 e 17, aumenta para <b>1d10, 1d12, 2d8 e 2d12</b>, respectivamente.",
             "Você pode escolher usar tanto <b>Força quanto Destreza</b> nos seus ataques desarmados e com armas marciais."
         ]
     },

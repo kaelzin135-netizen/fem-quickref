@@ -224,7 +224,7 @@
       "descricao": "Você treinou o seu corpo para que ele seja sua própria arma",
       "bullets": [
         "Ao realizar um ataque desarmado ou com uma arma marcial, você pode realizar um <b>ataque desarmado como uma ação bônus</b>.",
-        "O dano dos seus ataques desarmados se torna <b>1d8</b> e, nos níveis 5, 9, 13 e 17, aumenta para <b>1d10, 1d12 e 2d12</b>, respectivamente.",
+        "O dano dos seus ataques desarmados se torna <b>1d8</b> e, nos níveis 5, 9, 13 e 17, aumenta para <b>1d10, 1d12, 2d8 e 2d12</b>, respectivamente.",
         "Você pode escolher usar tanto <b>Força quanto Destreza</b> nos seus ataques desarmados e com armas marciais."
       ],
       "referencia": "Livro de Regras, pg. 49.",
@@ -253,26 +253,57 @@
     {
       "nome": "Cacique",
       "categoria": "Herdado · clã Aratupana",
-      "descricao": "Habilidade de clã anotada na ficha original.",
+      "descricao": "A petygua do clã, e as camélias que ela acende",
       "bullets": [
-        "A planilha lista \"Cacique - Herdado\" sem texto. O clã Aratupana é criação da mesa, então não há verbete no Livro de Regras."
+        "Você tem sua Petygua, passada por muitas gerações do clã, junto da mudança da sua técnica, você consegue fazer camélias diferentes para dar diferentes benefícios para si próprio, com cada um tendo um odor próprio e uma mudança que faz seu corpo reagir diferente.",
+        "Cada sabor do cachimbo muda um benefício. Todo começo de turno, como ação livre, você faz um teste de Destreza — CD 15. Caso passe, você escolhe o sabor; caso contrário, role 1d2.",
+        "Você tem que fazer uma medida de no máximo 75% – 25% para a distribuição (exemplo: 3 pontos em acerto, 1 ponto em dano).",
+        "<b>Camélia Vermelha</b> — o dobro da sua maestria para distribuir entre dano/acerto.",
+        "<b>Camélia Branca</b> — o dobro da sua maestria para distribuir entre RD/CA.",
+        "<b>Camélia Preta</b> — você recebe o dobro da sua maestria em dano, acerto, RD e CA. Só pode ser usada a cada 3 turnos (o primeiro turno não é contabilizado; a partir do terceiro turno da luta pode ser usada)."
       ],
-      "referencia": "Sem página — conteúdo de mesa.",
+      "referencia": "Nota da planilha original.",
       "mods": []
     },
     {
-      "nome": "Ajustes de Defesa (planilha)",
-      "categoria": "Homebrew",
-      "descricao": "Parcelas de Defesa registradas na planilha original.",
+      "nome": "Tempestade Espinhenta — funcionamento",
+      "categoria": "Técnica",
+      "descricao": "Os três acúmulos da técnica",
       "bullets": [
-        "A ficha do Google traz Equipamento +2 e Outros −2 na Defesa. Somam zero, mas ficam aqui para a conta bater termo a termo."
+        "A técnica se baseia em <b>3 acúmulos</b>: Carga Negativa (CN), Carga Positiva (CPO) e Camélias (CA) — limite de 5 pétalas (1 camélia) por alvo.",
+        "Você inicia o combate com 2 cargas negativas e ganha +1 carga negativa a cada final de turno. A carga positiva é colocada diretamente no inimigo: a cada toque (seu ataque ou o dele), o alvo ganha uma carga que fica até o final do combate.",
+        "As camélias são acumuladas por golpes em sequência: sempre que acertar 2 golpes ou mais em sequência (independente do alvo), surgem camélias iguais à quantidade de golpes dividida por 2. (Acertando 2 alvos com 1 soco cada, surge 1 pétala em cada; acertando 4 socos em 3 pessoas, surgem 2 pétalas em cada.)",
+        "<b>Pétalas (PT)</b> — 5 por alvo. Sempre que utilizar dois golpes ou mais e acertar, gera 1 pétala por golpe acertado em sequência."
       ],
-      "referencia": "Planilha original.",
+      "referencia": "Nota da planilha original.",
+      "mods": []
+    },
+    {
+      "nome": "Voto: Overclock",
+      "categoria": "Voto restritivo",
+      "descricao": "O estado forçado, e o preço dele",
+      "bullets": [
+        "Como ação de movimento, gastando <b>2 Cargas Negativas e 5 pétalas</b>, você força o estado de overclock a acontecer.",
+        "<b>Benefícios:</b> você recebe 1 dado de dano e seu nível de dano aumenta em 1. Ganha vantagem em todo teste que aconteça a até 3 metros de você.",
+        "<b>Malefícios:</b> seu corpo começa a ser coberto pelas suas vinhas — deslocamento reduzido pela metade. Você para de ganhar pontos de Carga.",
+        "A cada 2 acertos bem-sucedidos no overclock você consome 3 pétalas; sem pétalas, o overclock se encerra. Também pode encerrar por vontade própria, como ação livre (caso tenha sido ativado de forma natural). Ao acabar, recebe 1 ponto de exaustão se foi ligado por vontade própria, ou 2 se foi ligado sem a vontade do usuário.",
+        "<b>Gatilho involuntário</b> — exige as três condições: menos de 30% da vida, menos de 50% da energia amaldiçoada, e estar sob alguma condição negativa.",
+        "<b>Nesse caso os benefícios mudam:</b> dado de dano e nível aumentam em 2; vantagem em todo teste a até 4,5 m; você recebe 25% do seu dano como vampirismo; suas habilidades de técnica passam a ser de um nível acima (se já forem de nível 5, causam dados de dano adicional igual ao nível; técnicas de aumento de dano após ataque recebem o mesmo bônus, e as de dano durante o ataque recebem metade).",
+        "<b>E os malefícios mudam:</b> deslocamento reduzido pela metade; você para de ganhar pontos de Carga; o custo em pétalas de qualquer feitiço aumenta em ¼."
+      ],
+      "referencia": "Nota da planilha original.",
+      "mods": []
+    },
+    {
+      "nome": "Voto: Mente Instável",
+      "categoria": "Voto restritivo",
+      "descricao": "O que ele perdeu ao despertar",
+      "bullets": [
+        "<b>Malefício:</b> seu atributo de Força é reduzido em 2. Você perde a maestria na sua CA. Fica vulnerável a condições mentais: sofre −2 no teste de toda condição mental.",
+        "<b>Benefício:</b> você ganha +2 de atributos para distribuir. Sempre que acertar com as Faixas, recupera PV temporário igual a 2 + maestria. Se optar por não se mover no seu turno, ganha +1 dado de dano."
+      ],
+      "referencia": "Nota da planilha original.",
       "mods": [
-        {
-          "alvo": "defesa",
-          "valor": 2
-        },
         {
           "alvo": "defesa",
           "valor": -2
@@ -286,7 +317,8 @@
       "bullets": [
         "Ao obter essa habilidade, você pode escolher um tipo de dano da categoria Elementais para ser o novo tipo de dano dos seus ataques que não sejam de técnica amaldiçoada. Além disso, seus ataques causam 1d4 de dano adicional do tipo escolhido nesta aptidão.",
         "Com Nível de Aptidão em Aura 2, o dano adicional se torna 1d6; com nível de aptidão 3, se torna 1d8 e, com nível de aptidão 5, se torna 1d10. Dentro de combate, como uma ação livre, você pode desabilitar a aura elemental, retornando os seus ataques ao tipo de dano padrão.",
-        "<b>Pré-requisito:</b> Nível 6"
+        "<b>Pré-requisito:</b> Nível 6",
+        "[nota da planilha] Você converte as propriedades da sua aura, imbuindo-a com um elemento, para alterar o tipo de dano causado pelos seus ataques com armas. Escolha um tipo de dano da categoria Elementais para ser o novo tipo dos seus ataques que não sejam de técnica amaldiçoada. Além disso, seus ataques causam 1d4 de dano adicional do tipo escolhido."
       ],
       "referencia": "Livro de Regras, pg. 175.",
       "mods": []
@@ -296,13 +328,29 @@
       "categoria": "Aptidão de Controle e Leitura",
       "descricao": "Você se torna capaz de concentrar sua energia amaldiçoada em seu corpo, assim amenizando os impactos em troca de um consumo imediato de energia.",
       "bullets": [
-        "Como uma Reação, quando receber dano, você pode gastar uma quantidade de PE igual a 2 + o dobro do seu CL para receber pontos de vida temporários: para cada ponto gasto, você recebe 4 PVs temporários. Estes PVs temporários são avulsos a outras fontes e não seguem o limite comum para PVs temporários, durando até o final do turno da criatura contra a qual você usou a Reação."
+        "Como uma Reação, quando receber dano, você pode gastar uma quantidade de PE igual a 2 + o dobro do seu CL para receber pontos de vida temporários: para cada ponto gasto, você recebe 4 PVs temporários. Estes PVs temporários são avulsos a outras fontes e não seguem o limite comum para PVs temporários, durando até o final do turno da criatura contra a qual você usou a Reação.",
+        "[nota da planilha] Como uma Reação, quando receber dano, você pode gastar PE igual a 2 + o dobro do seu CL para receber pontos de vida temporários: para cada ponto gasto, você recebe 4 PV temporários. Esses PV são avulsos a outras fontes, não seguem o limite comum para PV temporários e duram até o final do turno da criatura contra a qual você usou a Reação."
       ],
       "referencia": "Livro de Regras, pg. 178.",
       "mods": []
+    },
+    {
+      "nome": "Equipamento (planilha)",
+      "categoria": "Homebrew",
+      "descricao": "Parcela de Defesa registrada na planilha",
+      "bullets": [
+        "A ficha do Google traz Equip. +2 na Defesa, sem dizer de qual item vem."
+      ],
+      "referencia": "Nota da planilha original.",
+      "mods": [
+        {
+          "alvo": "defesa",
+          "valor": 2
+        }
+      ]
     }
   ],
-  "anotacoes": "═══ APARÊNCIA ═══\nIdade 17 · Altura 1,85 · Peso 80kg · Gênero Masculino\nCabelos Azuis · Olhos: um olho azul e o outro prato · Pele Branquinho\nMarca: Cicatrizes no corpo todo, porém uma em destaque na testa\n\n═══ TRAÇOS DE PERSONALIDADE ═══\nAmanaí por tudo que ele viveu decidiu seguir mais a si mesmo, todo passado de bullying e julgamento que ele sofreu sem ter chances de se impor da maneira que ele queria deixou ele revoltado, é uma pessoa explosiva que gostaria de pensar mais nas consequências, mas quando ele para pra ver, ele já fez escolhas que não tem volta\n\n═══ IDEAIS ═══\nAmanaí tem um ideal simples, ele odeia qualquer traço de injustiça, qualquer mínimo deslize com ele é algo que ele vai lembrar pra sempre, todo rancor que ele sente, uma hora ou outra, ele vai ir atrás de cobrar.\n\n═══ COMPLICAÇÕES ═══\nEle odeia críticas, ele não consegue entender elas, ele sempre pensa que tão afrontando ele, e ele sempre quer rebater, causa de uma sindrome do impostor que ele carregou por toda sua vida, além de nunca se ver como capaz.\n\n═══ LIGAÇÕES ═══\nEle tem muito apreço pelo pai dele e por uma prima que ele conheceu nos poucos momentos que as crianças tentavam se aproximar, a petyngua que ele achou no sótão que ele fuma e as faixas são objetos importante para ele.\n\n═══ TÉCNICA AMALDIÇOADA — TEMPESTADE ESPINHENTA ═══\nTempestade Espinhenta é uma técnica do clã Aratupana que foi perdida após a extinção do clã, primordialmente se envolvendo somente com os aspectos das tempestades, após longos períodos de adaptação, se desenvolveu o suficiente pelos seus usuários a ponto de quase se tornar uma coexistência de duas técnicas em uma, também agora tendo a capacidade de geração de flores – visivelmente, camélias.\n\nEmbora tenha sido descrito como quase se tonar uma coexistência, isso só é possível por conta da própria energia amaldiçoada e aura que possuem propriedades únicas elétricas que se manifestam constantemente e o concedem certas capacidades. Você recebe a aptidão amaldiçoada \"Aura Elemental\" do tipo Chocante\n\nCD Técnica 18 · CD Amaldiçoada 18 (atributo Destreza)\n\n═══ APTIDÕES AMALDIÇOADAS ═══\n• Aura elemental (Chocante)\n• Cobrir-se\n\n═══ FEITIÇOS ═══\nFeitiços conhecidos: 2\nNível 0: Florescimento\n(Níveis 1 a 5 em branco na planilha)\n\n═══ VOTOS RESTRITIVOS ═══\nOVERCLOCK — A técnica de amanaí desde o momento do nascimento dele já tinha impostas regras para ele, tudo começando com as marcas que ele tinha no corpo, o corpo dele nunca conseguiu ter de fato um aperfeiçoamento dela, a Tempestade Espinhenta ela não é fraca, mas ela consegue se aprimorar ainda mais em troca do desgaste físico e a perca da sanidade do usuário\n\nMENTE INSTÁVEL — Assim que Imanaí despertou, ele mudou completamente, tanto físico quanto psicológicamente, tendo perdas severas nas inibições da sua própria cabeça e do seu corpo - também resultando na liberação do overclock\n\n═══ DOMÍNIO INATO ═══\nUma cidade completamente vazia, com escombros voando aos céus, ao mesmo tempo que nela ocorre uma chuva de de raio, alagando o chão, com o centro da cidade sendo coberta por uma contra árvore com camélias vermelhas enormes por elas\n(Expansão de Domínio e Técnica Máxima: em branco na planilha)\n\n═══ ATAQUES ═══\nFaixas — bônus +7 · dano 1d8+1d4 · tipo Impacto · alcance C&C\n\n═══ INVENTÁRIO ═══\n• uniforme comum ×1 — preço 0\n• kit de ferramentas ×1 — preço 1\n• Petyngua ×1 — preço 0\nEspaços ocupados 1 de 6\n\n═══ OUTROS DA PLANILHA ═══\nEstado atual: Estável · RD 0 · RDs por tipo (COR IMP PER CON QUE CHO SON ENE PSI RAD NEC VEN): todas em branco\nDados de vida: d8 / d10 / d12 — nenhum gasto\nTestes de morte: nenhum sucesso ou falha marcado\nExperiência: 0 · Grau 4\nDefesa detalhada: base 10 + Equip. 2 + Destreza 5 + Nível/2 1 + Outros −2 = 16\nTreinamentos (aba própria): nenhuma etapa concluída em nenhuma trilha — Agilidade, Barreiras (Helena), Compreensão (Augusto), Controle de Energia (Victor), Domínios (Helena), Energia Reversa, Luta (Francisco), Manejo de Arma (Tatiana), Treino de Perícia, Treino de Resistência\n",
+  "anotacoes": "═══ APARÊNCIA ═══\nIdade 17 · Altura 1,85 · Peso 80kg · Gênero Masculino\nCabelos Azuis · Olhos: um olho azul e o outro prato · Pele Branquinho\nMarca: Cicatrizes no corpo todo, porém uma em destaque na testa\n\n═══ TRAÇOS DE PERSONALIDADE ═══\nAmanaí por tudo que ele viveu decidiu seguir mais a si mesmo, todo passado de bullying e julgamento que ele sofreu sem ter chances de se impor da maneira que ele queria deixou ele revoltado, é uma pessoa explosiva que gostaria de pensar mais nas consequências, mas quando ele para pra ver, ele já fez escolhas que não tem volta\n\n═══ IDEAIS ═══\nAmanaí tem um ideal simples, ele odeia qualquer traço de injustiça, qualquer mínimo deslize com ele é algo que ele vai lembrar pra sempre, todo rancor que ele sente, uma hora ou outra, ele vai ir atrás de cobrar.\n\n═══ COMPLICAÇÕES ═══\nEle odeia críticas, ele não consegue entender elas, ele sempre pensa que tão afrontando ele, e ele sempre quer rebater, causa de uma sindrome do impostor que ele carregou por toda sua vida, além de nunca se ver como capaz.\n\n═══ LIGAÇÕES ═══\nEle tem muito apreço pelo pai dele e por uma prima que ele conheceu nos poucos momentos que as crianças tentavam se aproximar, a petyngua que ele achou no sótão que ele fuma e as faixas são objetos importante para ele.\n\n═══ TÉCNICA AMALDIÇOADA — TEMPESTADE ESPINHENTA ═══\nTempestade Espinhenta é uma técnica do clã Aratupana que foi perdida após a extinção do clã, primordialmente se envolvendo somente com os aspectos das tempestades, após longos períodos de adaptação, se desenvolveu o suficiente pelos seus usuários a ponto de quase se tornar uma coexistência de duas técnicas em uma, também agora tendo a capacidade de geração de flores – visivelmente, camélias.\n\nEmbora tenha sido descrito como quase se tonar uma coexistência, isso só é possível por conta da própria energia amaldiçoada e aura que possuem propriedades únicas elétricas que se manifestam constantemente e o concedem certas capacidades. Você recebe a aptidão amaldiçoada \"Aura Elemental\" do tipo Chocante\n\nCD Técnica 18 · CD Amaldiçoada 18 (atributo Destreza)\n\n═══ APTIDÕES AMALDIÇOADAS ═══\n• Aura elemental (Chocante)\n• Cobrir-se\n\n═══ FEITIÇOS ═══\nFeitiços conhecidos: 2\nNível 0: Florescimento\n(Níveis 1 a 5 em branco na planilha)\n\n═══ VOTOS RESTRITIVOS ═══\nOVERCLOCK — A técnica de amanaí desde o momento do nascimento dele já tinha impostas regras para ele, tudo começando com as marcas que ele tinha no corpo, o corpo dele nunca conseguiu ter de fato um aperfeiçoamento dela, a Tempestade Espinhenta ela não é fraca, mas ela consegue se aprimorar ainda mais em troca do desgaste físico e a perca da sanidade do usuário\n\nMENTE INSTÁVEL — Assim que Imanaí despertou, ele mudou completamente, tanto físico quanto psicológicamente, tendo perdas severas nas inibições da sua própria cabeça e do seu corpo - também resultando na liberação do overclock\n\n═══ DOMÍNIO INATO ═══\nUma cidade completamente vazia, com escombros voando aos céus, ao mesmo tempo que nela ocorre uma chuva de de raio, alagando o chão, com o centro da cidade sendo coberta por uma contra árvore com camélias vermelhas enormes por elas\n(Expansão de Domínio e Técnica Máxima: em branco na planilha)\n\n═══ ATAQUES ═══\nFaixas — bônus +7 · dano 1d8+1d4 · tipo Impacto · alcance C&C\n\n═══ INVENTÁRIO ═══\n• uniforme comum ×1 — preço 0\n• kit de ferramentas ×1 — preço 1\n• Petyngua ×1 — preço 0\nEspaços ocupados 1 de 6\n\n═══ OUTROS DA PLANILHA ═══\nEstado atual: Estável · RD 0 · RDs por tipo (COR IMP PER CON QUE CHO SON ENE PSI RAD NEC VEN): todas em branco\nDados de vida: d8 / d10 / d12 — nenhum gasto\nTestes de morte: nenhum sucesso ou falha marcado\nExperiência: 0 · Grau 4\nDefesa detalhada: base 10 + Equip. 2 + Destreza 5 + Nível/2 1 + Outros −2 = 16\nTreinamentos (aba própria): nenhuma etapa concluída em nenhuma trilha — Agilidade, Barreiras (Helena), Compreensão (Augusto), Controle de Energia (Victor), Domínios (Helena), Energia Reversa, Luta (Francisco), Manejo de Arma (Tatiana), Treino de Perícia, Treino de Resistência\n\n═══ NOTAS DE CÉLULA DA PLANILHA ═══\nAs habilidades, a técnica e os votos têm regra completa escrita nas notas de célula\nda planilha. Todas foram transcritas nos itens da aba Habilidades — Cacique, o\nfuncionamento da Tempestade Espinhenta, Overclock, Mente Instável, Aura Elemental e\nCobrir-Se. Nota de inventário: a quantidade de itens é multiplicada pelo peso (dois\nitens de peso 2 ocupam 4 espaços).",
   "pvPerdidos": 0,
   "pePerdidos": 0,
   "integridadePerdida": 0
