@@ -30,6 +30,15 @@
     --c-talento: #b45309;
     --c-aptidao: #1d4ed8;
 
+    /* acentos — página Itens */
+    --c-simples: #52525b;
+    --c-complexa: #831843;
+    --c-distancia: #0e7490;
+    --c-arremesso: #4d7c0f;
+    --c-uniforme: #a16207;
+    --c-escudo: #1d4ed8;
+    --c-propriedade: #5b21b6;
+
     /* acentos — página Evolução */
     --c-criacao: #0f766e;
     --c-subir: #b45309;
@@ -542,6 +551,13 @@ body {
 #section-aptidao     { --accent: var(--c-aptidao); }
 
 /* Evolução */
+#section-simples      { --accent: var(--c-simples); }
+#section-complexa     { --accent: var(--c-complexa); }
+#section-distancia    { --accent: var(--c-distancia); }
+#section-arremesso    { --accent: var(--c-arremesso); }
+#section-uniforme     { --accent: var(--c-uniforme); }
+#section-escudo       { --accent: var(--c-escudo); }
+#section-propriedade  { --accent: var(--c-propriedade); }
 #section-criacao      { --accent: var(--c-criacao); }
 #section-nivel        { --accent: var(--c-subir); }
 #section-tabela       { --accent: var(--c-tabela); }

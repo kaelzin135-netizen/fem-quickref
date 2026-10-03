@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Itens — Feiticeiros &amp; Maldições</title>
+    <link rel="stylesheet" type="text/css" href="css/quickref.css">
+    <link rel="stylesheet" type="text/css" href="css/icons.css">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans:400,400i,700,700i&display=swap" rel="stylesheet"
+        type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lora:700&display=swap" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/png" href="img/crowned-skull.png">
+</head>
+
+<body class="page-background">
+
+    <nav id="nav">
+        <div class="nav-inner">
+            <span class="nav-brand">F&amp;M 2.5.2</span>
+            <div class="nav-tabs">
+                <a href="index.html">Combate</a>
+                <a href="habilidades.html">Habilidades</a>
+                <a href="itens.html" class="active">Itens</a>
+                <a href="evolucao.html">Evolução</a>
+                <a href="ficha.html">Ficha</a>
+            </div>
+            <input type="search" id="search" placeholder="Buscar…" autocomplete="off" spellcheck="false">
+            <button type="button" id="btn-tema" aria-pressed="false"
+                title="Alternar modo dia/noite">☾ <span>Noite</span></button>
+        </div>
+    </nav>
+
+    <div class="layout">
+
+        <aside id="sidebar">
+            <nav id="nav-links" aria-label="Seções desta página"></nav>
+        </aside>
+
+    <div class="page fontsize">
+
+        <div class="main-title">Itens — Armas e Proteções</div>
+        <div class="description">
+            Todo o equipamento das tabelas do Livro de Regras: dano, margem de crítico, propriedades,
+            espaços ocupados, custo e grupo. No fim, as <b>propriedades de arma</b> explicadas uma vez só —
+            são elas que aparecem abreviadas em cada linha da tabela.
+            <b id="item-count">…</b> itens, com as páginas do Livro de Regras v2.5.2.
+            <br><br>
+            Todo personagem começa com <b>dois equipamentos de custo 1</b> (arma, escudo ou item especial),
+            um uniforme comum e um kit de ferramentas à escolha. Na aba
+            <a href="ficha.html">Ficha</a> dá para pegar qualquer um destes itens direto para o personagem,
+            já com o dano e as propriedades preenchidos.
+        </div>
+
+        <!-- Armas simples -->
+        <div id="section-simples" class="section-container">
+            <div class="section-title">Armas Simples <span class="float-right">sem treinamento especial</span></div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    As armas de uso corrente. O dano vem com o tipo: <b>Ct</b> cortante, <b>Im</b> impacto e
+                    <b>Pf</b> perfurante. Quando há dois dados separados por barra, o segundo é o uso com as
+                    duas mãos.
+                </div>
+                <div class="section-row" id="simples-lista"></div>
+            </div>
+        </div>
+
+        <!-- Armas complexas -->
+        <div id="section-complexa" class="section-container">
+            <div class="section-title">Armas Complexas <span class="float-right">manejo mais exigente</span></div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    Armas maiores, duplas ou de alcance estendido. Quase todas pedem treinamento marcial ou um
+                    mínimo de Força — veja a propriedade <b>Pesada</b>.
+                </div>
+                <div class="section-row" id="complexa-lista"></div>
+            </div>
+        </div>
+
+        <!-- A distância -->
+        <div id="section-distancia" class="section-container">
+            <div class="section-title">Armas a Distância <span class="float-right">alcance [normal/máximo]</span></div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    Arcos, bestas e armas de fogo. Dentro do primeiro valor de alcance o ataque é normal; até o
+                    segundo, é feito com desvantagem.
+                </div>
+                <div class="section-row" id="distancia-lista"></div>
+            </div>
+        </div>
+
+        <!-- De arremesso -->
+        <div id="section-arremesso" class="section-container">
+            <div class="section-title">Armas de Arremesso</div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    Feitas para serem lançadas. Contam como armas a distância para habilidades que se referem a elas.
+                </div>
+                <div class="section-row" id="arremesso-lista"></div>
+            </div>
+        </div>
+
+        <!-- Uniformes -->
+        <div id="section-uniforme" class="section-container">
+            <div class="section-title">Uniformes <span class="float-right">bônus na Defesa</span></div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    Modificações aplicadas ao uniforme do feiticeiro. A penalidade incide em testes de perícia que
+                    usam Destreza, e é <b>cumulativa</b> com a do escudo.
+                </div>
+                <div class="section-row" id="uniforme-lista"></div>
+            </div>
+        </div>
+
+        <!-- Escudos -->
+        <div id="section-escudo" class="section-container">
+            <div class="section-title">Escudos <span class="float-right">redução de dano</span></div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    Cada escudo dá RD enquanto empunhado. O dano entre parênteses é o do ataque com ele — e
+                    atacar com o escudo <b>desliga a RD</b> até o início do seu próximo turno.
+                </div>
+                <div class="section-row" id="escudo-lista"></div>
+            </div>
+        </div>
+
+        <!-- Propriedades -->
+        <div id="section-propriedade" class="section-container">
+            <div class="section-title">Propriedades de Arma</div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    O que cada palavra na coluna de propriedades quer dizer.
+                </div>
+                <div class="section-row" id="propriedade-lista"></div>
+            </div>
+        </div>
+
+        <div class="no-results" id="no-results">Nenhum resultado para a busca.</div>
+
+        <div class="footer">
+            Referência não-oficial · Feiticeiros &amp; Maldições — Livro de Regras v2.5.2
+        </div>
+
+    </div>
+
+    </div>
+
+    <script type="text/javascript" src="js/data_item.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/engine.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/itens.js" charset="utf-8"></script>
+
+</body>
+
+</html>
