@@ -23,7 +23,7 @@ function ficha_nova() {
         testesMorte: { sucessos: 0, falhas: 0 },
         dadosVidaGastos: {},
         inventario: [], limiteEspacos: 6,
-        armas: [],
+        armas: [], protecoes: [],
         feiticos: [], aptidoesAmaldicoadas: [],
         expansao: { nome: "", tipo: "", descricao: "" },
         tecnicaMaxima: { nome: "", descricao: "" },

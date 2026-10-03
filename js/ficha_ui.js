@@ -505,6 +505,7 @@ function desenhar() {
     desenhar_testes();
     desenhar_itens();
     if (typeof desenhar_marcas === "function") { desenhar_marcas(); }
+    if (typeof desenhar_itens_aba === "function") { desenhar_itens_aba(); }
     if (typeof desenhar_perfil === "function") { desenhar_perfil(); }
     if (typeof desenhar_treinos === "function") { desenhar_treinos(); }
     if (typeof desenhar_registro === "function") { desenhar_registro(); }
@@ -526,6 +527,7 @@ function recalcular() {
         /* os paineis novos tambem dependem dos numeros: a trilha mostra o
            selo do que ela concede, e o perfil mostra a CD de feitico */
         if (typeof desenhar_marcas === "function") { desenhar_marcas(); }
+        if (typeof desenhar_itens_aba === "function") { desenhar_itens_aba(); }
         if (typeof desenhar_perfil === "function") { desenhar_perfil(); }
         if (typeof desenhar_treinos === "function") { desenhar_treinos(); }
         if (typeof desenhar_registro === "function") { desenhar_registro(); }
@@ -592,6 +594,11 @@ function ligar_eventos() {
                 salvar();
                 if (el.dataset.lista === "inventario") { desenhar_registro(); }
             }
+            return;
+        }
+        if (el.id === "filtro-item") {
+            FILTRO_ITEM = el.value;
+            comFoco(desenhar_itens_aba);
             return;
         }
         if (el.id === "filtro-feitico") {
@@ -716,6 +723,13 @@ function ligar_eventos() {
         if (d.addLista) {
             if (!F[d.addLista]) { F[d.addLista] = []; }
             F[d.addLista].push(
+                d.addLista === "armas" ? {
+                    arma: "", bonus: "", dano: "", critico: "",
+                    tipo: "", alcance: "", propriedades: ""
+                } :
+                d.addLista === "protecoes" ? {
+                    nome: "", tipo: "", efeito: "", penalidade: "", custo: ""
+                } :
                 d.addLista === "inventario" ? { nome: "", quant: 1, peso: 0, preco: "" } :
                 d.addLista === "votos" ? { nome: "", descricao: "" } :
                 d.addLista === "feiticos" ? {
@@ -733,6 +747,14 @@ function ligar_eventos() {
             return;
         }
         if (d.tirarRetrato) { F.retrato = ""; desenhar(); return; }
+
+        if (d.addItemLivro !== undefined) { pegar_item_livro(Number(d.addItemLivro)); return; }
+
+        if (d.catItem !== undefined) {
+            CAT_ITEM = d.catItem;
+            desenhar_itens_aba();
+            return;
+        }
 
         if (d.abrirFeitico !== undefined) {
             var n = Number(d.abrirFeitico);

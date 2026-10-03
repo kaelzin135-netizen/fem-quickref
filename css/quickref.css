@@ -1850,7 +1850,7 @@ body.mostrar-contas .linha .conta { flex: 1 1 100%; text-align: left; }
 
 /* sao sete abas: o espacamento aperta para caberem numa linha, e o
    flex-wrap segura se a coluna ficar estreita demais */
-.abas { display: flex; flex-wrap: wrap; gap: 2px 11px; margin-bottom: 14px; }
+.abas { display: flex; flex-wrap: wrap; gap: 2px 9px; margin-bottom: 14px; }
 
 .aba-btn {
     /* sem folga lateral: sao sete abas e o sublinhado fica colado no
@@ -1863,9 +1863,9 @@ body.mostrar-contas .linha .conta { flex: 1 1 100%; text-align: left; }
     font-family: inherit;
     font-variant: normal;
     font-weight: 400;
-    font-size: 13px;
+    font-size: 12px;
     text-transform: uppercase;
-    letter-spacing: .6px;
+    letter-spacing: .4px;
     padding-bottom: 7px;
     cursor: pointer;
     white-space: nowrap;
@@ -2268,3 +2268,37 @@ input:focus, select:focus, textarea:focus, .aba-btn:focus-visible {
 }
 .trilha-escolha:focus { outline: none; border-bottom-color: var(--accent); }
 .trilha-manual { margin-left: auto; font-size: 11px; font-style: italic; color: var(--tinta-tenue); }
+
+/* ------------------------------------------------------------------------- */
+/* Aba Itens                                                                   */
+/* ------------------------------------------------------------------------- */
+
+.cab-arma, .linha-arma { display: grid; grid-template-columns: 1.6fr .6fr .9fr .5fr .8fr .8fr 1.6fr 24px; gap: 5px; align-items: center; }
+.cab-arma { padding: 0 2px 5px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: var(--tinta-tenue); }
+.linha-arma { min-height: 30px; }
+.campo-arma { min-width: 0; padding: 1px 0 2px; border: 0; border-bottom: 1px solid var(--linha); background: none; color: var(--tinta); font-family: inherit; font-size: 12px; }
+.campo-arma.largo { font-size: 13px; }
+.campo-arma:focus { outline: none; border-bottom-color: var(--accent); }
+
+.linha-defesa { display: flex; align-items: center; gap: 8px; min-height: 30px; }
+.linha-defesa .campo-arma.largo { flex: 1 1 auto; }
+.def-campo { display: flex; align-items: baseline; gap: 4px; flex: 0 0 auto; }
+.def-campo > span { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .7px; color: var(--tinta-tenue); }
+
+.item-barra { margin-bottom: 9px; }
+.item-barra input[type="search"] { width: 100%; box-sizing: border-box; padding: 3px 0 5px; border: 0; border-bottom: 1px solid var(--linha-forte); background: none; color: var(--tinta); font-family: inherit; font-size: 14px; }
+.item-barra input[type="search"]:focus { outline: none; border-bottom-color: var(--accent); }
+
+.item-cats { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.cat-chip { padding: 2px 9px; border: 1px solid var(--linha-forte); border-radius: 2px; background: none; color: var(--tinta-fraca); font-family: inherit; font-size: 11px; cursor: pointer; transition: color .1s ease, border-color .1s ease; }
+.cat-chip:hover { color: var(--tinta); }
+.cat-chip.ativa { border-color: var(--accent); color: var(--accent); }
+
+.grade-itens-livro { display: grid; grid-template-columns: repeat(auto-fill, minmax(236px, 1fr)); gap: 6px; }
+.item-livro { background: var(--elevado); padding: 9px 11px 10px; }
+.item-livro-topo { display: flex; align-items: center; gap: 7px; }
+.item-livro-topo b { flex: 1 1 auto; min-width: 0; font-size: 13px; font-weight: 700; color: var(--tinta); }
+.item-livro-cat { font-size: 10px; color: var(--accent); white-space: nowrap; }
+.item-livro-num { display: flex; flex-wrap: wrap; gap: 3px 10px; margin-top: 5px; font-size: 11px; color: var(--tinta-tenue); }
+.item-livro-num b { color: var(--tinta); font-weight: 500; font-variant-numeric: tabular-nums; }
+.item-livro-prop { margin-top: 5px; font-size: 11px; line-height: 1.45; color: var(--tinta-fraca); }
