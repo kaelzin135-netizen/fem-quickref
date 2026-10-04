@@ -55,6 +55,10 @@
     --c-voto: #831843;
     --c-peso: #b45309;
 
+    /* acentos — página Mundo */
+    --c-conceito: #1d4ed8;
+    --c-descanso2: #0f766e;
+
     /* acentos — página Evolução */
     --c-criacao: #0f766e;
     --c-subir: #b45309;
@@ -586,6 +590,8 @@ body {
 #section-invocacao    { --accent: var(--c-invocacao); }
 #section-voto         { --accent: var(--c-voto); }
 #section-peso         { --accent: var(--c-peso); }
+#section-conceito     { --accent: var(--c-conceito); }
+#section-descanso2    { --accent: var(--c-descanso2); }
 #section-criacao      { --accent: var(--c-criacao); }
 #section-nivel        { --accent: var(--c-subir); }
 #section-tabela       { --accent: var(--c-tabela); }
