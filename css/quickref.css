@@ -39,11 +39,21 @@
     --c-escudo: #1d4ed8;
     --c-propriedade: #5b21b6;
     --c-especial: #b45309;
+    --c-encant: #0e7490;
 
     /* acentos — página Origens */
     --c-origem: #7c3aed;
     --c-cla: #a16207;
     --c-anatomia: #166534;
+
+    /* acentos — página Técnica */
+    --c-tecnica: #5b21b6;
+    --c-feitico2: #1d4ed8;
+    --c-tabelas: #334155;
+    --c-dominio: #a21caf;
+    --c-invocacao: #0f766e;
+    --c-voto: #831843;
+    --c-peso: #b45309;
 
     /* acentos — página Evolução */
     --c-criacao: #0f766e;
@@ -564,10 +574,18 @@ body {
 #section-uniforme     { --accent: var(--c-uniforme); }
 #section-escudo       { --accent: var(--c-escudo); }
 #section-especial     { --accent: var(--c-especial); }
+#section-encant       { --accent: var(--c-encant); }
 #section-propriedade  { --accent: var(--c-propriedade); }
 #section-origem       { --accent: var(--c-origem); }
 #section-cla          { --accent: var(--c-cla); }
 #section-anatomia     { --accent: var(--c-anatomia); }
+#section-tecnica      { --accent: var(--c-tecnica); }
+#section-feitico      { --accent: var(--c-feitico2); }
+#section-tabelas      { --accent: var(--c-tabelas); }
+#section-dominio      { --accent: var(--c-dominio); }
+#section-invocacao    { --accent: var(--c-invocacao); }
+#section-voto         { --accent: var(--c-voto); }
+#section-peso         { --accent: var(--c-peso); }
 #section-criacao      { --accent: var(--c-criacao); }
 #section-nivel        { --accent: var(--c-subir); }
 #section-tabela       { --accent: var(--c-tabela); }

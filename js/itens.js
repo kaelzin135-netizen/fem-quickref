@@ -10,6 +10,7 @@ var SECTIONS = [
     ["section-uniforme", "Uniformes"],
     ["section-escudo", "Escudos"],
     ["section-especial", "Itens Especiais"],
+    ["section-encant", "Encantamentos"],
     ["section-propriedade", "Propriedades de Arma"]
 ];
 
@@ -24,6 +25,9 @@ function preencher() {
     fill_section(data_especial_c2, "especial2-lista", "Item especial");
     fill_section(data_especial_c3, "especial3-lista", "Item especial");
     fill_section(data_especial_c4, "especial4-lista", "Item especial");
+    fill_section(data_encant_arma, "encant-arma-lista", "Encantamento");
+    fill_section(data_encant_escudo, "encant-escudo-lista", "Encantamento");
+    fill_section(data_encant_uniforme, "encant-uniforme-lista", "Encantamento");
     fill_section(data_propriedade, "propriedade-lista", "Propriedade");
 }
 

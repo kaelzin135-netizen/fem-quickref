@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Técnica — Feiticeiros &amp; Maldições</title>
+    <link rel="stylesheet" type="text/css" href="css/quickref.css">
+    <link rel="stylesheet" type="text/css" href="css/icons.css">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans:400,400i,700,700i&display=swap" rel="stylesheet"
+        type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lora:700&display=swap" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/png" href="img/crowned-skull.png">
+</head>
+
+<body class="page-background">
+
+    <nav id="nav">
+        <div class="nav-inner">
+            <span class="nav-brand">F&amp;M 2.5.2</span>
+            <div class="nav-tabs">
+                <a href="index.html">Combate</a>
+                <a href="habilidades.html">Habilidades</a>
+                <a href="itens.html">Itens</a>
+                <a href="origens.html">Origens</a>
+                <a href="tecnica.html" class="active">Técnica</a>
+                <a href="evolucao.html">Evolução</a>
+                <a href="ficha.html">Ficha</a>
+            </div>
+            <input type="search" id="search" placeholder="Buscar…" autocomplete="off" spellcheck="false">
+            <button type="button" id="btn-tema" aria-pressed="false"
+                title="Alternar modo dia/noite">☾ <span>Noite</span></button>
+        </div>
+    </nav>
+
+    <div class="layout">
+
+        <aside id="sidebar">
+            <nav id="nav-links" aria-label="Seções desta página"></nav>
+        </aside>
+
+    <div class="page fontsize">
+
+        <div class="main-title">Técnica — Feitiços, Domínio e Votos</div>
+        <div class="description">
+            Como montar uma técnica amaldiçoada e os Feitiços dela, as tabelas de dano,
+            alcance e área por nível, a Expansão de Domínio, as invocações e os
+            <b>Votos de Restrição</b>.
+            <b id="item-count">…</b> itens, com as páginas do Livro de Regras v2.5.2.
+            <br><br>
+            Capítulos <b>9</b> (criação de técnica), <b>10</b> (invocações) e <b>14</b> (votos).
+            A ordem aqui é a do livro: primeiro o Funcionamento Básico, que limita tudo o que
+            vem depois, então os Feitiços, então o domínio.
+        </div>
+
+        <div id="section-tecnica" class="section-container">
+            <div class="section-title">Funcionamento Básico <span class="float-right">o que limita os Feitiços</span></div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    O texto da técnica vem primeiro porque <b>nenhum Feitiço pode escapar do que está nele</b>.
+                </div>
+                <div class="section-row" id="tecnica-lista"></div>
+            </div>
+        </div>
+
+        <div id="section-feitico" class="section-container">
+            <div class="section-title">Criando Feitiços <span class="float-right">cinco categorias</span></div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    Cada categoria tem o seu guia e as suas tabelas no capítulo 9.
+                </div>
+                <div class="section-row" id="feitico-lista"></div>
+            </div>
+        </div>
+
+        <div id="section-tabelas" class="section-container">
+            <div class="section-title">Tabelas de Criação <span class="float-right">dano, alcance e área</span></div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    <b>Alvo único.</b> Escolha entre teste de resistência e jogada de ataque — o de ataque
+                    causa mais porque errar não causa nada. O alcance vale para os dois.
+                </div>
+                <div class="section-row" id="tabela-dano"></div>
+                <div class="section-row section-subtitle text fontsize">
+                    <b>Área e alvos múltiplos.</b> Não existem no nível 0.
+                </div>
+                <div class="section-row" id="tabela-area"></div>
+            </div>
+        </div>
+
+        <div id="section-dominio" class="section-container">
+            <div class="section-title">Expansão de Domínio e Técnica Máxima</div>
+            <div class="section-content">
+                <div class="section-row" id="dominio-lista"></div>
+            </div>
+        </div>
+
+        <div id="section-invocacao" class="section-container">
+            <div class="section-title">Invocações <span class="float-right">capítulo 10</span></div>
+            <div class="section-content">
+                <div class="section-row" id="invocacao-lista"></div>
+            </div>
+        </div>
+
+        <div id="section-voto" class="section-container">
+            <div class="section-title">Votos de Restrição <span class="float-right">capítulo 14</span></div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    Uma troca equivalente: você abre mão de algo para ganhar poder. O
+                    <b>Voto Próprio</b> só pode mexer em aptidões, Feitiços e energia — para tocar
+                    atributos, Defesa ou RD é preciso uma <b>Restrição Congênita</b>, feita na criação.
+                </div>
+                <div class="section-row" id="voto-lista"></div>
+            </div>
+        </div>
+
+        <div id="section-peso" class="section-container">
+            <div class="section-title">Pesos de Voto <span class="float-right">leve, médio, pesado, extremo</span></div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    Os pesos não precisam ser escritos no voto; servem para enxergar se a troca é justa.
+                    Num <b>Voto Emergencial</b> o malefício é sempre <b>um peso acima</b> do benefício.
+                </div>
+                <div class="section-row" id="peso-lista"></div>
+            </div>
+        </div>
+
+        <div class="no-results" id="no-results">Nenhum resultado para a busca.</div>
+
+        <div class="footer">
+            Referência não-oficial · Feiticeiros &amp; Maldições — Livro de Regras v2.5.2
+        </div>
+
+    </div>
+
+    </div>
+
+    <script type="text/javascript" src="js/data_tecnica.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/data_voto.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/engine.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/tecnica.js" charset="utf-8"></script>
+
+</body>
+
+</html>
