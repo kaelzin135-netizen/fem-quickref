@@ -104,7 +104,8 @@ function desenhar_identidade() {
         (e ? '<div class="cab-caixa estatica"><b>' + esc(e.pvDado) + "×" + F.nivel +
             "</b><span>Dado de PV</span></div>" : "") +
         "</div>" +
-        (origemAtual() ? '<p class="nota-origem">' + esc(origemAtual().notas) + "</p>" : "");
+        (origemAtual() ? '<p class="nota-origem">' + esc(origemAtual().notas) + "</p>" : "") +
+        primeirosPassos();
 
     var alvo = document.getElementById("ficha-atrib-chave");
     if (alvo) {
@@ -183,6 +184,20 @@ function barra(rotulo, res, campo) {
         passoRec(campo, -5, res.total, "»", "+5") +
         "</div></div>" +
         '<div class="rec-pe">' + conta(res) + "</div></div>";
+}
+
+/* Ficha recem-criada nao diz por onde comecar: sem especializacao os PV, o
+   PE e metade da coluna ficam zerados e a pessoa fica olhando. Esta faixa so
+   aparece enquanto falta o essencial, e some sozinha quando deixa de faltar. */
+function primeirosPassos() {
+    if (F.especializacao) { return ""; }
+    return '<div class="passos">' +
+        "<b>Primeiros passos.</b> " +
+        "<span>1. escolha a <b>especialização</b> e a <b>origem</b> aqui em cima</span>" +
+        "<span>2. distribua os <b>atributos</b> na roda</span>" +
+        "<span>3. marque as <b>perícias</b> treinadas</span>" +
+        '<span>ou use <b>Importar</b> se a ficha já existe numa planilha</span>' +
+        "</div>";
 }
 
 function desenhar_recursos() {

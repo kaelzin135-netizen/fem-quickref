@@ -22,21 +22,27 @@ function mesa_esconder() {
     document.body.classList.remove("na-mesa");
 }
 
-function _cartaoFicha(env, podeAbrir) {
+/* Quem protege a ficha e o PIN, nao o estado da tela: qualquer um pode
+   pedir para abrir qualquer ficha, e quem tem PIN pede o PIN. Antes o botao
+   sumia depois que voce abria a sua, e as outras apareciam como "trancada"
+   mesmo sem PIN nenhum — alem de nao haver como trocar de ficha sem
+   recarregar a pagina. */
+function _cartaoFicha(env) {
     var trancada = !!(env.pin && env.pin.sal);
-    return '<div class="mesa-vaga ocupada">' +
+    var atual = typeof ENVELOPE !== "undefined" && ENVELOPE && ENVELOPE.id === env.id;
+    return '<div class="mesa-vaga ocupada' + (atual ? " atual" : "") + '">' +
         '<div class="mesa-vaga-papel">Jogador</div>' +
         '<div class="mesa-vaga-nome">' + _esc(env.titulo || "Sem nome") + "</div>" +
         (env.jogador ? '<div class="mesa-vaga-jogador">' + _esc(env.jogador) + "</div>" : "") +
         '<div class="mesa-vaga-sub">' +
         (env.ficha && env.ficha.especializacao ? _esc(env.ficha.especializacao) + " · " : "") +
         "nível " + ((env.ficha && env.ficha.nivel) || 1) +
-        (trancada ? " · trancada" : " · sem PIN") + "</div>" +
+        (trancada ? " · com PIN" : " · sem PIN") + "</div>" +
         '<div class="mesa-vaga-acoes">' +
-        (podeAbrir
-            ? '<button type="button" class="btn" data-abrir-ficha="' + env.id + '">' +
-              (SOU_MESTRE ? "Ver" : "Abrir") + "</button>"
-            : '<span class="mesa-bloqueada">trancada</span>') +
+        '<button type="button" class="btn' + (atual ? " secundario" : "") +
+        '" data-abrir-ficha="' + env.id + '">' +
+        (atual ? "Voltar" : SOU_MESTRE ? "Ver" : trancada ? "Abrir com PIN" : "Abrir") +
+        "</button>" +
         '<button type="button" class="btn-mini" data-pin-ficha="' + env.id + '">' +
         (trancada ? "trocar PIN" : "definir PIN") + "</button>" +
         '<button type="button" class="btn-mini perigo" data-apagar-ficha="' + env.id +
@@ -48,10 +54,7 @@ function desenhar_mesa() {
     var jogadores = MESA.fichas;
     var mestre = MESA.mestre;
 
-    var vagas = jogadores.map(function (e) {
-        /* o mestre ve todas; um jogador so abre a que ja destrancou */
-        return _cartaoFicha(e, SOU_MESTRE || !ENVELOPE || ENVELOPE.id === e.id);
-    });
+    var vagas = jogadores.map(_cartaoFicha);
     for (var i = jogadores.length; i < mesa_lugares(); i++) {
         vagas.push('<div class="mesa-vaga vazia"><div class="mesa-vaga-papel">Jogador ' + (i + 1) +
             '</div><div class="mesa-vaga-nome">vaga livre</div>' +
