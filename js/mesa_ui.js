@@ -182,8 +182,10 @@ function aplicar_leitura() {
     document.body.classList.toggle("somente-leitura", LEITURA);
     app.querySelectorAll("input, select, textarea").forEach(function (el) { el.disabled = LEITURA; });
     app.querySelectorAll("button").forEach(function (el) {
-        /* abas e o nome da pericia seguem clicaveis: so leem */
-        if (el.classList.contains("aba-btn") || el.dataset.periciaVer || el.dataset.ver) { return; }
+        /* abas, o nome da pericia e os dados seguem clicaveis: nenhum
+           deles escreve na ficha, e o mestre precisa rolar pelos NPCs */
+        if (el.classList.contains("aba-btn") || el.dataset.periciaVer || el.dataset.ver ||
+            el.dataset.rolar !== undefined || el.dataset.rolarArma !== undefined) { return; }
         el.disabled = LEITURA;
     });
     var faixa = document.getElementById("aviso-leitura");

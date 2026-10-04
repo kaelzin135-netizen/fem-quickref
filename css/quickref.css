@@ -2323,7 +2323,7 @@ input:focus, select:focus, textarea:focus, .aba-btn:focus-visible {
 /* Aba Itens                                                                   */
 /* ------------------------------------------------------------------------- */
 
-.cab-arma, .linha-arma { display: grid; grid-template-columns: 1.6fr .6fr .9fr .5fr .8fr .8fr 1.6fr 24px; gap: 5px; align-items: center; }
+.cab-arma, .linha-arma { display: grid; grid-template-columns: 20px 1.6fr .6fr .9fr .5fr .8fr .8fr 1.6fr 24px; gap: 5px; align-items: center; }
 .cab-arma { padding: 0 2px 5px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: var(--tinta-tenue); }
 .linha-arma { min-height: 30px; }
 .campo-arma { min-width: 0; padding: 1px 0 2px; border: 0; border-bottom: 1px solid var(--linha); background: none; color: var(--tinta); font-family: inherit; font-size: 12px; }
@@ -2592,3 +2592,205 @@ input:focus, select:focus, textarea:focus, .aba-btn:focus-visible {
 .retrato.vazia .retrato-vazio:hover { border-color: var(--accent); }
 .retrato-ico { display: inline-flex; color: var(--tinta-tenue); }
 .retrato-vazio b { font-weight: 500; color: var(--tinta); }
+
+/* ------------------------------------------------------------------------- */
+/* Bandeja de rolagens                                                        */
+/* Fica no canto, por cima de tudo; fechada é só uma bolha com o d20.         */
+/* ------------------------------------------------------------------------- */
+
+.bandeja {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 60;
+    --accent: #a16207;
+}
+
+/* --- bolha fechada --- */
+.bandeja-bolha {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid var(--linha-forte);
+    border-radius: 2px;
+    background: var(--elevado);
+    color: var(--tinta-fraca);
+    cursor: pointer;
+    transition: color .1s ease, border-color .1s ease;
+}
+
+.bandeja-bolha:hover { color: var(--tinta); border-color: var(--accent); }
+.bandeja-bolha .ico { width: 22px; height: 22px; }
+
+.bandeja-n {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 3px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 16px;
+    text-align: center;
+}
+
+/* --- painel aberto --- */
+.bandeja.aberta {
+    width: 304px;
+    max-width: calc(100vw - 32px);
+    max-height: 62vh;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--linha-forte);
+    border-top: 2px solid var(--accent);
+    border-radius: 2px;
+    background: var(--elevado);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, .45);
+}
+
+:root[data-tema="dia"] .bandeja.aberta { box-shadow: 0 10px 28px rgba(0, 0, 0, .18); }
+
+.bandeja-topo {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 8px 8px 12px;
+    border-bottom: 1px solid var(--linha);
+}
+
+.bandeja-topo h3 {
+    flex: 1 1 auto;
+    margin: 0;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--tinta-fraca);
+}
+
+.bandeja-lista {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 6px 10px 10px;
+}
+
+.bandeja-lista .aviso { margin: 6px 0 2px; }
+
+/* --- cada rolagem --- */
+.rol {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--linha);
+}
+
+.rol:last-child { border-bottom: 0; }
+
+.rol-total {
+    flex: 0 0 44px;
+    text-align: center;
+    font-size: 23px;
+    font-weight: 500;
+    line-height: 1.05;
+    color: var(--tinta);
+    font-variant-numeric: tabular-nums;
+}
+
+.rol.critico .rol-total { color: var(--verde); }
+.rol.desastre .rol-total { color: var(--vermelho); }
+
+.rol-corpo { flex: 1 1 auto; min-width: 0; }
+
+.rol-nome {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--tinta);
+}
+
+.rol-selo {
+    flex: 0 0 auto;
+    padding: 0 4px;
+    border: 1px solid var(--verde);
+    border-radius: 2px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .7px;
+    color: var(--verde);
+}
+
+.rol-selo.ruim { border-color: var(--vermelho); color: var(--vermelho); }
+
+.rol-detalhe {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-top: 2px;
+    font-size: 11px;
+    color: var(--tinta-tenue);
+    font-variant-numeric: tabular-nums;
+}
+
+.rol-hora { margin-left: auto; flex: 0 0 auto; }
+
+.rol-acoes { display: flex; gap: 4px; margin-top: 5px; }
+.rol-acoes .btn-mini { padding: 0 4px; min-height: 18px; font-size: 11px; }
+
+/* a rolagem nova entra piscando uma vez, para o olho achar onde caiu */
+.rol.nova { animation: rol-entra .28s ease; }
+
+@keyframes rol-entra {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: none; }
+}
+
+/* --- o bônus da linha vira o gatilho da rolagem --- */
+.linha-rolar {
+    padding: 0;
+    border: 0;
+    background: none;
+    font-family: inherit;
+    cursor: pointer;
+    transition: color .1s ease;
+}
+
+.linha-rolar:hover { color: var(--accent); }
+
+/* dado na linha da arma: cabe na coluna de 20px aberta para ele */
+.bt-dado { padding: 0; width: 20px; min-height: 20px; color: var(--tinta-tenue); }
+.bt-dado:hover { color: var(--accent); }
+.bt-dado .ico { width: 15px; height: 15px; }
+
+@media (max-width: 760px) {
+    .bandeja { right: 10px; bottom: 10px; }
+}
+
+/* dica de rolagem no pé da coluna de perícias */
+.dica-rolar { margin-top: 2px; }
+.dica-rolar b { color: var(--tinta-fraca); font-weight: 500; }
+
+kbd {
+    display: inline-block;
+    padding: 0 4px;
+    border: 1px solid var(--linha-forte);
+    border-radius: 2px;
+    background: var(--realce);
+    font-family: inherit;
+    font-size: 10px;
+    line-height: 15px;
+    color: var(--tinta-fraca);
+}

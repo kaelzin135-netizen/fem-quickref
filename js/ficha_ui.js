@@ -246,7 +246,10 @@ function linhaTeste(nome, curto, controles, res, treinado, mestre, verId) {
         rotulo +
         '<span class="linha-attr">' + esc(curto) + "</span>" +
         controles +
-        '<span class="linha-total" title="' + esc(formula(res)) + '">' + fmt(res.total) + "</span>" +
+        '<button type="button" class="linha-total linha-rolar" data-rolar="' + esc(nome) +
+        '" data-bonus="' + res.total + '" title="Rolar 1d20 ' +
+        (res.total < 0 ? "−" : "+") + " " + Math.abs(res.total) + " — " + esc(formula(res)) +
+        '">' + fmt(res.total) + "</button>" +
         conta(res) + "</div>";
 }
 
@@ -762,6 +765,19 @@ function ligar_eventos() {
             return;
         }
 
+        if (d.rolar !== undefined) {
+            guardarRolagem(rolarTeste(d.rolar, Number(d.bonus),
+                e.shiftKey ? "vantagem" : (e.altKey ? "desvantagem" : "normal")));
+            return;
+        }
+
+        if (d.rolarArma !== undefined) {
+            rolar_arma(Number(d.rolarArma));
+            return;
+        }
+
+        if (d.rerolar) { rerolar(d.rerolar); return; }
+
         if (d.abrirFeitico !== undefined) {
             var n = Number(d.abrirFeitico);
             FEITICO_ABERTO = (FEITICO_ABERTO === n) ? -1 : n;
@@ -884,6 +900,43 @@ function ligar_eventos() {
     };
 }
 
+/* Rola o ataque e o dano de uma arma da aba Itens de uma vez só:
+   é assim que a mesa usa — acerta e já quer saber quanto tirou. */
+function rolar_arma(i) {
+    var a = (F.armas || [])[i];
+    if (!a) { return; }
+    var nome = (a.arma || "arma").trim() || "arma";
+    guardarRolagem(rolarTeste(nome, Number(String(a.bonus || "").replace(/[^\d+-]/g, "")) || 0));
+    var dano = rolarDano(nome + " — dano", a.dano);
+    if (dano) { guardarRolagem(dano); }
+}
+
+/* Bandeja: abrir, fechar, limpar, e a tecla R como atalho. */
+function ligar_bandeja() {
+    var caixa = document.getElementById("bandeja");
+    if (!caixa) { return; }
+    desenhar_bandeja();
+
+    caixa.addEventListener("click", function (e) {
+        var bt = e.target.closest("button");
+        if (!bt) { return; }
+        if (bt.id === "bandeja-abrir") { BANDEJA = true; desenhar_bandeja(); return; }
+        if (bt.id === "bandeja-fechar") { BANDEJA = false; desenhar_bandeja(); return; }
+        if (bt.id === "bandeja-limpar") { ROLAGENS = []; desenhar_bandeja(); return; }
+        if (bt.dataset.rerolar) { rerolar(bt.dataset.rerolar); }
+    });
+
+    document.addEventListener("keydown", function (e) {
+        if (e.ctrlKey || e.metaKey || e.altKey) { return; }
+        var em = document.activeElement;
+        if (em && /^(INPUT|TEXTAREA|SELECT)$/.test(em.tagName)) { return; }
+        if (e.key === "r" || e.key === "R") {
+            BANDEJA = !BANDEJA;
+            desenhar_bandeja();
+        }
+    });
+}
+
 window.addEventListener("DOMContentLoaded", async function () {
     init_tema();
     montar_catalogo();
@@ -891,6 +944,7 @@ window.addEventListener("DOMContentLoaded", async function () {
     desenhar();
     ligar_eventos();
     ligar_assistente();
+    ligar_bandeja();
 
     /* a mesa e opcional: se mesa.js nao estiver carregado, a ficha
        funciona sozinha como sempre funcionou */

@@ -20,6 +20,8 @@ var COLUNAS_ARMA = [
 
 function linhaArma(a, i) {
     return '<div class="linha-arma">' +
+        '<button type="button" class="btn-mini bt-dado" data-rolar-arma="' + i +
+        '" title="Rolar o ataque e o dano">' + dadoSvg() + "</button>" +
         COLUNAS_ARMA.map(function (c) {
             return '<input type="text" class="campo-arma' + (c.largo ? " largo" : "") +
                 '" data-lista="armas" data-i="' + i + '" data-chave="' + c.id +
@@ -95,7 +97,7 @@ function desenhar_itens_aba() {
 
     alvo.innerHTML =
         '<h2>Jogadas de ataque <span class="h2-nota">as armas que você usa</span></h2>' +
-        '<div class="cab-arma">' +
+        '<div class="cab-arma"><span></span>' +
         COLUNAS_ARMA.map(function (c) {
             return '<span' + (c.largo ? ' class="largo"' : "") + ">" + esc(c.nome) + "</span>";
         }).join("") + "<span></span></div>" +
