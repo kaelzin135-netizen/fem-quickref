@@ -180,13 +180,27 @@ function aplicar_leitura() {
     var app = document.getElementById("ficha");
     if (!app) { return; }
     document.body.classList.toggle("somente-leitura", LEITURA);
-    app.querySelectorAll("input, select, textarea").forEach(function (el) { el.disabled = LEITURA; });
+
+    /* Travar e destravar nao e simetrico: alguns controles ja nascem
+       desligados por conta propria (o assistente desliga "aplicar base"
+       quando nao ha o que aplicar). Marcamos quem foi travado aqui para
+       destravar so esses depois, em vez de ligar tudo. */
+    var trancar = function (el) {
+        if (LEITURA) {
+            if (!el.disabled) { el.dataset.travado = "1"; el.disabled = true; }
+        } else if (el.dataset.travado) {
+            delete el.dataset.travado;
+            el.disabled = false;
+        }
+    };
+
+    app.querySelectorAll("input, select, textarea").forEach(trancar);
     app.querySelectorAll("button").forEach(function (el) {
         /* abas, o nome da pericia e os dados seguem clicaveis: nenhum
            deles escreve na ficha, e o mestre precisa rolar pelos NPCs */
         if (el.classList.contains("aba-btn") || el.dataset.periciaVer || el.dataset.ver ||
             el.dataset.rolar !== undefined || el.dataset.rolarArma !== undefined) { return; }
-        el.disabled = LEITURA;
+        trancar(el);
     });
     var faixa = document.getElementById("aviso-leitura");
     if (faixa) { faixa.classList.toggle("hidden", !LEITURA); }

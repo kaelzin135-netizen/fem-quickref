@@ -2794,3 +2794,13 @@ kbd {
     line-height: 15px;
     color: var(--tinta-fraca);
 }
+
+/* --- Notas: o campo ocupa a altura da coluna, em vez de 18 linhas fixas --- */
+.aba-painel[data-painel="notas"] { display: flex; }
+.aba-painel[data-painel="notas"].hidden { display: none; }
+
+.aba-painel[data-painel="notas"] .anotacoes {
+    flex: 1 1 auto;
+    min-height: 320px;
+    resize: none;
+}
