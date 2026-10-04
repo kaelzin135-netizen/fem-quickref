@@ -266,81 +266,112 @@ function desenhar_treinos() {
         '<div class="trilha-placar">' +
         '<div class="trilha-barra" style="--feito:' +
         Math.round(feitos / TREINAMENTOS.length * 100) + '%"></div>' +
-        "<span><b>" + feitos + "</b> de " + TREINAMENTOS.length + " concluídas</span>" +
+        "<span><b>" + focosGastos() + "</b> focos · <b>" + feitos + "</b> de " +
+        TREINAMENTOS.length + " linhas completas</span>" +
         "</div>" +
-        '<p class="rodape-col">Cada trilha tem quatro etapas; a recompensa só vale com as quatro marcadas.</p>' +
+        '<p class="rodape-col">Cada etapa marcada já vale o benefício dela. ' +
+        "As três primeiras custam 1 foco, a quarta custa 2; fechar as quatro " +
+        "ainda dá o <b>Bônus de Treinamento Completo</b> por cima.</p>" +
         '<div class="item-cats">' +
         chip("todas", "todas", TREINAMENTOS.length) +
         chip("andando", "em andamento", andando) +
-        chip("feitas", "concluídas", feitos) +
+        chip("feitas", "completas", feitos) +
         "</div>" +
         (lista.length ? "" : '<p class="aviso">Nenhuma trilha nesse estado.</p>') +
-        lista.map(function (t) {
-            var etapas = _etapasDe(t.id);
-            var marcadas = etapas.filter(Boolean).length;
-            var completo = treinoCompleto(t.id);
-            return '<div class="trilha' + (completo ? " completa" : "") +
-                (!completo && marcadas ? " andando" : "") + '">' +
-                '<div class="trilha-topo">' +
-                '<span class="trilha-nome">' + esc(t.nome) + "</span>" +
-                '<span class="trilha-conta">' + marcadas + "/4</span>" +
-                '<input type="text" class="trilha-instrutor" data-instrutor="' + t.id +
-                '" value="' + esc((F.treinosInstrutor && F.treinosInstrutor[t.id]) || "") +
-                '" placeholder="instrutor">' +
-                '<span class="trilha-etapas">' +
-                etapas.map(function (marcada, i) {
-                    return '<label class="etapa" title="' + (i + 1) + 'ª etapa">' +
-                        '<input type="checkbox" data-trilha="' + t.id + '" data-etapa="' + i + '"' +
-                        (marcada ? " checked" : "") + "><span>" + (i + 1) + "</span></label>";
-                }).join("") + "</span>" +
-                "</div>" +
-                '<p class="trilha-premio">' + esc(t.recompensa) + "</p>" +
-                rodapeTrilha(t, completo) +
-                "</div>";
-        }).join("");
+        lista.map(cartaoTrilha).join("");
 }
 
-/* O que a trilha faz sozinha na ficha, e o que continua na mao. */
-function rodapeTrilha(t, completo) {
-    var linhas = [];
-
-    (t.efeitos || []).forEach(function (e) {
-        var alvo = ALVOS.filter(function (a) { return a.id === e.alvo; })[0];
-        linhas.push('<span class="trilha-efeito' + (completo ? " ativo" : "") + '">' +
-            (e.valor > 0 ? "+" : "") + e.valor + " " + esc(alvo ? alvo.rotulo : e.alvo) + "</span>");
+/* Focos gastos somando todas as linhas: 1 por etapa, 2 na quarta. */
+function focosGastos() {
+    var n = 0;
+    TREINAMENTOS.forEach(function (t) {
+        var marcadas = _etapasDe(t.id);
+        (t.etapas || []).forEach(function (e, i) {
+            if (marcadas[i]) { n += Number(e.focos) || 1; }
+        });
     });
+    return n;
+}
 
-    if (t.escolhaAptidao) {
-        var escolha = (F.treinosEscolha || {})[t.id] || "";
-        linhas.push('<span class="trilha-efeito' + (completo && escolha ? " ativo" : "") +
-            '">+1 nível de aptidão em</span>' +
-            '<select class="trilha-escolha" data-escolha="' + t.id + '">' +
-            '<option value="">escolher…</option>' +
-            APTIDOES_NIVEL.map(function (a) {
-                return '<option value="' + a.id + '"' + (escolha === a.id ? " selected" : "") +
-                    ">" + esc(a.nome) + "</option>";
-            }).join("") + "</select>");
-    }
+function cartaoTrilha(t) {
+    var marcadas = _etapasDe(t.id);
+    var quantas = marcadas.filter(Boolean).length;
+    var completo = treinoCompleto(t.id);
 
-    var manual = t.manual
-        ? '<span class="trilha-manual">na mão: ' + esc(t.manual) + "</span>"
+    var selo = t.repetivel ? '<span class="trilha-selo">repetível</span>'
+        : t.soRestringido ? '<span class="trilha-selo">só Restringido</span>' : "";
+
+    return '<div class="trilha' + (completo ? " completa" : "") +
+        (!completo && quantas ? " andando" : "") + '">' +
+
+        '<div class="trilha-topo">' +
+        '<span class="trilha-nome">' + esc(t.nome) + "</span>" + selo +
+        '<span class="trilha-conta">' + quantas + "/4</span>" +
+        '<input type="text" class="trilha-instrutor" data-instrutor="' + t.id +
+        '" value="' + esc((F.treinosInstrutor && F.treinosInstrutor[t.id]) || "") +
+        '" placeholder="instrutor">' +
+        "</div>" +
+
+        '<ol class="trilha-etapas-lista">' +
+        (t.etapas || []).map(function (e, i) {
+            return linhaEtapa(t, e, i, !!marcadas[i]);
+        }).join("") + "</ol>" +
+
+        blocoCompleto(t, completo);
+}
+
+/* Uma etapa: a caixa, o que ela exige, o que ela dá e o que a ficha já somou. */
+function linhaEtapa(t, e, i, marcada) {
+    return '<li class="etapa-linha' + (marcada ? " feita" : "") + '">' +
+        '<label class="etapa-caixa" title="' + (i + 1) + 'ª etapa">' +
+        '<input type="checkbox" data-trilha="' + t.id + '" data-etapa="' + i + '"' +
+        (marcada ? " checked" : "") + "><span>" + (i + 1) + "ª</span></label>" +
+        '<div class="etapa-corpo">' +
+        '<p class="etapa-texto">' +
+        (e.exige ? '<span class="etapa-exige">' + esc(e.exige) + "</span>" : "") +
+        (Number(e.focos) > 1 ? '<span class="etapa-focos">' + e.focos + " focos</span>" : "") +
+        esc(e.texto) + "</p>" +
+        selosEfeito(e, marcada) +
+        "</div></li>";
+}
+
+/* O Bônus de Treinamento Completo, que só entra com as quatro marcadas. */
+function blocoCompleto(t, completo) {
+    var c = t.completo || {};
+    var escolha = (F.treinosEscolha || {})[t.id] || "";
+
+    return '<div class="trilha-completo' + (completo ? " ativo" : "") + '">' +
+        '<span class="trilha-completo-rot">Completo</span>' +
+        '<p class="etapa-texto">' + esc(c.texto || "") + "</p>" +
+        selosEfeito(c, completo) +
+        (c.escolhaAptidao
+            ? '<div class="trilha-escolha-linha">' +
+              '<span class="trilha-efeito' + (completo && escolha ? " ativo" : "") +
+              '">+1 nível de aptidão em</span>' +
+              '<select class="trilha-escolha" data-escolha="' + t.id + '">' +
+              '<option value="">escolher…</option>' +
+              APTIDOES_NIVEL.map(function (a) {
+                  return '<option value="' + a.id + '"' + (escolha === a.id ? " selected" : "") +
+                      ">" + esc(a.nome) + "</option>";
+              }).join("") + "</select></div>"
+            : "") +
+        "</div>";
+}
+
+/* O que a ficha soma sozinha, e o que continua na mão da mesa. */
+function selosEfeito(e, ativo) {
+    var selos = (e.efeitos || []).map(function (x) {
+        var a = ALVOS.filter(function (y) { return y.id === x.alvo; })[0];
+        return '<span class="trilha-efeito' + (ativo ? " ativo" : "") + '">' +
+            (x.valor > 0 ? "+" : "") + x.valor + " " + esc(a ? a.rotulo : x.alvo) + "</span>";
+    }).join("");
+
+    var manual = e.manual
+        ? '<span class="trilha-manual">na mão: ' + esc(e.manual) + "</span>"
         : "";
 
-    if (!linhas.length && !manual) { return ""; }
-    return '<div class="trilha-rodape">' + linhas.join("") + manual + "</div>";
-}
-
-/* Atualiza uma trilha sem redesenhar a lista, para nao roubar o foco. */
-function atualizar_trilha(id) {
-    var caixa = document.querySelector('[data-trilha="' + id + '"]');
-    var bloco = caixa && caixa.closest(".trilha");
-    if (bloco) { bloco.classList.toggle("completa", treinoCompleto(id)); }
-    var contador = document.querySelector("#ficha-treinos .rodape-col");
-    if (contador) {
-        var feitos = TREINAMENTOS.filter(function (t) { return treinoCompleto(t.id); }).length;
-        contador.textContent = feitos + " de " + TREINAMENTOS.length +
-            " trilhas concluídas. Cada trilha tem quatro etapas; a recompensa vale quando as quatro estão marcadas.";
-    }
+    if (!selos && !manual) { return ""; }
+    return '<div class="etapa-selos">' + selos + manual + "</div>";
 }
 
 /* ----------------------------------------------------------- registro ---- */

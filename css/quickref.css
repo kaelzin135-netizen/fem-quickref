@@ -2891,3 +2891,119 @@ kbd {
 
 .passos > b { color: var(--tinta); font-weight: 500; }
 .passos span b { color: var(--tinta); font-weight: 500; }
+
+/* ------------------------------------------------------------------------- */
+/* Trilhas de treinamento, etapa por etapa                                    */
+/* Cada etapa vale por si; o Bônus de Treinamento Completo vem por cima.      */
+/* ------------------------------------------------------------------------- */
+
+.trilha { padding: 12px 0 13px 10px; }
+
+.trilha-selo {
+    flex: 0 0 auto;
+    padding: 0 4px;
+    border: 1px solid var(--linha);
+    border-radius: 2px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    color: var(--tinta-tenue);
+}
+
+.trilha-etapas-lista { list-style: none; margin: 8px 0 0; padding: 0; }
+
+.etapa-linha {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    padding: 5px 0;
+}
+
+.etapa-linha + .etapa-linha { border-top: 1px solid var(--linha); }
+
+/* a caixa e o número da etapa andam juntos e não se separam */
+.etapa-caixa {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding-top: 1px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--tinta-tenue);
+    cursor: pointer;
+    font-variant-numeric: tabular-nums;
+}
+
+.etapa-caixa input { margin: 0; accent-color: var(--accent); cursor: pointer; }
+.etapa-linha.feita .etapa-caixa { color: var(--verde); }
+
+.etapa-corpo { flex: 1 1 auto; min-width: 0; }
+
+.etapa-texto {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--tinta-tenue);
+}
+
+.etapa-linha.feita .etapa-texto { color: var(--tinta); }
+
+/* pré-requisito e custo em focos, antes do texto da etapa */
+.etapa-exige, .etapa-focos {
+    display: inline-block;
+    margin-right: 6px;
+    padding: 0 4px;
+    border: 1px solid var(--linha);
+    border-radius: 2px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: var(--tinta-tenue);
+    vertical-align: 1px;
+}
+
+.etapa-focos { border-color: var(--linha-forte); }
+
+.etapa-selos {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px 9px;
+    margin-top: 5px;
+}
+
+/* --- o bônus de linha completa --- */
+.trilha-completo {
+    margin-top: 8px;
+    padding: 8px 10px;
+    border-left: 2px solid var(--linha);
+    background: var(--realce);
+}
+
+.trilha-completo.ativo { border-left-color: var(--verde); }
+
+.trilha-completo-rot {
+    display: block;
+    margin-bottom: 3px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--tinta-tenue);
+}
+
+.trilha-completo.ativo .trilha-completo-rot { color: var(--verde); }
+.trilha-completo.ativo .etapa-texto { color: var(--tinta); }
+
+.trilha-escolha-linha {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+.trilha-manual { margin-left: 0; }

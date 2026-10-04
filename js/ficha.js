@@ -123,21 +123,37 @@ function mods(alvo) {
             }
         });
     });
-    /* trilha concluida entra na conta como qualquer outra fonte, e sai
-       sozinha quando a pessoa desmarca uma etapa */
+    /* CADA ETAPA de treinamento concede o beneficio dela, nao so a quarta
+       (pg. 338). Entao cada etapa marcada entra na conta como uma parcela
+       propria, e sai sozinha quando a pessoa desmarca. Quem fecha as quatro
+       ainda soma o Bonus de Treinamento Completo por cima. */
     if (typeof TREINAMENTOS !== "undefined") {
         TREINAMENTOS.forEach(function (t) {
+            var marcadas = (F.treinos && F.treinos[t.id]) || [];
+            (t.etapas || []).forEach(function (etapa, i) {
+                if (!marcadas[i]) { return; }
+                (etapa.efeitos || []).forEach(function (e) {
+                    if (e.alvo === alvo) {
+                        saida.push({
+                            rotulo: t.nome + " " + (i + 1) + "ª",
+                            valor: Number(e.valor)
+                        });
+                    }
+                });
+            });
+
             if (!treinoCompleto(t.id)) { return; }
-            (t.efeitos || []).forEach(function (e) {
+            var c = t.completo || {};
+            (c.efeitos || []).forEach(function (e) {
                 if (e.alvo === alvo) {
-                    saida.push({ rotulo: "Treino: " + t.nome, valor: Number(e.valor) });
+                    saida.push({ rotulo: t.nome + " completo", valor: Number(e.valor) });
                 }
             });
-            /* Compreensão sobe uma aptidão à escolha */
-            if (t.escolhaAptidao) {
+            /* Compreensão sobe uma aptidão à escolha ao fechar a linha */
+            if (c.escolhaAptidao) {
                 var escolha = (F.treinosEscolha || {})[t.id];
                 if (escolha && alvo === "aptidao." + escolha) {
-                    saida.push({ rotulo: "Treino: " + t.nome, valor: 1 });
+                    saida.push({ rotulo: t.nome + " completo", valor: 1 });
                 }
             }
         });
