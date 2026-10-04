@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Origens — Feiticeiros &amp; Maldições</title>
+    <link rel="stylesheet" type="text/css" href="css/quickref.css">
+    <link rel="stylesheet" type="text/css" href="css/icons.css">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans:400,400i,700,700i&display=swap" rel="stylesheet"
+        type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lora:700&display=swap" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/png" href="img/crowned-skull.png">
+</head>
+
+<body class="page-background">
+
+    <nav id="nav">
+        <div class="nav-inner">
+            <span class="nav-brand">F&amp;M 2.5.2</span>
+            <div class="nav-tabs">
+                <a href="index.html">Combate</a>
+                <a href="habilidades.html">Habilidades</a>
+                <a href="itens.html">Itens</a>
+                <a href="origens.html" class="active">Origens</a>
+                <a href="evolucao.html">Evolução</a>
+                <a href="ficha.html">Ficha</a>
+            </div>
+            <input type="search" id="search" placeholder="Buscar…" autocomplete="off" spellcheck="false">
+            <button type="button" id="btn-tema" aria-pressed="false"
+                title="Alternar modo dia/noite">☾ <span>Noite</span></button>
+        </div>
+    </nav>
+
+    <div class="layout">
+
+        <aside id="sidebar">
+            <nav id="nav-links" aria-label="Seções desta página"></nav>
+        </aside>
+
+    <div class="page fontsize">
+
+        <div class="main-title">Origens — De Onde Vem a Sua Energia</div>
+        <div class="description">
+            As sete origens do Capítulo 3: o que cada uma concede no 1º nível e como ela
+            molda o resto da ficha. Em seguida as quatro <b>heranças de clã</b> do Herdado e as
+            <b>características de anatomia</b> do Feto Amaldiçoado Híbrido.
+            <b id="item-count">…</b> itens, com as páginas do Livro de Regras v2.5.2.
+            <br><br>
+            Toda origem dá um <b>bônus em atributo</b> — a forma muda de uma para outra — e um
+            punhado de características próprias. A origem é escolhida na criação e não muda depois.
+        </div>
+
+        <div id="section-origem" class="section-container">
+            <div class="section-title">As Sete Origens <span class="float-right">escolha uma na criação</span></div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    Duas delas puxam escolhas extras: o <b>Herdado</b> precisa escolher um clã, e o
+                    <b>Feto Amaldiçoado Híbrido</b> escolhe anatomias conforme sobe de nível. O
+                    <b>Restringido</b> é a única origem presa a uma especialização.
+                </div>
+                <div class="section-row" id="origem-lista"></div>
+            </div>
+        </div>
+
+        <div id="section-cla" class="section-container">
+            <div class="section-title">Heranças de Clã <span class="float-right">só para o Herdado</span></div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    O clã define o bônus em atributo, os treinamentos e a herança. Dá para pertencer a um
+                    clã <b>só na narrativa</b>, sem receber os benefícios — é o caso de Toji Fushiguro e
+                    Maki Zenin, que teriam a origem Restringido.
+                </div>
+                <div class="section-row" id="cla-lista"></div>
+            </div>
+        </div>
+
+        <div id="section-anatomia" class="section-container">
+            <div class="section-title">Características de Anatomia <span class="float-right">uma no 1º nível, outra a cada 5</span></div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    O corpo do Feto Amaldiçoado Híbrido se desenvolve com o tempo. Escolha uma ao
+                    receber a origem e outra a cada cinco níveis.
+                </div>
+                <div class="section-row" id="anatomia-lista"></div>
+            </div>
+        </div>
+
+        <div class="no-results" id="no-results">Nenhum resultado para a busca.</div>
+
+        <div class="footer">
+            Referência não-oficial · Feiticeiros &amp; Maldições — Livro de Regras v2.5.2
+        </div>
+
+    </div>
+
+    </div>
+
+    <script type="text/javascript" src="js/data_origem.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/engine.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/origens.js" charset="utf-8"></script>
+
+</body>
+
+</html>

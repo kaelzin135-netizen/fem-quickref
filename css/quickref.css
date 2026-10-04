@@ -39,6 +39,11 @@
     --c-escudo: #1d4ed8;
     --c-propriedade: #5b21b6;
 
+    /* acentos — página Origens */
+    --c-origem: #7c3aed;
+    --c-cla: #a16207;
+    --c-anatomia: #166534;
+
     /* acentos — página Evolução */
     --c-criacao: #0f766e;
     --c-subir: #b45309;
@@ -558,6 +563,9 @@ body {
 #section-uniforme     { --accent: var(--c-uniforme); }
 #section-escudo       { --accent: var(--c-escudo); }
 #section-propriedade  { --accent: var(--c-propriedade); }
+#section-origem       { --accent: var(--c-origem); }
+#section-cla          { --accent: var(--c-cla); }
+#section-anatomia     { --accent: var(--c-anatomia); }
 #section-criacao      { --accent: var(--c-criacao); }
 #section-nivel        { --accent: var(--c-subir); }
 #section-tabela       { --accent: var(--c-tabela); }
