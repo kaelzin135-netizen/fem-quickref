@@ -8,7 +8,7 @@ data_item_simples = [
         "description": "Arma simples · grupo Faca",
         "reference": "Livro de Regras, pg. 132.",
         "bullets": [
-            "<b>Propriedades.</b> Apunhaladora, arremessável [6/18m], fineza, leve, marcial, modular Ct.",
+            "<details class=\"props\"><summary>6 propriedades</summary><ul><li><b>Apunhaladora.</b> Favorece ataques furtivos e golpes em pontos vitais.</li><li><b>Arremessável [6/18m].</b> Pode ser lançada no alcance indicado, mantendo o dano.</li><li><b>Fineza.</b> Permite usar <b>Destreza</b> no lugar de Força nas jogadas de ataque e dano.</li><li><b>Leve.</b> Favorece a luta com duas armas.</li><li><b>Marcial.</b> Sem o treinamento adequado você <b>não soma o bônus de treinamento</b> nas jogadas de ataque.</li><li><b>Modular Ct.</b> Você pode escolher causar o tipo de dano indicado no lugar do tipo padrão.</li></ul></details>",
             "Ocupa <b>1</b> espaço e tem <b>custo 1</b>. Pertence ao grupo <b>Faca</b>."
         ]
     },
@@ -19,7 +19,7 @@ data_item_simples = [
         "description": "Arma simples · grupo Bastão",
         "reference": "Livro de Regras, pg. 132.",
         "bullets": [
-            "<b>Propriedades.</b> Amplo, dupla, marcial, versátil.",
+            "<details class=\"props\"><summary>4 propriedades</summary><ul><li><b>Amplo.</b> Atinge mais de um alvo adjacente com o mesmo golpe.</li><li><b>Dupla.</b> Conta como duas armas para efeito de luta com duas armas.</li><li><b>Marcial.</b> Sem o treinamento adequado você <b>não soma o bônus de treinamento</b> nas jogadas de ataque.</li><li><b>Versátil.</b> O primeiro dado é com uma mão; o segundo, com as duas.</li></ul></details>",
             "Ocupa <b>2</b> espaços e tem <b>custo 1</b>. Pertence ao grupo <b>Bastão</b>."
         ]
     },
@@ -30,7 +30,7 @@ data_item_simples = [
         "description": "Arma simples · grupo Bastão",
         "reference": "Livro de Regras, pg. 132.",
         "bullets": [
-            "<b>Propriedades.</b> Versátil.",
+            "<details class=\"props\"><summary>1 propriedade</summary><ul><li><b>Versátil.</b> O primeiro dado é com uma mão; o segundo, com as duas.</li></ul></details>",
             "Ocupa <b>1</b> espaço e tem <b>custo 1</b>. Pertence ao grupo <b>Bastão</b>."
         ]
     },
@@ -41,7 +41,7 @@ data_item_simples = [
         "description": "Arma simples · grupo Espada",
         "reference": "Livro de Regras, pg. 132.",
         "bullets": [
-            "<b>Propriedades.</b> Fineza, leve, marcial, modular Pf.",
+            "<details class=\"props\"><summary>4 propriedades</summary><ul><li><b>Fineza.</b> Permite usar <b>Destreza</b> no lugar de Força nas jogadas de ataque e dano.</li><li><b>Leve.</b> Favorece a luta com duas armas.</li><li><b>Marcial.</b> Sem o treinamento adequado você <b>não soma o bônus de treinamento</b> nas jogadas de ataque.</li><li><b>Modular Pf.</b> Você pode escolher causar o tipo de dano indicado no lugar do tipo padrão.</li></ul></details>",
             "Ocupa <b>1</b> espaço e tem <b>custo 1</b>. Pertence ao grupo <b>Espada</b>."
         ]
     },
@@ -52,7 +52,7 @@ data_item_simples = [
         "description": "Arma simples · grupo Pugilato",
         "reference": "Livro de Regras, pg. 132.",
         "bullets": [
-            "<b>Propriedades.</b> Especial.",
+            "<details class=\"props\"><summary>1 propriedade</summary><ul><li><b>Especial.</b> Tem uma regra própria — veja o texto da arma no livro.</li></ul></details>",
             "O dano desta arma é <b>especial</b> — veja o texto dela no livro.",
             "Ocupa <b>1</b> espaço e tem <b>custo 1</b>. Pertence ao grupo <b>Pugilato</b>."
         ]
@@ -64,7 +64,7 @@ data_item_simples = [
         "description": "Arma simples · grupo Haste",
         "reference": "Livro de Regras, pg. 132.",
         "bullets": [
-            "<b>Propriedades.</b> Fineza, leve, marcial.",
+            "<details class=\"props\"><summary>3 propriedades</summary><ul><li><b>Fineza.</b> Permite usar <b>Destreza</b> no lugar de Força nas jogadas de ataque e dano.</li><li><b>Leve.</b> Favorece a luta com duas armas.</li><li><b>Marcial.</b> Sem o treinamento adequado você <b>não soma o bônus de treinamento</b> nas jogadas de ataque.</li></ul></details>",
             "Ocupa <b>1</b> espaço e tem <b>custo 1</b>. Pertence ao grupo <b>Haste</b>."
         ]
     },
@@ -75,7 +75,7 @@ data_item_simples = [
         "description": "Arma simples · grupo Haste",
         "reference": "Livro de Regras, pg. 132.",
         "bullets": [
-            "<b>Propriedades.</b> Arremessável [6/18m], estendida, versátil.",
+            "<details class=\"props\"><summary>3 propriedades</summary><ul><li><b>Arremessável [6/18m].</b> Pode ser lançada no alcance indicado, mantendo o dano.</li><li><b>Estendida.</b> Atinge alvos a uma distância maior que o alcance normal de corpo a corpo.</li><li><b>Versátil.</b> O primeiro dado é com uma mão; o segundo, com as duas.</li></ul></details>",
             "Ocupa <b>1</b> espaço e tem <b>custo 1</b>. Pertence ao grupo <b>Haste</b>."
         ]
     },
@@ -86,7 +86,7 @@ data_item_simples = [
         "description": "Arma simples",
         "reference": "Livro de Regras, pg. 132.",
         "bullets": [
-            "<b>Propriedades.</b> Fineza, enérgica, leve, especial.",
+            "<details class=\"props\"><summary>4 propriedades</summary><ul><li><b>Fineza.</b> Permite usar <b>Destreza</b> no lugar de Força nas jogadas de ataque e dano.</li><li><b>Enérgica.</b> Interage melhor com efeitos que canalizam energia amaldiçoada pela arma.</li><li><b>Leve.</b> Favorece a luta com duas armas.</li><li><b>Especial.</b> Tem uma regra própria — veja o texto da arma no livro.</li></ul></details>",
             "Ocupa <b>1</b> espaço e tem <b>custo 1</b>."
         ]
     },
@@ -97,7 +97,7 @@ data_item_simples = [
         "description": "Arma simples · grupo Machado",
         "reference": "Livro de Regras, pg. 132.",
         "bullets": [
-            "<b>Propriedades.</b> Versátil.",
+            "<details class=\"props\"><summary>1 propriedade</summary><ul><li><b>Versátil.</b> O primeiro dado é com uma mão; o segundo, com as duas.</li></ul></details>",
             "Ocupa <b>1</b> espaço e tem <b>custo 1</b>. Pertence ao grupo <b>Machado</b>."
         ]
     },
@@ -108,7 +108,7 @@ data_item_simples = [
         "description": "Arma simples · grupo Chicote",
         "reference": "Livro de Regras, pg. 132.",
         "bullets": [
-            "<b>Propriedades.</b> Ampla, enérgica.",
+            "<details class=\"props\"><summary>2 propriedades</summary><ul><li><b>Ampla.</b> Atinge mais de um alvo adjacente com o mesmo golpe.</li><li><b>Enérgica.</b> Interage melhor com efeitos que canalizam energia amaldiçoada pela arma.</li></ul></details>",
             "Ocupa <b>1</b> espaço e tem <b>custo 1</b>. Pertence ao grupo <b>Chicote</b>."
         ]
     },
@@ -119,7 +119,7 @@ data_item_simples = [
         "description": "Arma simples · grupo Pugilato",
         "reference": "Livro de Regras, pg. 132.",
         "bullets": [
-            "<b>Propriedades.</b> Aparar, duas mãos, dupla, especial, pesado [16].",
+            "<details class=\"props\"><summary>5 propriedades</summary><ul><li><b>Aparar.</b> Pode ser usada para aparar ataques recebidos.</li><li><b>Duas mãos.</b> Ocupa as duas mãos: não dá para usar escudo ou uma segunda arma junto.</li><li><b>Dupla.</b> Conta como duas armas para efeito de luta com duas armas.</li><li><b>Especial.</b> Tem uma regra própria — veja o texto da arma no livro.</li><li><b>Pesado [16].</b> Exige o valor de <b>Força</b> indicado; abaixo dele o manejo é prejudicado.</li></ul></details>",
             "O dano desta arma é <b>especial</b> — veja o texto dela no livro.",
             "Ocupa <b>1</b> espaço e tem <b>custo 2</b>. Pertence ao grupo <b>Pugilato</b>."
         ]
@@ -131,7 +131,7 @@ data_item_simples = [
         "description": "Arma simples · grupo Martelo",
         "reference": "Livro de Regras, pg. 132.",
         "bullets": [
-            "<b>Propriedades.</b> Versátil.",
+            "<details class=\"props\"><summary>1 propriedade</summary><ul><li><b>Versátil.</b> O primeiro dado é com uma mão; o segundo, com as duas.</li></ul></details>",
             "Ocupa <b>1</b> espaço e tem <b>custo 1</b>. Pertence ao grupo <b>Martelo</b>."
         ]
     },
@@ -142,7 +142,7 @@ data_item_simples = [
         "description": "Arma simples · grupo Pugilato",
         "reference": "Livro de Regras, pg. 132.",
         "bullets": [
-            "<b>Propriedades.</b> Enérgica, especial, fineza, marcial.",
+            "<details class=\"props\"><summary>4 propriedades</summary><ul><li><b>Enérgica.</b> Interage melhor com efeitos que canalizam energia amaldiçoada pela arma.</li><li><b>Especial.</b> Tem uma regra própria — veja o texto da arma no livro.</li><li><b>Fineza.</b> Permite usar <b>Destreza</b> no lugar de Força nas jogadas de ataque e dano.</li><li><b>Marcial.</b> Sem o treinamento adequado você <b>não soma o bônus de treinamento</b> nas jogadas de ataque.</li></ul></details>",
             "O dano desta arma é <b>especial</b> — veja o texto dela no livro.",
             "Ocupa <b>1</b> espaço e tem <b>custo 2</b>. Pertence ao grupo <b>Pugilato</b>."
         ]
@@ -154,7 +154,7 @@ data_item_simples = [
         "description": "Arma simples · grupo Haste",
         "reference": "Livro de Regras, pg. 132.",
         "bullets": [
-            "<b>Propriedades.</b> Arremessável [6/18m], estendida, versátil.",
+            "<details class=\"props\"><summary>3 propriedades</summary><ul><li><b>Arremessável [6/18m].</b> Pode ser lançada no alcance indicado, mantendo o dano.</li><li><b>Estendida.</b> Atinge alvos a uma distância maior que o alcance normal de corpo a corpo.</li><li><b>Versátil.</b> O primeiro dado é com uma mão; o segundo, com as duas.</li></ul></details>",
             "Ocupa <b>1</b> espaço e tem <b>custo 1</b>. Pertence ao grupo <b>Haste</b>."
         ]
     }
@@ -168,7 +168,7 @@ data_item_distancia = [
         "description": "Arma a distância · grupo Arco",
         "reference": "Livro de Regras, pg. 132-134.",
         "bullets": [
-            "<b>Propriedades.</b> Duas mãos, mortal d10, alcance [24/48m].",
+            "<details class=\"props\"><summary>3 propriedades</summary><ul><li><b>Duas mãos.</b> Ocupa as duas mãos: não dá para usar escudo ou uma segunda arma junto.</li><li><b>Mortal d10.</b> No acerto crítico, o dado de dano da arma passa a ser o indicado.</li><li><b>Alcance [24/48m].</b> O primeiro valor é o alcance normal; até o segundo, o ataque é feito com <b>desvantagem</b>.</li></ul></details>",
             "Ocupa <b>2</b> espaços e tem <b>custo 1</b>. Pertence ao grupo <b>Arco</b>."
         ]
     },
@@ -179,7 +179,7 @@ data_item_distancia = [
         "description": "Arma a distância · grupo Arco",
         "reference": "Livro de Regras, pg. 132-134.",
         "bullets": [
-            "<b>Propriedades.</b> Mortal d10, leve, alcance [24/48m], recarga [1].",
+            "<details class=\"props\"><summary>4 propriedades</summary><ul><li><b>Mortal d10.</b> No acerto crítico, o dado de dano da arma passa a ser o indicado.</li><li><b>Leve.</b> Favorece a luta com duas armas.</li><li><b>Alcance [24/48m].</b> O primeiro valor é o alcance normal; até o segundo, o ataque é feito com <b>desvantagem</b>.</li><li><b>Recarga [1].</b> Dispara o número indicado de vezes antes de precisar recarregar.</li></ul></details>",
             "Ocupa <b>1</b> espaço e tem <b>custo 1</b>. Pertence ao grupo <b>Arco</b>."
         ]
     },
@@ -190,7 +190,7 @@ data_item_distancia = [
         "description": "Arma a distância · grupo Tiro",
         "reference": "Livro de Regras, pg. 132-134.",
         "bullets": [
-            "<b>Propriedades.</b> Alcance [36/72m], emperrar, leve, recarga [12].",
+            "<details class=\"props\"><summary>4 propriedades</summary><ul><li><b>Alcance [36/72m].</b> O primeiro valor é o alcance normal; até o segundo, o ataque é feito com <b>desvantagem</b>.</li><li><b>Emperrar.</b> Em certos resultados a arma trava e precisa ser destravada antes do próximo disparo.</li><li><b>Leve.</b> Favorece a luta com duas armas.</li><li><b>Recarga [12].</b> Dispara o número indicado de vezes antes de precisar recarregar.</li></ul></details>",
             "Ocupa <b>1</b> espaço e tem <b>custo 2</b>. Pertence ao grupo <b>Tiro</b>."
         ]
     },
@@ -201,7 +201,7 @@ data_item_distancia = [
         "description": "Arma a distância · grupo Arco",
         "reference": "Livro de Regras, pg. 132-134.",
         "bullets": [
-            "<b>Propriedades.</b> Duas mãos, mortal d12, alcance [30/60m].",
+            "<details class=\"props\"><summary>3 propriedades</summary><ul><li><b>Duas mãos.</b> Ocupa as duas mãos: não dá para usar escudo ou uma segunda arma junto.</li><li><b>Mortal d12.</b> No acerto crítico, o dado de dano da arma passa a ser o indicado.</li><li><b>Alcance [30/60m].</b> O primeiro valor é o alcance normal; até o segundo, o ataque é feito com <b>desvantagem</b>.</li></ul></details>",
             "Ocupa <b>2</b> espaços e tem <b>custo 1</b>. Pertence ao grupo <b>Arco</b>."
         ]
     },
@@ -212,7 +212,7 @@ data_item_distancia = [
         "description": "Arma a distância · grupo Tiro",
         "reference": "Livro de Regras, pg. 132-134.",
         "bullets": [
-            "<b>Propriedades.</b> Alcance [9/18], Duas Mãos, Emperrar, Recarga [1], Especial, Pesada [16].",
+            "<details class=\"props\"><summary>6 propriedades</summary><ul><li><b>Alcance [9/18].</b> O primeiro valor é o alcance normal; até o segundo, o ataque é feito com <b>desvantagem</b>.</li><li><b>Duas Mãos.</b> Ocupa as duas mãos: não dá para usar escudo ou uma segunda arma junto.</li><li><b>Emperrar.</b> Em certos resultados a arma trava e precisa ser destravada antes do próximo disparo.</li><li><b>Recarga [1].</b> Dispara o número indicado de vezes antes de precisar recarregar.</li><li><b>Especial.</b> Tem uma regra própria — veja o texto da arma no livro.</li><li><b>Pesada [16].</b> Exige o valor de <b>Força</b> indicado; abaixo dele o manejo é prejudicado.</li></ul></details>",
             "Ocupa <b>4</b> espaços e tem <b>custo 4</b>. Pertence ao grupo <b>Tiro</b>."
         ]
     },
@@ -223,7 +223,7 @@ data_item_distancia = [
         "description": "Arma a distância · grupo Besta",
         "reference": "Livro de Regras, pg. 132-134.",
         "bullets": [
-            "<b>Propriedades.</b> Pesada [14], alcance [45/90m], recarga [1], mortal d12.",
+            "<details class=\"props\"><summary>4 propriedades</summary><ul><li><b>Pesada [14].</b> Exige o valor de <b>Força</b> indicado; abaixo dele o manejo é prejudicado.</li><li><b>Alcance [45/90m].</b> O primeiro valor é o alcance normal; até o segundo, o ataque é feito com <b>desvantagem</b>.</li><li><b>Recarga [1].</b> Dispara o número indicado de vezes antes de precisar recarregar.</li><li><b>Mortal d12.</b> No acerto crítico, o dado de dano da arma passa a ser o indicado.</li></ul></details>",
             "Ocupa <b>2</b> espaços e tem <b>custo 1</b>. Pertence ao grupo <b>Besta</b>."
         ]
     },
@@ -234,7 +234,7 @@ data_item_distancia = [
         "description": "Arma a distância · grupo Tiro",
         "reference": "Livro de Regras, pg. 132-134.",
         "bullets": [
-            "<b>Propriedades.</b> Alcance [9/18m], duas mãos, emperrar, especial, recarga [2].",
+            "<details class=\"props\"><summary>5 propriedades</summary><ul><li><b>Alcance [9/18m].</b> O primeiro valor é o alcance normal; até o segundo, o ataque é feito com <b>desvantagem</b>.</li><li><b>Duas mãos.</b> Ocupa as duas mãos: não dá para usar escudo ou uma segunda arma junto.</li><li><b>Emperrar.</b> Em certos resultados a arma trava e precisa ser destravada antes do próximo disparo.</li><li><b>Especial.</b> Tem uma regra própria — veja o texto da arma no livro.</li><li><b>Recarga [2].</b> Dispara o número indicado de vezes antes de precisar recarregar.</li></ul></details>",
             "Ocupa <b>2</b> espaços e tem <b>custo 2</b>. Pertence ao grupo <b>Tiro</b>."
         ]
     },
@@ -245,7 +245,7 @@ data_item_distancia = [
         "description": "Arma a distância · grupo Tiro",
         "reference": "Livro de Regras, pg. 132-134.",
         "bullets": [
-            "<b>Propriedades.</b> Alcance [30/60m], duas mãos, emperrar, especial, recarga [30].",
+            "<details class=\"props\"><summary>5 propriedades</summary><ul><li><b>Alcance [30/60m].</b> O primeiro valor é o alcance normal; até o segundo, o ataque é feito com <b>desvantagem</b>.</li><li><b>Duas mãos.</b> Ocupa as duas mãos: não dá para usar escudo ou uma segunda arma junto.</li><li><b>Emperrar.</b> Em certos resultados a arma trava e precisa ser destravada antes do próximo disparo.</li><li><b>Especial.</b> Tem uma regra própria — veja o texto da arma no livro.</li><li><b>Recarga [30].</b> Dispara o número indicado de vezes antes de precisar recarregar.</li></ul></details>",
             "Ocupa <b>4</b> espaços e tem <b>custo 3</b>. Pertence ao grupo <b>Tiro</b>."
         ]
     },
@@ -256,7 +256,7 @@ data_item_distancia = [
         "description": "Arma a distância · grupo Tiro",
         "reference": "Livro de Regras, pg. 132-134.",
         "bullets": [
-            "<b>Propriedades.</b> Alcance [60/120m], duas mãos, emperrar, recarga [20].",
+            "<details class=\"props\"><summary>4 propriedades</summary><ul><li><b>Alcance [60/120m].</b> O primeiro valor é o alcance normal; até o segundo, o ataque é feito com <b>desvantagem</b>.</li><li><b>Duas mãos.</b> Ocupa as duas mãos: não dá para usar escudo ou uma segunda arma junto.</li><li><b>Emperrar.</b> Em certos resultados a arma trava e precisa ser destravada antes do próximo disparo.</li><li><b>Recarga [20].</b> Dispara o número indicado de vezes antes de precisar recarregar.</li></ul></details>",
             "Ocupa <b>2</b> espaços e tem <b>custo 2</b>. Pertence ao grupo <b>Tiro</b>."
         ]
     },
@@ -267,7 +267,7 @@ data_item_distancia = [
         "description": "Arma a distância · grupo Tiro",
         "reference": "Livro de Regras, pg. 132-134.",
         "bullets": [
-            "<b>Propriedades.</b> Alcance [120/240m], duas mãos, emperrar, recarga [5].",
+            "<details class=\"props\"><summary>4 propriedades</summary><ul><li><b>Alcance [120/240m].</b> O primeiro valor é o alcance normal; até o segundo, o ataque é feito com <b>desvantagem</b>.</li><li><b>Duas mãos.</b> Ocupa as duas mãos: não dá para usar escudo ou uma segunda arma junto.</li><li><b>Emperrar.</b> Em certos resultados a arma trava e precisa ser destravada antes do próximo disparo.</li><li><b>Recarga [5].</b> Dispara o número indicado de vezes antes de precisar recarregar.</li></ul></details>",
             "Ocupa <b>4</b> espaços e tem <b>custo 3</b>. Pertence ao grupo <b>Tiro</b>."
         ]
     }
@@ -281,7 +281,7 @@ data_item_arremesso = [
         "description": "Arma de arremesso · grupo Dardo",
         "reference": "Livro de Regras, pg. 132-134.",
         "bullets": [
-            "<b>Propriedades.</b> Leve, alcance [12/24m].",
+            "<details class=\"props\"><summary>2 propriedades</summary><ul><li><b>Leve.</b> Favorece a luta com duas armas.</li><li><b>Alcance [12/24m].</b> O primeiro valor é o alcance normal; até o segundo, o ataque é feito com <b>desvantagem</b>.</li></ul></details>",
             "Ocupa <b>1</b> espaço e tem <b>custo 1</b>. Pertence ao grupo <b>Dardo</b>."
         ]
     },
@@ -292,7 +292,7 @@ data_item_arremesso = [
         "description": "Arma de arremesso · grupo Dardo",
         "reference": "Livro de Regras, pg. 132-134.",
         "bullets": [
-            "<b>Propriedades.</b> Leve, alcance [12/24m], especial.",
+            "<details class=\"props\"><summary>3 propriedades</summary><ul><li><b>Leve.</b> Favorece a luta com duas armas.</li><li><b>Alcance [12/24m].</b> O primeiro valor é o alcance normal; até o segundo, o ataque é feito com <b>desvantagem</b>.</li><li><b>Especial.</b> Tem uma regra própria — veja o texto da arma no livro.</li></ul></details>",
             "Ocupa <b>1</b> espaço e tem <b>custo 1</b>. Pertence ao grupo <b>Dardo</b>."
         ]
     },
@@ -303,7 +303,7 @@ data_item_arremesso = [
         "description": "Arma de arremesso · grupo Faca",
         "reference": "Livro de Regras, pg. 132-134.",
         "bullets": [
-            "<b>Propriedades.</b> Leve, alcance [12/24m], modular Ct.",
+            "<details class=\"props\"><summary>3 propriedades</summary><ul><li><b>Leve.</b> Favorece a luta com duas armas.</li><li><b>Alcance [12/24m].</b> O primeiro valor é o alcance normal; até o segundo, o ataque é feito com <b>desvantagem</b>.</li><li><b>Modular Ct.</b> Você pode escolher causar o tipo de dano indicado no lugar do tipo padrão.</li></ul></details>",
             "Ocupa <b>1</b> espaço e tem <b>custo 1</b>. Pertence ao grupo <b>Faca</b>."
         ]
     },
@@ -314,7 +314,7 @@ data_item_arremesso = [
         "description": "Arma de arremesso · grupo Faca",
         "reference": "Livro de Regras, pg. 132-134.",
         "bullets": [
-            "<b>Propriedades.</b> Arremessável [12/24m], especial, leve.",
+            "<details class=\"props\"><summary>3 propriedades</summary><ul><li><b>Arremessável [12/24m].</b> Pode ser lançada no alcance indicado, mantendo o dano.</li><li><b>Especial.</b> Tem uma regra própria — veja o texto da arma no livro.</li><li><b>Leve.</b> Favorece a luta com duas armas.</li></ul></details>",
             "Ocupa <b>1</b> espaço e tem <b>custo 1</b>. Pertence ao grupo <b>Faca</b>."
         ]
     },
@@ -325,7 +325,7 @@ data_item_arremesso = [
         "description": "Arma de arremesso · grupo Dardo",
         "reference": "Livro de Regras, pg. 132-134.",
         "bullets": [
-            "<b>Propriedades.</b> Apunhaladora, arremessável [9/18m], fineza, leve.",
+            "<details class=\"props\"><summary>4 propriedades</summary><ul><li><b>Apunhaladora.</b> Favorece ataques furtivos e golpes em pontos vitais.</li><li><b>Arremessável [9/18m].</b> Pode ser lançada no alcance indicado, mantendo o dano.</li><li><b>Fineza.</b> Permite usar <b>Destreza</b> no lugar de Força nas jogadas de ataque e dano.</li><li><b>Leve.</b> Favorece a luta com duas armas.</li></ul></details>",
             "Ocupa <b>1</b> espaço e tem <b>custo 1</b>. Pertence ao grupo <b>Dardo</b>."
         ]
     },
@@ -336,7 +336,7 @@ data_item_arremesso = [
         "description": "Arma de arremesso",
         "reference": "Livro de Regras, pg. 132-134.",
         "bullets": [
-            "<b>Propriedades.</b> Alcance [9/27m], especial.",
+            "<details class=\"props\"><summary>2 propriedades</summary><ul><li><b>Alcance [9/27m].</b> O primeiro valor é o alcance normal; até o segundo, o ataque é feito com <b>desvantagem</b>.</li><li><b>Especial.</b> Tem uma regra própria — veja o texto da arma no livro.</li></ul></details>",
             "O dano desta arma é <b>especial</b> — veja o texto dela no livro.",
             "Ocupa <b>1</b> espaço e tem <b>custo 2</b>."
         ]
@@ -348,7 +348,7 @@ data_item_arremesso = [
         "description": "Arma de arremesso · grupo Dardo",
         "reference": "Livro de Regras, pg. 132-134.",
         "bullets": [
-            "<b>Propriedades.</b> Arremessável [12/24m], mortal d8, leve.",
+            "<details class=\"props\"><summary>3 propriedades</summary><ul><li><b>Arremessável [12/24m].</b> Pode ser lançada no alcance indicado, mantendo o dano.</li><li><b>Mortal d8.</b> No acerto crítico, o dado de dano da arma passa a ser o indicado.</li><li><b>Leve.</b> Favorece a luta com duas armas.</li></ul></details>",
             "Ocupa <b>1</b> espaço e tem <b>custo 1</b>. Pertence ao grupo <b>Dardo</b>."
         ]
     }
@@ -362,7 +362,7 @@ data_item_complexa = [
         "description": "Arma complexa · grupo Faca",
         "reference": "Livro de Regras, pg. 133.",
         "bullets": [
-            "<b>Propriedades.</b> Apunhaladora, duas mãos, fineza, leve, marcial, modular Ct, especial.",
+            "<details class=\"props\"><summary>7 propriedades</summary><ul><li><b>Apunhaladora.</b> Favorece ataques furtivos e golpes em pontos vitais.</li><li><b>Duas mãos.</b> Ocupa as duas mãos: não dá para usar escudo ou uma segunda arma junto.</li><li><b>Fineza.</b> Permite usar <b>Destreza</b> no lugar de Força nas jogadas de ataque e dano.</li><li><b>Leve.</b> Favorece a luta com duas armas.</li><li><b>Marcial.</b> Sem o treinamento adequado você <b>não soma o bônus de treinamento</b> nas jogadas de ataque.</li><li><b>Modular Ct.</b> Você pode escolher causar o tipo de dano indicado no lugar do tipo padrão.</li><li><b>Especial.</b> Tem uma regra própria — veja o texto da arma no livro.</li></ul></details>",
             "Ocupa <b>2</b> espaços e tem <b>custo 2</b>. Pertence ao grupo <b>Faca</b>."
         ]
     },
@@ -373,7 +373,7 @@ data_item_complexa = [
         "description": "Arma complexa · grupo Faca",
         "reference": "Livro de Regras, pg. 133.",
         "bullets": [
-            "<b>Propriedades.</b> Aparar, apunhaladora, fineza, leve, marcial, modular Ct.",
+            "<details class=\"props\"><summary>6 propriedades</summary><ul><li><b>Aparar.</b> Pode ser usada para aparar ataques recebidos.</li><li><b>Apunhaladora.</b> Favorece ataques furtivos e golpes em pontos vitais.</li><li><b>Fineza.</b> Permite usar <b>Destreza</b> no lugar de Força nas jogadas de ataque e dano.</li><li><b>Leve.</b> Favorece a luta com duas armas.</li><li><b>Marcial.</b> Sem o treinamento adequado você <b>não soma o bônus de treinamento</b> nas jogadas de ataque.</li><li><b>Modular Ct.</b> Você pode escolher causar o tipo de dano indicado no lugar do tipo padrão.</li></ul></details>",
             "Ocupa <b>1</b> espaço e tem <b>custo 1</b>. Pertence ao grupo <b>Faca</b>."
         ]
     },
@@ -384,7 +384,7 @@ data_item_complexa = [
         "description": "Arma complexa · grupo Haste",
         "reference": "Livro de Regras, pg. 133.",
         "bullets": [
-            "<b>Propriedades.</b> Duas mãos, estendida, modular Pf, pesada [14], especial.",
+            "<details class=\"props\"><summary>5 propriedades</summary><ul><li><b>Duas mãos.</b> Ocupa as duas mãos: não dá para usar escudo ou uma segunda arma junto.</li><li><b>Estendida.</b> Atinge alvos a uma distância maior que o alcance normal de corpo a corpo.</li><li><b>Modular Pf.</b> Você pode escolher causar o tipo de dano indicado no lugar do tipo padrão.</li><li><b>Pesada [14].</b> Exige o valor de <b>Força</b> indicado; abaixo dele o manejo é prejudicado.</li><li><b>Especial.</b> Tem uma regra própria — veja o texto da arma no livro.</li></ul></details>",
             "Ocupa <b>2</b> espaços e tem <b>custo 2</b>. Pertence ao grupo <b>Haste</b>."
         ]
     },
@@ -395,7 +395,7 @@ data_item_complexa = [
         "description": "Arma complexa · grupo Chicote",
         "reference": "Livro de Regras, pg. 133.",
         "bullets": [
-            "<b>Propriedades.</b> Estendida, fineza, leve, especial.",
+            "<details class=\"props\"><summary>4 propriedades</summary><ul><li><b>Estendida.</b> Atinge alvos a uma distância maior que o alcance normal de corpo a corpo.</li><li><b>Fineza.</b> Permite usar <b>Destreza</b> no lugar de Força nas jogadas de ataque e dano.</li><li><b>Leve.</b> Favorece a luta com duas armas.</li><li><b>Especial.</b> Tem uma regra própria — veja o texto da arma no livro.</li></ul></details>",
             "Ocupa <b>1</b> espaço e tem <b>custo 1</b>. Pertence ao grupo <b>Chicote</b>."
         ]
     },
@@ -406,7 +406,7 @@ data_item_complexa = [
         "description": "Arma complexa · grupo Chicote",
         "reference": "Livro de Regras, pg. 133.",
         "bullets": [
-            "<b>Propriedades.</b> Estendida, pesada [14], versátil, especial.",
+            "<details class=\"props\"><summary>4 propriedades</summary><ul><li><b>Estendida.</b> Atinge alvos a uma distância maior que o alcance normal de corpo a corpo.</li><li><b>Pesada [14].</b> Exige o valor de <b>Força</b> indicado; abaixo dele o manejo é prejudicado.</li><li><b>Versátil.</b> O primeiro dado é com uma mão; o segundo, com as duas.</li><li><b>Especial.</b> Tem uma regra própria — veja o texto da arma no livro.</li></ul></details>",
             "Ocupa <b>2</b> espaços e tem <b>custo 2</b>. Pertence ao grupo <b>Chicote</b>."
         ]
     },
@@ -417,7 +417,7 @@ data_item_complexa = [
         "description": "Arma complexa · grupo Chicote",
         "reference": "Livro de Regras, pg. 133.",
         "bullets": [
-            "<b>Propriedades.</b> Estendida, fineza, leve, especial.",
+            "<details class=\"props\"><summary>4 propriedades</summary><ul><li><b>Estendida.</b> Atinge alvos a uma distância maior que o alcance normal de corpo a corpo.</li><li><b>Fineza.</b> Permite usar <b>Destreza</b> no lugar de Força nas jogadas de ataque e dano.</li><li><b>Leve.</b> Favorece a luta com duas armas.</li><li><b>Especial.</b> Tem uma regra própria — veja o texto da arma no livro.</li></ul></details>",
             "Ocupa <b>1</b> espaço e tem <b>custo 3</b>. Pertence ao grupo <b>Chicote</b>."
         ]
     },
@@ -428,7 +428,7 @@ data_item_complexa = [
         "description": "Arma complexa · grupo Bastão",
         "reference": "Livro de Regras, pg. 133.",
         "bullets": [
-            "<b>Propriedades.</b> Duas mãos, pesada [16], oscilante.",
+            "<details class=\"props\"><summary>3 propriedades</summary><ul><li><b>Duas mãos.</b> Ocupa as duas mãos: não dá para usar escudo ou uma segunda arma junto.</li><li><b>Pesada [16].</b> Exige o valor de <b>Força</b> indicado; abaixo dele o manejo é prejudicado.</li><li><b>Oscilante.</b> O impulso da arma continua após o golpe, conforme a regra dela.</li></ul></details>",
             "Ocupa <b>2</b> espaços e tem <b>custo 2</b>. Pertence ao grupo <b>Bastão</b>."
         ]
     },
@@ -439,7 +439,7 @@ data_item_complexa = [
         "description": "Arma complexa · grupo Chicote",
         "reference": "Livro de Regras, pg. 133.",
         "bullets": [
-            "<b>Propriedades.</b> Estendida, enérgica, pesada [14], versátil.",
+            "<details class=\"props\"><summary>4 propriedades</summary><ul><li><b>Estendida.</b> Atinge alvos a uma distância maior que o alcance normal de corpo a corpo.</li><li><b>Enérgica.</b> Interage melhor com efeitos que canalizam energia amaldiçoada pela arma.</li><li><b>Pesada [14].</b> Exige o valor de <b>Força</b> indicado; abaixo dele o manejo é prejudicado.</li><li><b>Versátil.</b> O primeiro dado é com uma mão; o segundo, com as duas.</li></ul></details>",
             "Ocupa <b>2</b> espaços e tem <b>custo 1</b>. Pertence ao grupo <b>Chicote</b>."
         ]
     },
@@ -450,7 +450,7 @@ data_item_complexa = [
         "description": "Arma complexa · grupo Espada",
         "reference": "Livro de Regras, pg. 133.",
         "bullets": [
-            "<b>Propriedades.</b> Fineza, leve, marcial, especial.",
+            "<details class=\"props\"><summary>4 propriedades</summary><ul><li><b>Fineza.</b> Permite usar <b>Destreza</b> no lugar de Força nas jogadas de ataque e dano.</li><li><b>Leve.</b> Favorece a luta com duas armas.</li><li><b>Marcial.</b> Sem o treinamento adequado você <b>não soma o bônus de treinamento</b> nas jogadas de ataque.</li><li><b>Especial.</b> Tem uma regra própria — veja o texto da arma no livro.</li></ul></details>",
             "Ocupa <b>1</b> espaço e tem <b>custo 2</b>. Pertence ao grupo <b>Espada</b>."
         ]
     },
@@ -461,7 +461,7 @@ data_item_complexa = [
         "description": "Arma complexa · grupo Espada",
         "reference": "Livro de Regras, pg. 133.",
         "bullets": [
-            "<b>Propriedades.</b> Modular Pf, versátil.",
+            "<details class=\"props\"><summary>2 propriedades</summary><ul><li><b>Modular Pf.</b> Você pode escolher causar o tipo de dano indicado no lugar do tipo padrão.</li><li><b>Versátil.</b> O primeiro dado é com uma mão; o segundo, com as duas.</li></ul></details>",
             "Ocupa <b>1</b> espaço e tem <b>custo 1</b>. Pertence ao grupo <b>Espada</b>."
         ]
     },
@@ -472,7 +472,7 @@ data_item_complexa = [
         "description": "Arma complexa · grupo Espada",
         "reference": "Livro de Regras, pg. 133.",
         "bullets": [
-            "<b>Propriedades.</b> Versátil, fatal d10, fineza.",
+            "<details class=\"props\"><summary>3 propriedades</summary><ul><li><b>Versátil.</b> O primeiro dado é com uma mão; o segundo, com as duas.</li><li><b>Fatal d10.</b> No acerto crítico, o dado de dano da arma passa a ser o indicado.</li><li><b>Fineza.</b> Permite usar <b>Destreza</b> no lugar de Força nas jogadas de ataque e dano.</li></ul></details>",
             "Ocupa <b>1</b> espaço e tem <b>custo 1</b>. Pertence ao grupo <b>Espada</b>."
         ]
     },
@@ -483,7 +483,7 @@ data_item_complexa = [
         "description": "Arma complexa · grupo Espada",
         "reference": "Livro de Regras, pg. 133.",
         "bullets": [
-            "<b>Propriedades.</b> Ampla, duas mãos, modular Pf, pesada [14].",
+            "<details class=\"props\"><summary>4 propriedades</summary><ul><li><b>Ampla.</b> Atinge mais de um alvo adjacente com o mesmo golpe.</li><li><b>Duas mãos.</b> Ocupa as duas mãos: não dá para usar escudo ou uma segunda arma junto.</li><li><b>Modular Pf.</b> Você pode escolher causar o tipo de dano indicado no lugar do tipo padrão.</li><li><b>Pesada [14].</b> Exige o valor de <b>Força</b> indicado; abaixo dele o manejo é prejudicado.</li></ul></details>",
             "Ocupa <b>2</b> espaços e tem <b>custo 2</b>. Pertence ao grupo <b>Espada</b>."
         ]
     },
@@ -494,7 +494,7 @@ data_item_complexa = [
         "description": "Arma complexa · grupo Espada",
         "reference": "Livro de Regras, pg. 133.",
         "bullets": [
-            "<b>Propriedades.</b> Ampla, duas mãos, modular Im, pesada [20], especial.",
+            "<details class=\"props\"><summary>5 propriedades</summary><ul><li><b>Ampla.</b> Atinge mais de um alvo adjacente com o mesmo golpe.</li><li><b>Duas mãos.</b> Ocupa as duas mãos: não dá para usar escudo ou uma segunda arma junto.</li><li><b>Modular Im.</b> Você pode escolher causar o tipo de dano indicado no lugar do tipo padrão.</li><li><b>Pesada [20].</b> Exige o valor de <b>Força</b> indicado; abaixo dele o manejo é prejudicado.</li><li><b>Especial.</b> Tem uma regra própria — veja o texto da arma no livro.</li></ul></details>",
             "Ocupa <b>4</b> espaços e tem <b>custo 3</b>. Pertence ao grupo <b>Espada</b>."
         ]
     },
@@ -505,7 +505,7 @@ data_item_complexa = [
         "description": "Arma complexa · grupo Haste",
         "reference": "Livro de Regras, pg. 133.",
         "bullets": [
-            "<b>Propriedades.</b> Ampla, versátil.",
+            "<details class=\"props\"><summary>2 propriedades</summary><ul><li><b>Ampla.</b> Atinge mais de um alvo adjacente com o mesmo golpe.</li><li><b>Versátil.</b> O primeiro dado é com uma mão; o segundo, com as duas.</li></ul></details>",
             "Ocupa <b>2</b> espaços e tem <b>custo 2</b>. Pertence ao grupo <b>Haste</b>."
         ]
     },
@@ -516,7 +516,7 @@ data_item_complexa = [
         "description": "Arma complexa · grupo Haste",
         "reference": "Livro de Regras, pg. 133.",
         "bullets": [
-            "<b>Propriedades.</b> Duas mãos, dupla, especial, estendida, enérgica.",
+            "<details class=\"props\"><summary>5 propriedades</summary><ul><li><b>Duas mãos.</b> Ocupa as duas mãos: não dá para usar escudo ou uma segunda arma junto.</li><li><b>Dupla.</b> Conta como duas armas para efeito de luta com duas armas.</li><li><b>Especial.</b> Tem uma regra própria — veja o texto da arma no livro.</li><li><b>Estendida.</b> Atinge alvos a uma distância maior que o alcance normal de corpo a corpo.</li><li><b>Enérgica.</b> Interage melhor com efeitos que canalizam energia amaldiçoada pela arma.</li></ul></details>",
             "Ocupa <b>1</b> espaço e tem <b>custo 2</b>. Pertence ao grupo <b>Haste</b>."
         ]
     },
@@ -527,7 +527,7 @@ data_item_complexa = [
         "description": "Arma complexa · grupo Haste",
         "reference": "Livro de Regras, pg. 133.",
         "bullets": [
-            "<b>Propriedades.</b> Duas mãos, enérgica, estendida, pesada [14].",
+            "<details class=\"props\"><summary>4 propriedades</summary><ul><li><b>Duas mãos.</b> Ocupa as duas mãos: não dá para usar escudo ou uma segunda arma junto.</li><li><b>Enérgica.</b> Interage melhor com efeitos que canalizam energia amaldiçoada pela arma.</li><li><b>Estendida.</b> Atinge alvos a uma distância maior que o alcance normal de corpo a corpo.</li><li><b>Pesada [14].</b> Exige o valor de <b>Força</b> indicado; abaixo dele o manejo é prejudicado.</li></ul></details>",
             "Ocupa <b>2</b> espaços e tem <b>custo 1</b>. Pertence ao grupo <b>Haste</b>."
         ]
     },
@@ -538,7 +538,7 @@ data_item_complexa = [
         "description": "Arma complexa · grupo Machado",
         "reference": "Livro de Regras, pg. 133.",
         "bullets": [
-            "<b>Propriedades.</b> Ampla, duas mãos, pesada [16].",
+            "<details class=\"props\"><summary>3 propriedades</summary><ul><li><b>Ampla.</b> Atinge mais de um alvo adjacente com o mesmo golpe.</li><li><b>Duas mãos.</b> Ocupa as duas mãos: não dá para usar escudo ou uma segunda arma junto.</li><li><b>Pesada [16].</b> Exige o valor de <b>Força</b> indicado; abaixo dele o manejo é prejudicado.</li></ul></details>",
             "Ocupa <b>2</b> espaços e tem <b>custo 1</b>. Pertence ao grupo <b>Machado</b>."
         ]
     },
@@ -549,7 +549,7 @@ data_item_complexa = [
         "description": "Arma complexa · grupo Martelo",
         "reference": "Livro de Regras, pg. 133.",
         "bullets": [
-            "<b>Propriedades.</b> Duas mãos, pesada [16].",
+            "<details class=\"props\"><summary>2 propriedades</summary><ul><li><b>Duas mãos.</b> Ocupa as duas mãos: não dá para usar escudo ou uma segunda arma junto.</li><li><b>Pesada [16].</b> Exige o valor de <b>Força</b> indicado; abaixo dele o manejo é prejudicado.</li></ul></details>",
             "Ocupa <b>2</b> espaços e tem <b>custo 1</b>. Pertence ao grupo <b>Martelo</b>."
         ]
     },
@@ -560,7 +560,7 @@ data_item_complexa = [
         "description": "Arma complexa · grupo Bastão",
         "reference": "Livro de Regras, pg. 133.",
         "bullets": [
-            "<b>Propriedades.</b> Dupla, enérgica, fineza, marcial.",
+            "<details class=\"props\"><summary>4 propriedades</summary><ul><li><b>Dupla.</b> Conta como duas armas para efeito de luta com duas armas.</li><li><b>Enérgica.</b> Interage melhor com efeitos que canalizam energia amaldiçoada pela arma.</li><li><b>Fineza.</b> Permite usar <b>Destreza</b> no lugar de Força nas jogadas de ataque e dano.</li><li><b>Marcial.</b> Sem o treinamento adequado você <b>não soma o bônus de treinamento</b> nas jogadas de ataque.</li></ul></details>",
             "Ocupa <b>1</b> espaço e tem <b>custo 1</b>. Pertence ao grupo <b>Bastão</b>."
         ]
     },
@@ -571,7 +571,7 @@ data_item_complexa = [
         "description": "Arma complexa · grupo Bastão",
         "reference": "Livro de Regras, pg. 133.",
         "bullets": [
-            "<b>Propriedades.</b> Duas mãos, dupla, estendida, marcial, pesada [14], enérgica.",
+            "<details class=\"props\"><summary>6 propriedades</summary><ul><li><b>Duas mãos.</b> Ocupa as duas mãos: não dá para usar escudo ou uma segunda arma junto.</li><li><b>Dupla.</b> Conta como duas armas para efeito de luta com duas armas.</li><li><b>Estendida.</b> Atinge alvos a uma distância maior que o alcance normal de corpo a corpo.</li><li><b>Marcial.</b> Sem o treinamento adequado você <b>não soma o bônus de treinamento</b> nas jogadas de ataque.</li><li><b>Pesada [14].</b> Exige o valor de <b>Força</b> indicado; abaixo dele o manejo é prejudicado.</li><li><b>Enérgica.</b> Interage melhor com efeitos que canalizam energia amaldiçoada pela arma.</li></ul></details>",
             "Ocupa <b>2</b> espaços e tem <b>custo 2</b>. Pertence ao grupo <b>Bastão</b>."
         ]
     },
@@ -582,7 +582,7 @@ data_item_complexa = [
         "description": "Arma complexa · grupo Espada",
         "reference": "Livro de Regras, pg. 133.",
         "bullets": [
-            "<b>Propriedades.</b> Fineza, mortal d10.",
+            "<details class=\"props\"><summary>2 propriedades</summary><ul><li><b>Fineza.</b> Permite usar <b>Destreza</b> no lugar de Força nas jogadas de ataque e dano.</li><li><b>Mortal d10.</b> No acerto crítico, o dado de dano da arma passa a ser o indicado.</li></ul></details>",
             "Ocupa <b>1</b> espaço e tem <b>custo 1</b>. Pertence ao grupo <b>Espada</b>."
         ]
     }

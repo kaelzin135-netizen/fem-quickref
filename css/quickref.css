@@ -38,6 +38,7 @@
     --c-uniforme: #a16207;
     --c-escudo: #1d4ed8;
     --c-propriedade: #5b21b6;
+    --c-especial: #b45309;
 
     /* acentos — página Origens */
     --c-origem: #7c3aed;
@@ -562,6 +563,7 @@ body {
 #section-arremesso    { --accent: var(--c-arremesso); }
 #section-uniforme     { --accent: var(--c-uniforme); }
 #section-escudo       { --accent: var(--c-escudo); }
+#section-especial     { --accent: var(--c-especial); }
 #section-propriedade  { --accent: var(--c-propriedade); }
 #section-origem       { --accent: var(--c-origem); }
 #section-cla          { --accent: var(--c-cla); }
@@ -2326,3 +2328,13 @@ input:focus, select:focus, textarea:focus, .aba-btn:focus-visible {
 .item-livro-num { display: flex; flex-wrap: wrap; gap: 3px 10px; margin-top: 5px; font-size: 11px; color: var(--tinta-tenue); }
 .item-livro-num b { color: var(--tinta); font-weight: 500; font-variant-numeric: tabular-nums; }
 .item-livro-prop { margin-top: 5px; font-size: 11px; line-height: 1.45; color: var(--tinta-fraca); }
+
+/* propriedades da arma, abertas dentro do próprio cartão */
+.props { margin: .4em 0 0; }
+.props summary { cursor: pointer; color: var(--accent); font-size: .92em; list-style: none; }
+.props summary::-webkit-details-marker { display: none; }
+.props summary::before { content: "▸ "; display: inline-block; transition: transform .12s ease; }
+.props[open] summary::before { content: "▾ "; }
+.props summary:hover { text-decoration: underline; }
+.props ul { margin: .45em 0 0; padding-left: 1.1em; }
+.props li { margin: .25em 0; line-height: 1.45; }
