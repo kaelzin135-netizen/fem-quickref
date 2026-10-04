@@ -91,6 +91,12 @@ function desenhar_form(papel) {
     alvo.classList.remove("hidden");
     alvo.innerHTML =
         "<h3>" + (papel === "mestre" ? "Ficha do mestre" : "Nova ficha de jogador") + "</h3>" +
+        '<div class="imp-abas">' +
+        '<button type="button" class="imp-aba ativa" data-modo-novo="zero">Em branco</button>' +
+        '<button type="button" class="imp-aba" data-modo-novo="planilha">Da minha planilha</button>' +
+        "</div>" +
+        '<div id="modo-planilha" class="hidden">' + painel_importar() + "</div>" +
+        '<div id="modo-zero">' +
         '<label class="cab-campo"><span>Nome</span>' +
         '<input type="text" id="mesa-nome" placeholder="Nome do personagem"></label>' +
         '<label class="cab-campo"><span>PIN</span>' +
@@ -101,7 +107,8 @@ function desenhar_form(papel) {
         '<div class="mesa-form-acoes">' +
         '<button type="button" class="btn" data-criar-ficha="' + papel + '">Criar</button>' +
         '<button type="button" class="btn secundario" data-cancelar-form="1">Cancelar</button>' +
-        '</div><p class="mesa-erro hidden" id="mesa-erro"></p>';
+        "</div></div>" +
+        '<p class="mesa-erro hidden" id="mesa-erro"></p>';
     document.getElementById("mesa-nome").focus();
 }
 
@@ -219,6 +226,43 @@ function ligar_mesa() {
         var d = b.dataset;
 
         if (d.novaFicha) { desenhar_form(d.novaFicha); return; }
+
+        if (d.modoNovo) {
+            var planilha = d.modoNovo === "planilha";
+            document.getElementById("modo-planilha").classList.toggle("hidden", !planilha);
+            document.getElementById("modo-zero").classList.toggle("hidden", planilha);
+            tela.querySelectorAll(".imp-aba").forEach(function (x) {
+                x.classList.toggle("ativa", x.dataset.modoNovo === d.modoNovo);
+            });
+            return;
+        }
+
+        if (d.cancelarImport) {
+            _IMPORTADO = null;
+            document.getElementById("imp-saida").innerHTML = "";
+            return;
+        }
+
+        if (d.confirmarImport) {
+            if (!_IMPORTADO) { return; }
+            var vindo = _IMPORTADO.ficha;
+            if (mesa_cheia()) { _erro("A mesa já tem " + mesa_lugares() + " jogadores."); return; }
+            var env = {
+                id: "f" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+                titulo: vindo.nome || "Importada",
+                jogador: vindo.jogador || "",
+                papel: "jogador",
+                dono: "eu",
+                criadaEm: new Date().toISOString(),
+                pin: null,
+                ficha: vindo
+            };
+            MESA.fichas.push(env);
+            await mesa_gravar();
+            _IMPORTADO = null;
+            abrir_envelope(env, false);
+            return;
+        }
         if (d.cancelarForm) { document.getElementById("mesa-form").classList.add("hidden"); return; }
 
         if (d.criarFicha) {
@@ -289,6 +333,8 @@ function ligar_mesa() {
             desenhar_mesa();
         }
     });
+
+    if (typeof ligar_importar === "function") { ligar_importar(tela); }
 
     var btn = document.getElementById("btn-mesa");
     if (btn) { btn.onclick = mesa_mostrar; }

@@ -2362,3 +2362,53 @@ input:focus, select:focus, textarea:focus, .aba-btn:focus-visible {
 .props summary:hover { text-decoration: underline; }
 .props ul { margin: .45em 0 0; padding-left: 1.1em; }
 .props li { margin: .25em 0; line-height: 1.45; }
+
+/* ------------------------------------------------------------------------- */
+/* Importar planilha                                                           */
+/* ------------------------------------------------------------------------- */
+
+.imp-abas { display: flex; gap: 10px; margin-bottom: 14px; border-bottom: 1px solid var(--linha); }
+.imp-aba { padding: 2px 1px 7px; border: 0; border-bottom: 2px solid transparent; background: none;
+    color: var(--tinta-fraca); font-family: inherit; font-size: 12px; text-transform: uppercase;
+    letter-spacing: .6px; cursor: pointer; margin-bottom: -1px; }
+.imp-aba:hover { color: var(--tinta); }
+.imp-aba.ativa { color: var(--tinta); border-bottom-color: var(--accent); }
+
+.imp-ajuda { margin: 0 0 12px; font-size: 13px; line-height: 1.55; color: var(--tinta-fraca); }
+.imp-ajuda b { color: var(--tinta); font-weight: 500; }
+
+.imp-area { display: flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 26px 16px; border: 1px dashed var(--linha-forte); border-radius: 2px;
+    color: var(--tinta-fraca); font-size: 13px; cursor: pointer; text-align: center;
+    transition: border-color .12s ease, background-color .12s ease; }
+.imp-area:hover { border-color: var(--accent); }
+.imp-area.sobre { border-color: var(--accent); background: var(--realce); color: var(--tinta); }
+.imp-area b { color: var(--tinta); font-weight: 500; }
+.imp-icone .ico { width: 20px; height: 20px; }
+
+.imp-lendo { margin: 14px 0 0; font-size: 13px; color: var(--tinta-fraca); }
+.imp-erro { margin: 14px 0 0; padding: 10px 12px; border-left: 2px solid var(--vermelho);
+    background: var(--realce); font-size: 13px; line-height: 1.5; color: var(--tinta-fraca); }
+.imp-erro b { color: var(--tinta); }
+
+.imp-resumo { display: grid; grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+    gap: 8px; margin: 16px 0 4px; }
+.imp-resumo > div { display: flex; flex-direction: column; gap: 2px; padding: 7px 9px;
+    border: 1px solid var(--linha); }
+.imp-resumo span { font-size: 9px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .8px; color: var(--tinta-tenue); }
+.imp-resumo b { font-size: 15px; font-weight: 500; color: var(--tinta); }
+
+.imp-bloco { margin-top: 14px; padding-left: 10px; border-left: 2px solid var(--linha-forte); }
+.imp-bloco.ok { border-left-color: var(--verde); }
+.imp-bloco.hb { border-left-color: var(--accent); }
+.imp-bloco.dedu { border-left-color: #1d4ed8; }
+.imp-bloco.aviso { border-left-color: #c2760c; }
+.imp-bloco h4 { display: flex; align-items: baseline; gap: 7px; margin: 0 0 5px;
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .9px;
+    color: var(--tinta-fraca); }
+.imp-bloco h4 span { font-weight: 400; color: var(--tinta-tenue); }
+.imp-bloco ul { margin: 0; padding-left: 16px; }
+.imp-bloco li { font-size: 12px; line-height: 1.5; color: var(--tinta-fraca); }
+
+.imp-acoes { display: flex; gap: 8px; margin-top: 18px; }
