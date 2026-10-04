@@ -5,8 +5,8 @@
 
 /* Campo de texto ligado a um caminho aninhado, tipo "aparencia.idade".
    O tratador genérico de eventos entende data-caminho. */
-function campoCaminho(caminho, rotulo, valor, tipo) {
-    return '<label class="cab-campo"><span>' + esc(rotulo) + "</span>" +
+function campoCaminho(caminho, rotulo, valor, tipo, amplo) {
+    return '<label class="cab-campo' + (amplo ? " amplo" : "") + '"><span>' + esc(rotulo) + "</span>" +
         '<input type="' + (tipo || "text") + '" data-caminho="' + caminho +
         '" value="' + esc(valor == null ? "" : valor) + '"></label>';
 }
@@ -102,24 +102,35 @@ function desenhar_perfil() {
 
     alvo.innerHTML =
         "<h2>Aptidões amaldiçoadas</h2>" +
-        '<div class="cab-lista"><span>Nome</span><span>Atual</span><span>Máx.</span><span>Custo</span></div>' +
-        '<div class="lista-apt">' + apt + "</div>" +
+        (apt
+            ? '<div class="cab-lista"><span>Nome</span><span>Atual</span><span>Máx.</span>' +
+              '<span>Custo</span><span class="acao"></span></div>'
+            : "") +
+        '<div class="lista-apt">' +
+        (apt || '<p class="aviso">Nenhuma aptidão anotada. Você recebe uma por nível, do 2º ao 20º.</p>') +
+        "</div>" +
         '<button type="button" class="btn secundario" data-add-lista="aptidoesAmaldicoadas">' +
         icone("add") + "Aptidão</button>" +
 
         desenhoFeiticos() +
 
         "<h2>Expansão de domínio</h2>" +
+        '<div class="campos-duplos">' +
         campoCaminho("expansao.nome", "Nome", F.expansao && F.expansao.nome) +
         campoCaminho("expansao.tipo", "Tipo", F.expansao && F.expansao.tipo) +
+        "</div>" +
         areaCaminho("expansao.descricao", "Descrição", F.expansao && F.expansao.descricao) +
 
         "<h2>Técnica máxima</h2>" +
-        campoCaminho("tecnicaMaxima.nome", "Nome", F.tecnicaMaxima && F.tecnicaMaxima.nome) +
+        '<div class="campos-duplos">' +
+        campoCaminho("tecnicaMaxima.nome", "Nome", F.tecnicaMaxima && F.tecnicaMaxima.nome, null, true) +
+        "</div>" +
         areaCaminho("tecnicaMaxima.descricao", "Descrição", F.tecnicaMaxima && F.tecnicaMaxima.descricao) +
 
         "<h2>Votos restritivos</h2>" +
-        '<div class="lista-votos">' + votos + "</div>" +
+        '<div class="lista-votos">' +
+        (votos || '<p class="aviso">Nenhum voto. Um voto troca liberdade por poder — e a quebra cobra caro.</p>') +
+        "</div>" +
         '<button type="button" class="btn secundario" data-add-lista="votos">' +
         icone("add") + "Voto</button>";
 }
@@ -209,21 +220,58 @@ function desenhoFeiticos() {
 
 /* ------------------------------------------------------------ treinos ---- */
 
+/* "todas" | "andando" | "feitas" */
+var FILTRO_TRILHA = "todas";
+
+function _etapasDe(id) {
+    return (F.treinos && F.treinos[id]) || [false, false, false, false];
+}
+
 function desenhar_treinos() {
     var alvo = document.getElementById("ficha-treinos");
     if (!alvo) { return; }
 
     var feitos = TREINAMENTOS.filter(function (t) { return treinoCompleto(t.id); }).length;
+    var andando = TREINAMENTOS.filter(function (t) {
+        return !treinoCompleto(t.id) && _etapasDe(t.id).some(Boolean);
+    }).length;
+
+    var lista = TREINAMENTOS.filter(function (t) {
+        if (FILTRO_TRILHA === "feitas") { return treinoCompleto(t.id); }
+        if (FILTRO_TRILHA === "andando") {
+            return !treinoCompleto(t.id) && _etapasDe(t.id).some(Boolean);
+        }
+        return true;
+    });
+
+    var chip = function (id, rotulo, n) {
+        return '<button type="button" class="cat-chip' + (FILTRO_TRILHA === id ? " ativa" : "") +
+            '" data-filtro-trilha="' + id + '">' + esc(rotulo) +
+            (n === null ? "" : ' <span class="chip-n">' + n + "</span>") + "</button>";
+    };
 
     alvo.innerHTML =
-        '<p class="rodape-col">' + feitos + " de " + TREINAMENTOS.length +
-        " trilhas concluídas. Cada trilha tem quatro etapas; a recompensa vale quando as quatro estão marcadas.</p>" +
-        TREINAMENTOS.map(function (t) {
-            var etapas = (F.treinos && F.treinos[t.id]) || [false, false, false, false];
+        '<div class="trilha-placar">' +
+        '<div class="trilha-barra" style="--feito:' +
+        Math.round(feitos / TREINAMENTOS.length * 100) + '%"></div>' +
+        "<span><b>" + feitos + "</b> de " + TREINAMENTOS.length + " concluídas</span>" +
+        "</div>" +
+        '<p class="rodape-col">Cada trilha tem quatro etapas; a recompensa só vale com as quatro marcadas.</p>' +
+        '<div class="item-cats">' +
+        chip("todas", "todas", TREINAMENTOS.length) +
+        chip("andando", "em andamento", andando) +
+        chip("feitas", "concluídas", feitos) +
+        "</div>" +
+        (lista.length ? "" : '<p class="aviso">Nenhuma trilha nesse estado.</p>') +
+        lista.map(function (t) {
+            var etapas = _etapasDe(t.id);
+            var marcadas = etapas.filter(Boolean).length;
             var completo = treinoCompleto(t.id);
-            return '<div class="trilha' + (completo ? " completa" : "") + '">' +
+            return '<div class="trilha' + (completo ? " completa" : "") +
+                (!completo && marcadas ? " andando" : "") + '">' +
                 '<div class="trilha-topo">' +
                 '<span class="trilha-nome">' + esc(t.nome) + "</span>" +
+                '<span class="trilha-conta">' + marcadas + "/4</span>" +
                 '<input type="text" class="trilha-instrutor" data-instrutor="' + t.id +
                 '" value="' + esc((F.treinosInstrutor && F.treinosInstrutor[t.id]) || "") +
                 '" placeholder="instrutor">' +
@@ -307,23 +355,30 @@ function desenhar_registro() {
 
     alvo.innerHTML =
         "<h2>Retrato</h2>" +
-        '<div class="retrato">' +
+        '<div class="retrato' + (F.retrato ? "" : " vazia") + '">' +
         (F.retrato
             ? '<img src="' + esc(F.retrato) + '" alt="Retrato do personagem">'
-            : '<div class="retrato-vazio">sem imagem</div>') +
+            : '<label class="retrato-vazio" id="retrato-alvo">' +
+              '<span class="retrato-ico">' + icone("add") + "</span>" +
+              "<span><b>Solte uma imagem aqui</b> ou clique para escolher</span>" +
+              '<input type="file" id="retrato-arquivo" accept="image/*" hidden></label>') +
         '<div class="retrato-acoes">' +
-        '<label class="btn secundario">' + icone("add") + "Escolher imagem" +
-        '<input type="file" id="retrato-arquivo" accept="image/*" hidden></label>' +
-        (F.retrato ? '<button type="button" class="btn-mini perigo" data-tirar-retrato="1">remover</button>' : "") +
-        '</div></div>' +
-        '<p class="mesa-nota">A imagem é reduzida para no máximo 420px e guardada dentro da própria ficha, ' +
-        "então ela viaja junto no Exportar.</p>" +
+        (F.retrato
+            ? '<label class="btn secundario">' + icone("add") + "Trocar imagem" +
+              '<input type="file" id="retrato-arquivo" accept="image/*" hidden></label>' +
+              '<button type="button" class="btn-mini perigo" data-tirar-retrato="1">remover</button>'
+            : "") +
+        "</div></div>" +
+        '<p class="mesa-nota">Reduzida para 420px e guardada dentro da ficha, então viaja no Exportar.</p>' +
 
         "<h2>Aparência</h2>" +
-        CAMPOS_APARENCIA.map(function (c) {
-            return c.longo
-                ? areaCaminho("aparencia." + c.id, c.nome, F.aparencia && F.aparencia[c.id])
-                : campoCaminho("aparencia." + c.id, c.nome, F.aparencia && F.aparencia[c.id]);
+        '<div class="campos-duplos">' +
+        CAMPOS_APARENCIA.filter(function (c) { return !c.longo; }).map(function (c) {
+            return campoCaminho("aparencia." + c.id, c.nome,
+                F.aparencia && F.aparencia[c.id], "text", c.amplo);
+        }).join("") + "</div>" +
+        CAMPOS_APARENCIA.filter(function (c) { return c.longo; }).map(function (c) {
+            return areaCaminho("aparencia." + c.id, c.nome, F.aparencia && F.aparencia[c.id]);
         }).join("") +
 
         "<h2>História</h2>" +

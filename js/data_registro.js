@@ -9,7 +9,7 @@ var CAMPOS_APARENCIA = [
     { id: "peso", nome: "Peso" },
     { id: "genero", nome: "Gênero" },
     { id: "cabelos", nome: "Cabelos" },
-    { id: "olhos", nome: "Olhos" },
+    { id: "olhos", nome: "Olhos", amplo: true },
     { id: "pele", nome: "Pele" },
     { id: "roupas", nome: "Roupas" },
     { id: "marca", nome: "Marca", longo: true }

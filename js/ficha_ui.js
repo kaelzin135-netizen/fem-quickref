@@ -756,6 +756,12 @@ function ligar_eventos() {
             return;
         }
 
+        if (d.filtroTrilha !== undefined) {
+            FILTRO_TRILHA = d.filtroTrilha;
+            desenhar_treinos();
+            return;
+        }
+
         if (d.abrirFeitico !== undefined) {
             var n = Number(d.abrirFeitico);
             FEITICO_ABERTO = (FEITICO_ABERTO === n) ? -1 : n;
@@ -894,6 +900,29 @@ window.addEventListener("DOMContentLoaded", async function () {
         document.getElementById("mesa-fechar").onclick = function () {
             if (ENVELOPE) { mesa_esconder(); }
         };
+        /* arrastar a imagem para cima do retrato */
+        var app = document.getElementById("ficha");
+        ["dragenter", "dragover"].forEach(function (ev) {
+            app.addEventListener(ev, function (e) {
+                var alvo = e.target.closest && e.target.closest(".retrato-vazio");
+                if (!alvo) { return; }
+                e.preventDefault();
+                alvo.classList.add("sobre");
+            });
+        });
+        app.addEventListener("dragleave", function (e) {
+            var alvo = e.target.closest && e.target.closest(".retrato-vazio");
+            if (alvo) { alvo.classList.remove("sobre"); }
+        });
+        app.addEventListener("drop", function (e) {
+            var alvo = e.target.closest && e.target.closest(".retrato-vazio");
+            if (!alvo) { return; }
+            e.preventDefault();
+            alvo.classList.remove("sobre");
+            var arq = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+            if (arq && /^image\//.test(arq.type)) { guardar_retrato(arq); }
+        });
+
         document.getElementById("btn-liberar-edicao").onclick = function () {
             LEITURA = false;
             aplicar_leitura();
