@@ -52,13 +52,23 @@ function ficha_nova() {
 var F = ficha_nova();
 
 function salvar() {
-    try { localStorage.setItem(CHAVE_FICHA, JSON.stringify(F)); } catch (e) { /* sem storage */ }
+    var erro = null;
+    try {
+        localStorage.setItem(CHAVE_FICHA, JSON.stringify(F));
+    } catch (e) {
+        /* aba anonima, armazenamento cheio ou bloqueado. Engolir isso em
+           silencio e o pior caso possivel: a pessoa joga a sessao inteira
+           achando que esta salvo. Melhor avisar na hora. */
+        erro = e;
+    }
     /* se a ficha veio de uma mesa, o envelope dela tambem precisa acompanhar */
     if (typeof ENVELOPE !== "undefined" && ENVELOPE) {
         ENVELOPE.ficha = F;
         ENVELOPE.titulo = F.nome || ENVELOPE.titulo;
         if (typeof mesa_gravar === "function") { mesa_gravar(); }
     }
+    if (typeof avisar_salvo === "function") { avisar_salvo(erro); }
+    return !erro;
 }
 
 /* o formato antigo guardava {n0:[nome], n1:[...]}; vira lista de objetos */

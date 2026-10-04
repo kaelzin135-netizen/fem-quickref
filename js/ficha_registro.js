@@ -151,6 +151,13 @@ var CAMPOS_FEITICO = [
 
 /* Um cartao por feiticio, agrupado por nivel, com o chevron abrindo os
    detalhes — o desenho da aba Rituais do C.R.I.S. */
+/* O custo e campo livre ("2 PE", "2", "1 por nivel"); so da para gastar
+   sozinho quando comeca com um numero. Nos outros casos nao ha botao. */
+function custoFeitico(f) {
+    var m = /^\s*(\d+)/.exec(String(f.custo == null ? "" : f.custo));
+    return m ? Number(m[1]) : 0;
+}
+
 function cartaoFeitico(f, i) {
     var aberto = FEITICO_ABERTO === i;
     return '<div class="feitico' + (aberto ? " aberto" : "") + '">' +
@@ -160,6 +167,11 @@ function cartaoFeitico(f, i) {
         '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg></button>' +
         '<input type="text" class="feitico-nome" data-lista="feiticos" data-i="' + i +
         '" data-chave="nome" value="' + esc(f.nome || "") + '" placeholder="nome do feitiço">' +
+        (custoFeitico(f)
+            ? '<button type="button" class="btn-mini feitico-usar" data-usar-feitico="' + i +
+              '" title="Gastar ' + custoFeitico(f) + ' de energia">' +
+              custoFeitico(f) + "</button>"
+            : "") +
         '<button type="button" class="btn-mini perigo" data-remover-lista="feiticos" data-i="' + i +
         '">' + icone("fechar") + "</button>" +
         "</div>" +

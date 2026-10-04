@@ -778,6 +778,8 @@ function ligar_eventos() {
 
         if (d.rerolar) { rerolar(d.rerolar); return; }
 
+        if (d.usarFeitico !== undefined) { usar_feitico(Number(d.usarFeitico)); return; }
+
         if (d.abrirFeitico !== undefined) {
             var n = Number(d.abrirFeitico);
             FEITICO_ABERTO = (FEITICO_ABERTO === n) ? -1 : n;
@@ -909,6 +911,58 @@ function rolar_arma(i) {
     guardarRolagem(rolarTeste(nome, Number(String(a.bonus || "").replace(/[^\d+-]/g, "")) || 0));
     var dano = rolarDano(nome + " — dano", a.dano);
     if (dano) { guardarRolagem(dano); }
+}
+
+/* Lancar um feitico desconta o custo da barra de energia e deixa o registro
+   na bandeja. Sem energia, nada e descontado e o botao avisa. */
+function usar_feitico(i) {
+    var f = (F.feiticos || [])[i];
+    if (!f) { return; }
+    var custo = custoFeitico(f);
+    if (!custo) { return; }
+
+    var max = peMax().total;
+    var atual = max - (Number(F.pePerdidos) || 0);
+    var bt = document.querySelector('[data-usar-feitico="' + i + '"]');
+
+    if (custo > atual) {
+        if (bt) {
+            bt.classList.add("sem-energia");
+            setTimeout(function () { bt.classList.remove("sem-energia"); }, 900);
+        }
+        return;
+    }
+
+    F.pePerdidos = (Number(F.pePerdidos) || 0) + custo;
+    salvar();
+    desenhar_recursos();
+    guardarRolagem(registrarGasto(
+        (f.nome || "feitiço").trim() || "feitiço", custo, atual - custo,
+        (espec() ? espec().recurso : "Energia").replace(/^Pontos de /, "")
+    ));
+}
+
+/* --------------------------------------------------------------- gravacao -- */
+
+var _sumirSalvo = null;
+
+/* Chamado por salvar(). Sem erro, pisca "salvo" e some — ninguem precisa de
+   um carimbo permanente. Com erro, fica na tela ate dar certo de novo. */
+function avisar_salvo(erro) {
+    var el = document.getElementById("salvo");
+    if (!el) { return; }
+    clearTimeout(_sumirSalvo);
+
+    if (erro) {
+        el.className = "salvo ruim visivel";
+        el.textContent = "Não deu para salvar neste navegador. " +
+            "Use Exportar e guarde o arquivo antes de fechar a aba.";
+        return;
+    }
+
+    el.className = "salvo visivel";
+    el.textContent = "salvo";
+    _sumirSalvo = setTimeout(function () { el.classList.remove("visivel"); }, 1100);
 }
 
 /* Bandeja: abrir, fechar, limpar, e a tecla R como atalho. */

@@ -85,6 +85,21 @@ function rolarDano(nome, expr) {
     };
 }
 
+/* Gasto de recurso (um feitico lancado, por exemplo) entra na mesma
+   bandeja: na mesa a pergunta "quanto de PE ja foi nesta cena?" aparece
+   tanto quanto "quanto eu tirei no dado". */
+function registrarGasto(nome, custo, restante, rotulo) {
+    return {
+        tipo: "gasto",
+        nome: nome,
+        custo: custo,
+        restante: restante,
+        rotulo: rotulo || "PE",
+        total: custo,
+        hora: new Date()
+    };
+}
+
 /* --------------------------------------------------------------- registro -- */
 
 function guardarRolagem(r) {
@@ -116,16 +131,18 @@ function _detalheDano(r) {
 
 function cartaoRolagem(r, i) {
     var classe = "rol" + (r.critico ? " critico" : "") + (r.desastre ? " desastre" : "") +
-        (i === 0 ? " nova" : "");
+        (r.tipo === "gasto" ? " gasto" : "") + (i === 0 ? " nova" : "");
     var selo = r.critico ? '<span class="rol-selo">crítico</span>'
         : r.desastre ? '<span class="rol-selo ruim">desastre</span>' : "";
 
     return '<div class="' + classe + '">' +
-        '<div class="rol-total">' + r.total + "</div>" +
+        '<div class="rol-total">' + (r.tipo === "gasto" ? "−" + r.custo : r.total) + "</div>" +
         '<div class="rol-corpo">' +
         '<div class="rol-nome">' + esc(r.nome) + selo + "</div>" +
         '<div class="rol-detalhe">' +
-        (r.tipo === "teste" ? esc(_detalheTeste(r)) : esc(_detalheDano(r))) +
+        esc(r.tipo === "teste" ? _detalheTeste(r)
+            : r.tipo === "gasto" ? ("restam " + r.restante + " " + r.rotulo)
+            : _detalheDano(r)) +
         '<span class="rol-hora">' + _hora(r.hora) + "</span></div>" +
         (r.tipo === "teste" && i === 0
             ? '<div class="rol-acoes">' +
