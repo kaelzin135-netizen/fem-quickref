@@ -47,7 +47,7 @@ var ITENS_LIVRO = [
     {
         "nome": "Faixas",
         "categoria": "Arma simples",
-        "dano": "-",
+        "dano": "desarmado",
         "critico": "-",
         "propriedades": "Especial",
         "espacos": 1,
@@ -107,7 +107,7 @@ var ITENS_LIVRO = [
     {
         "nome": "Manoplas",
         "categoria": "Arma simples",
-        "dano": "Especial",
+        "dano": "desarmado",
         "critico": "-",
         "propriedades": "Aparar, duas mãos, dupla, especial, pesado [16]",
         "espacos": 1,
@@ -127,7 +127,7 @@ var ITENS_LIVRO = [
     {
         "nome": "Soco Inglês",
         "categoria": "Arma simples",
-        "dano": "Especial",
+        "dano": "desarmado",
         "critico": "-",
         "propriedades": "Enérgica, especial, fineza, marcial",
         "espacos": 1,
@@ -507,7 +507,7 @@ var ITENS_LIVRO = [
     {
         "nome": "Rede",
         "categoria": "Arma de arremesso",
-        "dano": "-",
+        "dano": "—",
         "critico": "-",
         "propriedades": "Alcance [9/27m], especial",
         "espacos": 1,

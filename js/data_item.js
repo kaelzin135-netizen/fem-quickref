@@ -19,7 +19,7 @@ data_item_simples = [
         "description": "Arma simples · grupo Bastão",
         "reference": "Livro de Regras, pg. 132.",
         "bullets": [
-            "<details class=\"props\"><summary>4 propriedades</summary><ul><li><b>Amplo.</b> Uma vez por rodada, ao atacar, você pode escolher outro alvo adjacente à criatura: se a Defesa dele for menor que o resultado do seu crítico, ele recebe <b>metade do dano</b>.</li><li><b>Dupla.</b> Serve para Lutando com Duas Armas e Estilo Duplo, contando como uma arma de uma mão <b>e</b> uma arma leve.</li><li><b>Marcial.</b> É integrada ao uso do corpo, podendo se beneficiar de habilidades de caminhos focados em formar um <b>Lutador</b>.</li><li><b>Versátil.</b> O <b>primeiro dado</b> é o dano com uma mão; o <b>segundo</b>, com as duas.</li></ul></details>",
+            "<details class=\"props\"><summary>4 propriedades</summary><ul><li><b>Ampla.</b> Uma vez por rodada, ao atacar, você pode escolher outro alvo adjacente à criatura: se a Defesa dele for menor que o resultado do seu crítico, ele recebe <b>metade do dano</b>.</li><li><b>Dupla.</b> Serve para Lutando com Duas Armas e Estilo Duplo, contando como uma arma de uma mão <b>e</b> uma arma leve.</li><li><b>Marcial.</b> É integrada ao uso do corpo, podendo se beneficiar de habilidades de caminhos focados em formar um <b>Lutador</b>.</li><li><b>Versátil.</b> O <b>primeiro dado</b> é o dano com uma mão; o <b>segundo</b>, com as duas.</li></ul></details>",
             "Ocupa <b>2</b> espaços e tem <b>custo 1</b>. Pertence ao grupo <b>Bastão</b>."
         ]
     },
@@ -48,12 +48,12 @@ data_item_simples = [
     {
         "title": "Faixas",
         "icon": "fist",
-        "subtitle": "1 espaço · custo 1",
-        "description": "Arma simples · grupo Pugilato",
+        "subtitle": "dano desarmado · 1 espaço · custo 1",
+        "description": "Equipamento · grupo Pugilato",
         "reference": "Livro de Regras, pg. 132.",
         "bullets": [
             "<details class=\"props\"><summary>1 propriedade</summary><ul><li><b>Especial.</b> Tem um traço único próprio — veja a arma na seção de <b>propriedades especiais</b>.</li></ul></details>",
-            "O dano desta arma é <b>especial</b> — veja o texto dela no livro.",
+            "O dano desta arma é <b>especial</b> — veja a regra dela em <b>Propriedades Especiais</b>, abaixo nesta página.",
             "Ocupa <b>1</b> espaço e tem <b>custo 1</b>. Pertence ao grupo <b>Pugilato</b>."
         ]
     },
@@ -115,12 +115,12 @@ data_item_simples = [
     {
         "title": "Manoplas",
         "icon": "fist",
-        "subtitle": "Especial · 1 espaço · custo 2",
+        "subtitle": "dano desarmado · 1 espaço · custo 2",
         "description": "Arma simples · grupo Pugilato",
         "reference": "Livro de Regras, pg. 132.",
         "bullets": [
-            "<details class=\"props\"><summary>5 propriedades</summary><ul><li><b>Aparar.</b> Se for treinado, pode gastar uma <b>ação de movimento</b> para posicioná-la defensivamente e receber <b>+2 na Defesa</b> até o começo do próximo turno.</li><li><b>Duas mãos.</b> Só pode ser manuseada apropriadamente com <b>as duas mãos</b>.</li><li><b>Dupla.</b> Serve para Lutando com Duas Armas e Estilo Duplo, contando como uma arma de uma mão <b>e</b> uma arma leve.</li><li><b>Especial.</b> Tem um traço único próprio — veja a arma na seção de <b>propriedades especiais</b>.</li><li><b>Pesado [16].</b> Exige <b>Força 16</b> ou mais. Com Força abaixo disso você recebe <b>desvantagem</b> nas rolagens de ataque com ela.</li></ul></details>",
-            "O dano desta arma é <b>especial</b> — veja o texto dela no livro.",
+            "<details class=\"props\"><summary>5 propriedades</summary><ul><li><b>Aparar.</b> Se for treinado, pode gastar uma <b>ação de movimento</b> para posicioná-la defensivamente e receber <b>+2 na Defesa</b> até o começo do próximo turno.</li><li><b>Duas mãos.</b> Só pode ser manuseada apropriadamente com <b>as duas mãos</b>.</li><li><b>Dupla.</b> Serve para Lutando com Duas Armas e Estilo Duplo, contando como uma arma de uma mão <b>e</b> uma arma leve.</li><li><b>Especial.</b> Tem um traço único próprio — veja a arma na seção de <b>propriedades especiais</b>.</li><li><b>Pesada [16].</b> Exige <b>Força 16</b> ou mais. Com Força abaixo disso você recebe <b>desvantagem</b> nas rolagens de ataque com ela.</li></ul></details>",
+            "O dano desta arma é <b>especial</b> — veja a regra dela em <b>Propriedades Especiais</b>, abaixo nesta página.",
             "Ocupa <b>1</b> espaço e tem <b>custo 2</b>. Pertence ao grupo <b>Pugilato</b>."
         ]
     },
@@ -138,12 +138,12 @@ data_item_simples = [
     {
         "title": "Soco Inglês",
         "icon": "fist",
-        "subtitle": "Especial · 1 espaço · custo 2",
+        "subtitle": "dano desarmado · 1 espaço · custo 2",
         "description": "Arma simples · grupo Pugilato",
         "reference": "Livro de Regras, pg. 132.",
         "bullets": [
             "<details class=\"props\"><summary>4 propriedades</summary><ul><li><b>Enérgica.</b> Acumula impulso: fazendo <b>mais de um ataque no mesmo turno</b>, o segundo recebe bônus de dano igual à quantidade de dados de dano da arma, e cada ataque seguinte aumenta esse bônus em +1.</li><li><b>Especial.</b> Tem um traço único próprio — veja a arma na seção de <b>propriedades especiais</b>.</li><li><b>Fineza.</b> Você pode usar <b>Destreza no lugar de Força</b> nas jogadas de ataque e nas rolagens de dano com ela.</li><li><b>Marcial.</b> É integrada ao uso do corpo, podendo se beneficiar de habilidades de caminhos focados em formar um <b>Lutador</b>.</li></ul></details>",
-            "O dano desta arma é <b>especial</b> — veja o texto dela no livro.",
+            "O dano desta arma é <b>especial</b> — veja a regra dela em <b>Propriedades Especiais</b>, abaixo nesta página.",
             "Ocupa <b>1</b> espaço e tem <b>custo 2</b>. Pertence ao grupo <b>Pugilato</b>."
         ]
     },
@@ -337,7 +337,7 @@ data_item_arremesso = [
         "reference": "Livro de Regras, pg. 132-134.",
         "bullets": [
             "<details class=\"props\"><summary>2 propriedades</summary><ul><li><b>Alcance [9/27m].</b> Alcance normal <b>9 m</b>; de lá até <b>27 m</b> o ataque é com <b>desvantagem</b>, e além disso é impossível.</li><li><b>Especial.</b> Tem um traço único próprio — veja a arma na seção de <b>propriedades especiais</b>.</li></ul></details>",
-            "O dano desta arma é <b>especial</b> — veja o texto dela no livro.",
+            "O dano desta arma é <b>especial</b> — veja a regra dela em <b>Propriedades Especiais</b>, abaixo nesta página.",
             "Ocupa <b>1</b> espaço e tem <b>custo 2</b>."
         ]
     },

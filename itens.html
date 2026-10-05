@@ -177,6 +177,59 @@
             </div>
         </div>
 
+        <!-- Propriedades especiais -->
+        <div id="section-arma-especial" class="section-container">
+            <div class="section-title">Propriedades Especiais
+                <span class="float-right">a regra própria de cada arma</span></div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    Armas com a propriedade <b>Especial</b> têm uma regra só delas, e é aqui que
+                    ela mora. Repare que <b>Faixas, Manoplas e Soco Inglês não usam dano de arma</b>:
+                    os três aplicam o seu <b>dano desarmado</b>. Capítulo 5, pgs. 137-138.
+                </div>
+                <div class="section-row" id="arma-especial-lista"></div>
+            </div>
+        </div>
+
+        <!-- Níveis de dano -->
+        <div id="section-nivel-dano" class="section-container">
+            <div class="section-title">Níveis de Dano
+                <span class="float-right">pg. 139</span></div>
+            <div class="section-content">
+                <div class="section-row section-subtitle text fontsize">
+                    Várias habilidades, treinamentos e encantamentos dizem &ldquo;aumenta em um
+                    nível de dano&rdquo;. Ache o dado atual na linha e ande para o lado.
+                </div>
+                <div class="section-row">
+                    <div class="table-wrap">
+                    <table class="ref">
+                        <thead>
+                            <tr><th>−2 níveis</th><th>−1 nível</th><th>Padrão</th>
+                                <th>+1 nível</th><th>+2 níveis</th><th>+3 níveis</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td>1d2</td><td>1d3</td><td>1d4</td><td>1d6</td><td>1d8</td></tr>
+                            <tr><td>1d2</td><td>1d3</td><td>1d4</td><td>1d6</td><td>1d8</td><td>1d10</td></tr>
+                            <tr><td>1d3</td><td>1d4</td><td>1d6</td><td>1d8</td><td>1d10</td><td>1d12</td></tr>
+                            <tr><td>1d4</td><td>1d6</td><td>1d8 ou 2d4</td><td>1d10</td><td>1d12</td><td>1d12+1d4</td></tr>
+                            <tr><td>1d6</td><td>1d8</td><td>1d10</td><td>1d12</td><td>1d12+1d4</td><td>1d12+1d6</td></tr>
+                            <tr><td>1d8</td><td>1d10</td><td>1d12 ou 2d6</td><td>1d12+1d4</td><td>1d12+1d6</td><td>1d12+1d8</td></tr>
+                            <tr><td>1d10</td><td>2d6</td><td>2d8</td><td>2d10</td><td>2d12</td><td>2d12+1d4</td></tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+                <div class="section-row section-subtitle text fontsize">
+                    Passando de +3 níveis a lógica continua (1d4 &rarr; 1d6 &rarr; 1d8 &rarr; 1d10
+                    &rarr; 1d12 &rarr; 1d12+1d4); com dados adicionais, sobe o dado adicional até o
+                    d12 e, passando dele, entra mais um dado começando no d4. Dado de dano
+                    <b>adicional</b> usa o maior dado do nível &mdash; com 1d12+1d6, o dado extra é 1d12.
+                    Se os dados da arma não estiverem na tabela, some o resultado máximo e ache o
+                    nível mais próximo.
+                </div>
+            </div>
+        </div>
+
         <div class="no-results" id="no-results">Nenhum resultado para a busca.</div>
 
         <div class="footer">
@@ -190,6 +243,7 @@
     <script type="text/javascript" src="js/data_item.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/data_especial.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/data_propriedade.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/data_arma_especial.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/data_encant.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/engine.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/itens.js" charset="utf-8"></script>
