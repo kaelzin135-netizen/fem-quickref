@@ -47,6 +47,10 @@ recusa tentativas até o tempo passar; acertar limpa a contagem. Com ela, 4 díg
 seguram bem: dez tentativas a cada dez minutos dá mais de uma semana para varrer o
 espaço todo, e isso em cima de uma única ficha.
 
+A mesma trava vale para o **PIN de mestre**, com contagem própria: ele abre as seis
+fichas, então seria pouco útil proteger cada uma e deixar a chave-mestra livre para
+chute.
+
 O que continua valendo: quem souber o PIN de uma ficha lê e escreve naquela ficha — é
 exatamente para isso que o PIN existe.
 
@@ -107,7 +111,22 @@ begin
   if p_pin is null or p_pin = '' then return false; end if;
   select valor into m from mesa_config where chave = 'pin_mestre';
   if m is null then return false; end if;
-  return crypt(p_pin, m) = m;
+
+  -- O PIN de mestre abre as SEIS fichas, então ele é o alvo mais valioso da
+  -- mesa e precisa da mesma trava que elas — senão adianta pouco proteger
+  -- cada ficha e deixar a chave-mestra livre para chute.
+  if (select count(*) from tentativas
+        where id = '__mestre__' and quando > now() - interval '10 minutes') >= 10 then
+    raise exception 'muitas tentativas; espere 10 minutos';
+  end if;
+
+  if crypt(p_pin, m) = m then
+    delete from tentativas where id = '__mestre__';
+    return true;
+  end if;
+
+  insert into tentativas (id) values ('__mestre__');
+  return false;
 end $$;
 
 -- Define (ou troca) o PIN do mestre. Exige o atual, se já houver um.
@@ -156,7 +175,12 @@ begin
     delete from tentativas where id = p_id;        -- acertou: limpa a conta
     return;
   end if;
-  if mesa_e_mestre(p_pin) then
+  -- Compara com o PIN de mestre sem passar por mesa_e_mestre(): aquela
+  -- função tem a própria trava, e um erro aqui não deve contar lá.
+  if (select valor from mesa_config where chave = 'pin_mestre') is not null
+     and p_pin is not null
+     and crypt(p_pin, (select valor from mesa_config where chave = 'pin_mestre'))
+         = (select valor from mesa_config where chave = 'pin_mestre') then
     delete from tentativas where id = p_id;
     return;
   end if;
