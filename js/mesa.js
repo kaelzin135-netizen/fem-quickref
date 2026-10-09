@@ -207,10 +207,12 @@ var ArmazemNuvem = {
     /* Grava so a ficha aberta, com o PIN que destrancou ela. */
     async gravar(mesa) {
         var self = this;
-        var abertos = (mesa.fichas || []).filter(function (f) {
-            return f.ficha && self._pins[f.id] !== undefined;
-        });
-        if (!abertos.length) { return true; }
+        var comFicha = (mesa.fichas || []).filter(function (f) { return f.ficha; });
+        var abertos = comFicha.filter(function (f) { return self._pins[f.id] !== undefined; });
+        /* Nada aberto: nao ha o que gravar, e isso e normal (quadro da mesa
+           sem ficha aberta). Mas se ha ficha carregada SEM o PIN em memoria,
+           gravar falhou de verdade — nao devolver true e esconder a perda. */
+        if (!abertos.length) { return comFicha.length === 0; }
         var todosOk = true;
         for (var i = 0; i < abertos.length; i++) {
             var env = abertos[i];
@@ -384,19 +386,48 @@ async function mesa_adicionar(nome, papel, pin) {
     if (mesa_cheia()) {
         return { ok: false, erro: "A mesa já tem " + mesa_lugares() + " jogadores." };
     }
-    var env = {
-        id: "f" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+    var id = "f" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+    var ficha = ficha_nova();
+    ficha.nome = nome || "";
+
+    /* No modo nuvem a linha nasce no servidor, e e ele que guarda o hash do
+       PIN. Nao da para seguir o caminho local aqui: gravar() so escreve as
+       fichas cujo PIN esta em memoria, e uma ficha recem-criada nao tem —
+       ela seria filtrada e a ficha sumiria no proximo carregamento, sem
+       erro nenhum na tela. */
+    if (ArmazemNuvem.ativo) {
+        var env = {
+            id: id, titulo: nome || "Sem nome", jogador: "", papel: "jogador",
+            criadaEm: new Date().toISOString(), pin: pin ? { remoto: true } : null,
+            ficha: ficha
+        };
+        var r = await ArmazemNuvem._rpc("mesa_gravar", {
+            p_id: id,
+            p_pin: pin || null,          /* texto puro: quem faz o hash e o banco */
+            p_dados: env,
+            p_titulo: env.titulo,
+            p_jogador: null,
+            p_resumo: resumoDaFicha(ficha),
+            p_capa: null
+        });
+        if (!r.ok) { return { ok: false, erro: r.erro }; }
+        ArmazemNuvem.lembrarPin(id, pin || null);
+        MESA.fichas.push(env);
+        return { ok: true, envelope: env };
+    }
+
+    var envLocal = {
+        id: id,
         titulo: nome || "Sem nome",
         papel: "jogador",
         dono: "eu",
         criadaEm: new Date().toISOString(),
         pin: pin ? await criarSegredoPin(pin) : null,
-        ficha: ficha_nova()
+        ficha: ficha
     };
-    env.ficha.nome = nome || "";
-    MESA.fichas.push(env);
+    MESA.fichas.push(envLocal);
     await mesa_gravar();
-    return { ok: true, envelope: env };
+    return { ok: true, envelope: envLocal };
 }
 
 function mesa_buscar(id) {
