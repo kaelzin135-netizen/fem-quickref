@@ -321,6 +321,7 @@ function abrir_modal(titulo, sub, corpo) {
     document.getElementById("modal-sub").textContent = sub || "";
     document.getElementById("modal-corpo").innerHTML = corpo;
     fundo.classList.remove("hidden");
+    document.body.classList.add("com-modal");
     document.getElementById("modal-fechar").focus();
 }
 
@@ -328,6 +329,7 @@ function fechar_modal() {
     var fundo = document.getElementById("modal-ficha");
     if (!fundo || fundo.classList.contains("hidden")) { return; }
     fundo.classList.add("hidden");
+    document.body.classList.remove("com-modal");
     if (focoAntesDoModal && focoAntesDoModal.isConnected) { focoAntesDoModal.focus(); }
     focoAntesDoModal = null;
 }

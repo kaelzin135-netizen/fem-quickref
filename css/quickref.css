@@ -3126,3 +3126,15 @@ body.body-ficha {
 .bandeja-livre input.sem-energia { border-color: var(--vermelho); color: var(--vermelho); }
 .bandeja-livre .btn-mini { flex: 0 0 auto; padding: 0 5px; min-height: 24px; }
 .bandeja-livre .ico { width: 16px; height: 16px; }
+
+/* ------------------------------------------------------------------------- */
+/* Trava o fundo enquanto há uma tela por cima                                */
+/*                                                                            */
+/* Enquanto a ficha tinha overflow:hidden no body isto vinha de graça — a     */
+/* página nunca rolava. Passando a rolar como uma só, abrir a Mesa ou um      */
+/* pop-up deixava o fundo rolar atrás; a classe "na-mesa" já era posta pelo   */
+/* JS e não tinha regra nenhuma. */
+/* ------------------------------------------------------------------------- */
+
+body.na-mesa,
+body.com-modal { overflow: hidden; }
