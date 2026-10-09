@@ -121,6 +121,7 @@ var ArmazemNuvem = {
     compartilha: true,
     _pins: {},        /* id -> PIN, so em memoria */
     _pinMestre: null, /* idem: o PIN de mestre desta aba */
+    _visto: {},       /* id -> carimbo da versao que eu li */
     _resumos: [],     /* ultimo mesa_listar() */
 
     get configurado() {
@@ -185,6 +186,7 @@ var ArmazemNuvem = {
                     pin: l.tem_pin ? { remoto: true } : null,
                     resumoRemoto: resumo,
                     capaRemota: l.capa || "",
+                    atualizadoEm: l.atualizado_em,
                     carregada: !!self._pins[l.id],
                     ficha: null
                 };
@@ -199,7 +201,17 @@ var ArmazemNuvem = {
         var r = await this._rpc("mesa_abrir", { p_id: id, p_pin: usar });
         if (!r.ok) { return { ok: false, erro: r.erro }; }
         this.lembrarPin(id, pin);
-        return { ok: true, ficha: r.dados || {} };
+
+        /* A funcao nova devolve {dados, em}; a antiga devolvia os dados
+           soltos. Aceitar as duas evita quebrar quem ainda nao rodou a
+           migracao do SQL. */
+        var corpo = r.dados || {};
+        if (corpo && corpo.dados !== undefined && corpo.em !== undefined) {
+            this._visto[id] = corpo.em;
+            return { ok: true, ficha: corpo.dados || {} };
+        }
+        this._visto[id] = null;
+        return { ok: true, ficha: corpo };
     },
 
     /* ------------------------------------------------------------ escrita -- */
@@ -226,9 +238,21 @@ var ArmazemNuvem = {
                 p_titulo: env.titulo || null,
                 p_jogador: env.jogador || null,
                 p_resumo: resumoDaFicha(env.ficha),
-                p_capa: (env.ficha && env.ficha.capa) || null
+                p_capa: (env.ficha && env.ficha.capa) || null,
+                p_visto: this._visto[env.id] || null
             });
-            if (!r.ok) { todosOk = false; }
+            if (!r.ok) {
+                todosOk = false;
+                if (/conflito/i.test(r.erro || "")) { this._conflito = env.id; }
+            } else {
+                /* gravou: a versao que eu tenho agora e a minha. Releio o
+                   carimbo para o proximo save nao bater de frente comigo. */
+                var v = await this._rpc("mesa_listar", {});
+                if (v.ok && Array.isArray(v.dados)) {
+                    var linha = v.dados.filter(function (l) { return l.id === env.id; })[0];
+                    if (linha) { this._visto[env.id] = linha.atualizado_em; }
+                }
+            }
         }
         return todosOk;
     },
@@ -315,7 +339,15 @@ async function _descarregar() {
     } finally {
         _gravando = false;
     }
-    if (typeof avisar_salvo === "function") { avisar_salvo(ok ? null : new Error("servidor")); }
+    if (typeof avisar_salvo === "function") {
+        if (ok) { avisar_salvo(null); }
+        else if (ArmazemNuvem._conflito) {
+            avisar_salvo(new Error("conflito"), "Esta ficha foi alterada em outro " +
+                "lugar. Recarregue a página para pegar a versão nova — salvar agora " +
+                "apagaria o que a outra pessoa escreveu.");
+            ArmazemNuvem._conflito = null;
+        } else { avisar_salvo(new Error("servidor")); }
+    }
     /* mexeu de novo enquanto o POST estava no ar: manda mais uma rodada */
     if (_pedidoNovo) { _pedidoNovo = false; await _descarregar(); }
     return ok;

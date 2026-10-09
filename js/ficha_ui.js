@@ -569,6 +569,11 @@ function desenhar() {
     if (typeof aplicar_leitura === "function") { aplicar_leitura(); }
 }
 
+/* Campos de texto puro: guardados na ficha, mas sem efeito em nenhum valor
+   derivado. Qualquer campo que entre numa conta FICA DE FORA desta lista —
+   nível, especialização, origem e os dois atributos-chave mexem em tudo. */
+var CAMPOS_LEVES = ["nome", "jogador", "campanha", "tecnica"];
+
 function recalcular() {
     comFoco(function () {
         desenhar_identidade();
@@ -629,7 +634,13 @@ function ligar_eventos() {
         if (el.dataset.campo === "anotacoes") { F.anotacoes = el.value; salvar(); return; }
         if (el.dataset.campo && !el.dataset.treino && !el.dataset.ataque) {
             F[el.dataset.campo] = el.type === "number" ? Number(el.value) : el.value;
-            recalcular();
+            /* Só recalcula quem muda algum número. Nome, jogador, campanha e
+               técnica não entram em conta nenhuma — e redesenhar a ficha
+               inteira a cada tecla custava 17 ms e 2.554 nós, que é de onde
+               vinha a sensação de ficha pesada ao digitar. O próprio campo já
+               mostra o que foi escrito; não há o que redesenhar. */
+            if (CAMPOS_LEVES.indexOf(el.dataset.campo) >= 0) { salvar(); }
+            else { recalcular(); }
             return;
         }
         /* campo ligado a um caminho aninhado: "aparencia.idade" */
@@ -1004,15 +1015,15 @@ var _sumirSalvo = null;
 
 /* Chamado por salvar(). Sem erro, pisca "salvo" e some — ninguem precisa de
    um carimbo permanente. Com erro, fica na tela ate dar certo de novo. */
-function avisar_salvo(erro) {
+function avisar_salvo(erro, mensagem) {
     var el = document.getElementById("salvo");
     if (!el) { return; }
     clearTimeout(_sumirSalvo);
 
     if (erro) {
         el.className = "salvo ruim visivel";
-        el.textContent = "Não deu para salvar neste navegador. " +
-            "Use Exportar e guarde o arquivo antes de fechar a aba.";
+        el.textContent = mensagem || ("Não deu para salvar neste navegador. " +
+            "Use Exportar e guarde o arquivo antes de fechar a aba.");
         return;
     }
 

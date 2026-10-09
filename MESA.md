@@ -33,7 +33,7 @@ fica como hash `bcrypt` do `pgcrypto`.
 | --- | --- |
 | `mesa_listar()` | devolve só o que o cartão mostra: nome, jogador, nível, se tem PIN |
 | `mesa_abrir(id, pin)` | devolve a ficha **só** com o PIN certo |
-| `mesa_gravar(id, pin, dados)` | grava **só** com o PIN certo |
+| `mesa_gravar(id, pin, dados, …, visto)` | grava com o PIN certo, e recusa se a ficha mudou desde a leitura |
 | `mesa_definir_pin(id, atual, novo)` | troca o PIN, exigindo o atual |
 | `mesa_e_mestre(pin)` | diz se aquele PIN é o do mestre |
 | `mesa_definir_pin_mestre(atual, novo)` | define o PIN que abre todas |
@@ -189,28 +189,44 @@ begin
 end $$;
 
 -- ------------------------------------------------------------------- abrir --
+-- Devolve a ficha e o carimbo da versão lida. O carimbo volta no gravar,
+-- e é o que permite recusar uma escrita por cima do trabalho de outro.
 create or replace function mesa_abrir(p_id text, p_pin text default null)
 returns jsonb
 language plpgsql security definer set search_path = public, extensions as $$
-declare h text; d jsonb;
+declare h text; d jsonb; ts timestamptz;
 begin
-  select pin_hash, dados into h, d from fichas where id = p_id;
+  select pin_hash, dados, atualizado_em into h, d, ts from fichas where id = p_id;
   if not found then raise exception 'ficha não encontrada'; end if;
   perform _mesa_confere(p_id, p_pin, h);
-  return d;
+  return jsonb_build_object('dados', d, 'em', to_jsonb(ts));
 end $$;
 
 -- ------------------------------------------------------------------ gravar --
 -- O mestre lê, não escreve: gravar exige o PIN da própria ficha.
+-- A assinatura mudou (entrou p_visto), e "create or replace" com outra
+-- assinatura cria uma SOBRECARGA em vez de substituir — aí o PostgREST não
+-- sabe qual chamar. Some com a antiga antes.
+drop function if exists mesa_gravar(text, text, jsonb, text, text, jsonb, text);
+
 create or replace function mesa_gravar(
   p_id text, p_pin text, p_dados jsonb,
   p_titulo text default null, p_jogador text default null,
-  p_resumo jsonb default null, p_capa text default null)
+  p_resumo jsonb default null, p_capa text default null,
+  p_visto timestamptz default null)
 returns boolean
 language plpgsql security definer set search_path = public, extensions as $$
-declare h text;
+declare h text; ts timestamptz;
 begin
-  select pin_hash into h from fichas where id = p_id;
+  select pin_hash, atualizado_em into h, ts from fichas where id = p_id;
+
+  -- Dois na mesma ficha (o mestre olhando enquanto o jogador edita, ou a
+  -- mesma pessoa em dois aparelhos) faziam o último salvar por cima do
+  -- outro, em silêncio. Com o carimbo da leitura, a segunda escrita é
+  -- recusada e a página pede para recarregar.
+  if p_visto is not null and ts is distinct from p_visto then
+    raise exception 'conflito: a ficha mudou em outro lugar';
+  end if;
   if not found then
     insert into fichas (id, titulo, jogador, resumo, capa, dados, pin_hash)
       values (p_id, coalesce(p_titulo, 'Sem nome'), p_jogador,
@@ -258,7 +274,7 @@ grant execute on function mesa_abrir(text, text)             to anon, authentica
 grant execute on function mesa_definir_pin(text, text, text) to anon, authenticated;
 grant execute on function mesa_e_mestre(text)                to anon, authenticated;
 grant execute on function mesa_definir_pin_mestre(text, text) to anon, authenticated;
-grant execute on function mesa_gravar(text, text, jsonb, text, text, jsonb, text)
+grant execute on function mesa_gravar(text, text, jsonb, text, text, jsonb, text, timestamptz)
   to anon, authenticated;
 ```
 
