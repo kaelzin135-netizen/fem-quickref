@@ -122,6 +122,7 @@ var ArmazemNuvem = {
     _pins: {},        /* id -> PIN, so em memoria */
     _pinMestre: null, /* idem: o PIN de mestre desta aba */
     _visto: {},       /* id -> carimbo da versao que eu li */
+    semRede: false,   /* o ambiente proibiu a chamada (CSP, offline) */
     _resumos: [],     /* ultimo mesa_listar() */
 
     get configurado() {
@@ -152,6 +153,11 @@ var ArmazemNuvem = {
             }
             return { ok: true, dados: corpo };
         } catch (e) {
+            /* fetch que nem sai: ou a maquina esta sem rede, ou a pagina roda
+               num lugar que proibe chamar outro dominio — o artifact do
+               Claude bloqueia por CSP, e la o modo compartilhado nao tem
+               como funcionar. Marcamos para a tela poder explicar. */
+            this.semRede = true;
             return { ok: false, erro: "Não deu para falar com o servidor." };
         }
     },
@@ -307,12 +313,25 @@ function mesa_nova() {
 }
 
 function armazemAtual() {
-    return ArmazemNuvem.ativo ? ArmazemNuvem : ArmazemLocal;
+    if (ArmazemNuvem.ativo && !ArmazemNuvem.semRede) { return ArmazemNuvem; }
+    return ArmazemLocal;
 }
+
+/* Onde as fichas compartilhadas realmente abrem. O artifact do Claude nao
+   deixa a pagina falar com o Supabase, entao la so da para o modo local. */
+var ENDERECO_COMPARTILHADO = "https://kaelzin135-netizen.github.io/fem-quickref/ficha.html";
 
 async function mesa_carregar() {
     ARMAZEM = armazemAtual();
-    MESA = (await ARMAZEM.ler()) || mesa_nova();
+    var lido = await ARMAZEM.ler();
+    /* A nuvem nao respondeu por falta de rede: em vez de mostrar uma mesa
+       vazia (e deixar a pessoa criar fichas que nao vao a lugar nenhum),
+       volta para o armazenamento local e deixa a tela explicar. */
+    if (!lido && ARMAZEM === ArmazemNuvem && ArmazemNuvem.semRede) {
+        ARMAZEM = ArmazemLocal;
+        lido = await ArmazemLocal.ler();
+    }
+    MESA = lido || mesa_nova();
     if (!Array.isArray(MESA.fichas)) { MESA.fichas = []; }
     return MESA;
 }

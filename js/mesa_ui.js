@@ -102,11 +102,18 @@ function desenhar_mesa() {
         '<div class="mesa-aviso ' + (arm.compartilha ? "ok" : "atencao") + '">' +
         (arm.compartilha
             ? "<b>Modo compartilhado.</b> As fichas ficam no servidor e quem manda no acesso é ele: cada jogador vê a própria, o mestre vê todas."
-            : "<b>Modo local.</b> Estas fichas ficam <b>só neste navegador</b> — nada é " +
-              "compartilhado com outras pessoas, e o PIN aqui é uma tranca de conveniência. " +
-              "Para as seis pessoas verem as mesmas fichas, faltam dois valores em " +
-              "<code>js/mesa.js</code>: a <b>Project URL</b> e a <b>chave anon</b> do Supabase. " +
-              "O SQL inteiro já está pronto em <b>MESA.md</b>.") +
+            : (ArmazemNuvem.configurado && ArmazemNuvem.semRede
+                ? "<b>Modo local — aqui não dá para compartilhar.</b> Esta página não " +
+                  "consegue falar com o servidor da mesa: o visualizador do Claude bloqueia " +
+                  "chamadas para fora, por segurança. As fichas compartilhadas abrem em " +
+                  '<a href="' + ENDERECO_COMPARTILHADO + '" target="_blank" rel="noopener">' +
+                  "kaelzin135-netizen.github.io/fem-quickref</a> — é esse o endereço para " +
+                  "mandar aos jogadores. O que você editar aqui fica só neste navegador."
+                : "<b>Modo local.</b> Estas fichas ficam <b>só neste navegador</b> — nada é " +
+                  "compartilhado com outras pessoas, e o PIN aqui é uma tranca de conveniência. " +
+                  "Para as seis pessoas verem as mesmas fichas, faltam dois valores em " +
+                  "<code>js/mesa.js</code>: a <b>Project URL</b> e a <b>chave anon</b> do " +
+                  "Supabase. O SQL inteiro já está pronto em <b>MESA.md</b>.")) +
         "</div>" +
         '<h3 class="mesa-titulo">Jogadores <span>' + jogadores.length + " de " + mesa_lugares() + "</span></h3>" +
         '<div class="mesa-grade">' + vagas.join("") + "</div>" +
@@ -144,8 +151,13 @@ function desenhar_form(papel) {
         '<label class="cab-campo"><span>PIN</span>' +
         '<input type="password" id="mesa-pin" inputmode="numeric" autocomplete="new-password" ' +
         'placeholder="opcional — deixe vazio para não trancar"></label>' +
-        '<p class="mesa-nota">O PIN é guardado como hash (PBKDF2, 150 mil iterações), nunca em texto puro. ' +
-        "No modo local ele impede alguém de abrir a ficha pela interface, e só isso.</p>" +
+        '<p class="mesa-nota">' + (ArmazemNuvem.ativo && !ArmazemNuvem.semRede
+            ? "O PIN vai para o servidor e é guardado como <b>hash bcrypt</b>, nunca em texto " +
+              "puro. É ele que destranca a ficha para você e a mantém fechada para os outros, " +
+              "com dez tentativas erradas trancando por dez minutos."
+            : "O PIN é guardado como hash (PBKDF2, 150 mil iterações), nunca em texto puro. " +
+              "No modo local ele impede alguém de abrir a ficha pela interface, e só isso.") +
+        "</p>" +
         '<div class="mesa-form-acoes">' +
         '<button type="button" class="btn" data-criar-ficha="' + papel + '">Criar</button>' +
         '<button type="button" class="btn secundario" data-cancelar-form="1">Cancelar</button>' +
@@ -187,8 +199,10 @@ function desenhar_pin(env) {
         'placeholder="vazio remove o PIN"></label>' +
         '<label class="cab-campo"><span>Repita</span>' +
         '<input type="password" id="pin-conf" inputmode="numeric" autocomplete="new-password"></label>' +
-        '<p class="mesa-nota">Guardado como hash PBKDF2 com sal, nunca em texto puro. ' +
-        "Se esquecer, não há como recuperar — só remover a ficha e criar outra.</p>" +
+        '<p class="mesa-nota">' + (ArmazemNuvem.ativo && !ArmazemNuvem.semRede
+            ? "Guardado no servidor como hash <b>bcrypt</b>, nunca em texto puro."
+            : "Guardado como hash PBKDF2 com sal, nunca em texto puro.") +
+        " Se esquecer, não há como recuperar — só remover a ficha e criar outra.</p>" +
         '<div class="mesa-form-acoes">' +
         '<button type="button" class="btn" data-salvar-pin="' + env.id + '">Salvar</button>' +
         '<button type="button" class="btn secundario" data-cancelar-form="1">Cancelar</button>' +
