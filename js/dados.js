@@ -164,6 +164,12 @@ function desenhar_bandeja() {
           '<button type="button" class="btn-mini" id="bandeja-limpar">limpar</button>' +
           '<button type="button" class="modal-x" id="bandeja-fechar" aria-label="Fechar"></button>' +
           "</div>" +
+          /* rolagem solta, como o campo "Rolar dados" da aba Combate deles */
+          '<div class="bandeja-livre">' +
+          '<input type="text" id="bandeja-expr" placeholder="2d6+3, 1d20, 4d8…" ' +
+          'autocomplete="off" spellcheck="false">' +
+          '<button type="button" class="btn-mini" id="bandeja-rolar" title="Rolar">' +
+          dadoSvg() + "</button></div>" +
           '<div class="bandeja-lista">' +
           (ROLAGENS.length
               ? ROLAGENS.map(cartaoRolagem).join("")

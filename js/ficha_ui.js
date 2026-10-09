@@ -245,9 +245,20 @@ function desenhar_aptidoes() {
 /* ------------------------------------------------ coluna 2 e abas -------- */
 
 /* selo hexagonal no inicio da linha, no lugar do d20 do C.R.I.S. */
-function marcaLinha() {
-    return '<svg class="linha-marca" viewBox="0 0 24 24" aria-hidden="true">' +
-        '<polygon points="12,2 21,7 21,17 12,22 3,17 3,7"/></svg>';
+/* Abrindo cada linha vai o dado, e nao um selo decorativo: na ficha do
+   C.R.I.S. a primeira celula de toda pericia e um botao de rolar, e e por
+   ele que a mesa joga o tempo todo. O selo hexagonal que estava aqui so
+   enfeitava — quem rolava era o numero do bonus, que ninguem adivinha. */
+function marcaLinha(nome, bonus) {
+    if (nome === undefined) {
+        return '<svg class="linha-marca" viewBox="0 0 24 24" aria-hidden="true">' +
+            '<polygon points="12,2 21,7 21,17 12,22 3,17 3,7"/></svg>';
+    }
+    return '<button type="button" class="linha-dado" data-rolar="' + esc(nome) +
+        '" data-bonus="' + bonus + '" title="Rolar 1d20 ' +
+        (bonus < 0 ? "−" : "+") + " " + Math.abs(bonus) +
+        ' — Shift vantagem, Alt desvantagem" aria-label="Rolar ' + esc(nome) + '">' +
+        dadoSvg() + "</button>";
 }
 
 function linhaTeste(nome, curto, controles, res, treinado, mestre, verId) {
@@ -257,7 +268,7 @@ function linhaTeste(nome, curto, controles, res, treinado, mestre, verId) {
           esc(verId) + '" title="Ver para que serve">' + esc(nome) + "</button>"
         : '<span class="linha-nome">' + esc(nome) + "</span>";
     return '<div class="linha' + (treinado ? " treinada" : "") + (mestre ? " mestre" : "") + '">' +
-        marcaLinha() +
+        marcaLinha(nome, res.total) +
         rotulo +
         '<span class="linha-attr">' + esc(curto) + "</span>" +
         controles +
@@ -381,8 +392,19 @@ function rotuloAlvo(id) {
     return a ? a.rotulo : id;
 }
 
+var FILTRO_HAB = "";
+
 function desenhar_itens() {
-    var lista = F.itens.length ? F.itens.map(function (item, i) {
+    var busca = FILTRO_HAB.toLowerCase();
+    var visiveis = F.itens.map(function (item, i) { return { item: item, i: i }; })
+        .filter(function (x) {
+            if (!busca) { return true; }
+            return ((x.item.nome || "") + " " + (x.item.categoria || ""))
+                .toLowerCase().indexOf(busca) >= 0;
+        });
+
+    var lista = visiveis.length ? visiveis.map(function (x) {
+        var item = x.item, i = x.i;
         var chips = (item.mods || []).map(function (m, j) {
             return '<span class="chip">' + esc(rotuloAlvo(m.alvo)) + " " + fmt(m.valor) +
                 '<button type="button" class="chip-x" data-remover-mod="' + i + ":" + j +
@@ -406,7 +428,10 @@ function desenhar_itens() {
             "</div>" +
             '<div class="form-mod hidden" data-form-mod="' + i + '">' + formularioMod(i) + "</div>" +
             "</div>";
-    }).join("") : '<p class="aviso">Nenhuma habilidade ainda — use <b>Adicionar do livro</b>.</p>';
+    }).join("")
+        : '<p class="aviso">' + (busca
+            ? "Nenhuma habilidade com esse nome."
+            : "Nenhuma habilidade ainda — use <b>Adicionar do livro</b>.") + "</p>";
 
     document.getElementById("ficha-itens").innerHTML =
         '<div class="acoes-itens">' +
@@ -416,6 +441,12 @@ function desenhar_itens() {
         "Homebrew</button>" +
         '<span class="contagem-itens">' + F.itens.length + "</span>" +
         "</div>" +
+        /* com 14 habilidades a lista ja nao se le de relance; o C.R.I.S. poe
+           um filtro no topo de cada aba e e o que falta aqui */
+        (F.itens.length > 6
+            ? '<div class="feitico-barra"><input type="search" id="filtro-hab" ' +
+              'placeholder="Filtrar habilidades" value="' + esc(FILTRO_HAB) + '"></div>'
+            : "") +
         '<div id="painel-catalogo" class="painel hidden"></div>' +
         '<div id="painel-homebrew" class="painel hidden"></div>' +
         lista;
@@ -490,7 +521,10 @@ function seletorDe(el) {
      "feitico"].forEach(function (k) {
         if (el.dataset[k] !== undefined) { partes.push("[data-" + k + '="' + el.dataset[k] + '"]'); }
     });
-    return partes.length ? partes.join("") : null;
+    if (partes.length) { return partes.join(""); }
+    /* campos sem data-* (os filtros de busca) se achavam pelo id — sem isto
+       o comFoco() devolvia null e o foco saia do campo a cada letra. */
+    return el.id ? "#" + el.id : null;
 }
 
 function comFoco(fn) {
@@ -622,6 +656,11 @@ function ligar_eventos() {
         if (el.id === "filtro-feitico") {
             FILTRO_FEITICO = el.value;
             comFoco(desenhar_perfil);
+            return;
+        }
+        if (el.id === "filtro-hab") {
+            FILTRO_HAB = el.value;
+            comFoco(desenhar_itens);
             return;
         }
         if (el.dataset.escolha) {
@@ -980,6 +1019,24 @@ function avisar_salvo(erro) {
     _sumirSalvo = setTimeout(function () { el.classList.remove("visivel"); }, 1100);
 }
 
+/* Rola o que a pessoa digitou no campo solto da bandeja. */
+function rolar_expressao() {
+    var campo = document.getElementById("bandeja-expr");
+    if (!campo) { return; }
+    var txt = (campo.value || "").trim();
+    if (!txt) { return; }
+    var r = rolarDano(txt, txt);
+    if (!r) {
+        campo.classList.add("sem-energia");
+        setTimeout(function () { campo.classList.remove("sem-energia"); }, 900);
+        return;
+    }
+    r.nome = txt;
+    guardarRolagem(r);
+    var novo = document.getElementById("bandeja-expr");
+    if (novo) { novo.value = txt; novo.focus(); novo.select(); }
+}
+
 /* Bandeja: abrir, fechar, limpar, e a tecla R como atalho. */
 function ligar_bandeja() {
     var caixa = document.getElementById("bandeja");
@@ -992,7 +1049,12 @@ function ligar_bandeja() {
         if (bt.id === "bandeja-abrir") { BANDEJA = true; desenhar_bandeja(); return; }
         if (bt.id === "bandeja-fechar") { BANDEJA = false; desenhar_bandeja(); return; }
         if (bt.id === "bandeja-limpar") { ROLAGENS = []; desenhar_bandeja(); return; }
+        if (bt.id === "bandeja-rolar") { rolar_expressao(); return; }
         if (bt.dataset.rerolar) { rerolar(bt.dataset.rerolar); }
+    });
+
+    caixa.addEventListener("keydown", function (e) {
+        if (e.target.id === "bandeja-expr" && e.key === "Enter") { rolar_expressao(); }
     });
 
     document.addEventListener("keydown", function (e) {

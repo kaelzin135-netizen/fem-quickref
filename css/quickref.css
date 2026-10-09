@@ -3007,3 +3007,122 @@ kbd {
 }
 
 .trilha-manual { margin-left: 0; }
+
+/* ------------------------------------------------------------------------- */
+/* A ficha rola como UMA página                                               */
+/*                                                                            */
+/* Estava com três áreas de rolagem independentes (uma por coluna), cada uma   */
+/* com a sua barra e a sua posição perdida. Medindo a ficha do C.R.I.S.: lá    */
+/* nenhuma coluna rola por dentro — a página inteira rola de uma vez, e as     */
+/* colunas têm a altura natural do conteúdo. É o que fazemos aqui.            */
+/* ------------------------------------------------------------------------- */
+
+body.body-ficha {
+    overflow: visible;
+    height: auto;
+    min-height: 100vh;
+}
+
+.ficha-app {
+    flex: 0 0 auto;
+    min-height: 0;
+    align-items: start;      /* colunas param onde o conteúdo acaba */
+}
+
+.col {
+    overflow: visible;
+    min-height: 0;
+}
+
+/* nada mais segura rolagem própria dentro da ficha */
+.col-2 .cartao.alto,
+.col-3 .cartao.alto { display: block; flex: none; min-height: 0; }
+
+.linhas { overflow: visible; }
+.aba-painel { overflow: visible; flex: none; }
+
+/* A faixa de identidade e a tira de abas só grudam no layout de três
+   colunas. Empilhado, a identidade ocupa seis linhas e grudada cobriria
+   metade da tela — ali ela rola junto com o resto. */
+/* Só a tira de abas gruda, e só no layout de três colunas: é por ela que se
+   navega a coluna 3, e sem isso você rola até o fim das habilidades e tem de
+   voltar ao topo para trocar de aba. A faixa de identidade não gruda — ela
+   tem 119px e empurraria tudo para baixo sem dar nada em troca. */
+@media (min-width: 1100px) {
+    .abas {
+        position: sticky;
+        top: 42px;
+        z-index: 20;
+        background: var(--chao);
+        padding-top: 10px;
+        padding-bottom: 2px;
+        margin-bottom: 10px;
+    }
+}
+
+/* o campo de notas volta a ter altura própria, já que a coluna não estica */
+.aba-painel[data-painel="notas"] .anotacoes { min-height: 420px; }
+
+/* ------------------------------------------------------------------------- */
+/* O dado abre cada linha, como na ficha do C.R.I.S.                          */
+/* ------------------------------------------------------------------------- */
+
+.linha-dado {
+    flex: 0 0 20px;
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    border-radius: 2px;
+    background: none;
+    color: var(--tinta-tenue);
+    cursor: pointer;
+    transition: color .1s ease, background-color .1s ease;
+}
+
+.linha-dado .ico { width: 15px; height: 15px; }
+.linha-dado:hover { color: var(--accent); background: var(--realce); }
+.linha:hover .linha-dado { color: var(--tinta-fraca); }
+.linha:hover .linha-dado:hover { color: var(--accent); }
+
+.linha-marca-vazia { flex: 0 0 20px; }
+
+/* --- treinada e mestre ganham cor na barra, não só no nome ---
+   O C.R.I.S. colore a linha inteira pelo grau de treino (branco → verde →
+   azul), e é isso que deixa 20 perícias legíveis de relance. */
+.linha { border-left: 2px solid transparent; padding-left: 4px; }
+.linha.treinada { border-left-color: var(--verde); }
+.linha.mestre { border-left-color: var(--accent); }
+.linha.treinada .linha-dado { color: var(--verde); }
+.linha.mestre .linha-dado { color: var(--accent); }
+.linha-cab { padding-left: 6px; }
+
+/* rolagem solta na bandeja, como o campo "Rolar dados" da aba Combate deles */
+.bandeja-livre {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--linha);
+}
+
+.bandeja-livre input {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 3px 6px;
+    border: 1px solid var(--linha-forte);
+    border-radius: 2px;
+    background: none;
+    color: var(--tinta);
+    font-family: inherit;
+    font-size: 12px;
+}
+
+.bandeja-livre input:focus { outline: none; border-color: var(--accent); }
+.bandeja-livre input.sem-energia { border-color: var(--vermelho); color: var(--vermelho); }
+.bandeja-livre .btn-mini { flex: 0 0 auto; padding: 0 5px; min-height: 24px; }
+.bandeja-livre .ico { width: 16px; height: 16px; }
