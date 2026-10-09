@@ -122,8 +122,13 @@ function abrir_detalhe(item, data, section, type) {
         (ref ? '<div class="detalhe-ref">' + escape_html(ref) + '</div>' : '');
 
     if (section) {
-        painel.style.setProperty("--accent",
-            window.getComputedStyle(section).backgroundColor);
+        /* O acento vinha do background-color da secao, que funcionava quando
+           a secao ERA uma moldura colorida. No formato liso o fundo passou a
+           ser a cor do painel (#121212), e o detalhe nascia com acento quase
+           preto. A cor certa esta na propria variavel. */
+        var estilo = window.getComputedStyle(section);
+        var cor = (estilo.getPropertyValue("--accent") || "").trim();
+        painel.style.setProperty("--accent", cor || estilo.backgroundColor);
     }
 
     var ancora = fim_da_linha(item);

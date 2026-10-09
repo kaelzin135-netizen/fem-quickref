@@ -3450,3 +3450,19 @@ body.com-modal { overflow: hidden; }
 :root[data-tema="noite"] .section-container {
     border-left-color: color-mix(in oklab, var(--accent) 62%, #fff);
 }
+
+/* --- painel de detalhe: mesmo tratamento dos títulos de seção --- */
+.detalhe {
+    border-left-width: 2px;
+    border-radius: 0 2px 2px 0;
+}
+
+/* o título usa o acento cru, que sobre o painel escuro some pelo mesmo
+   motivo dos rótulos de seção: esses tons eram fundo, não tinta */
+:root[data-tema="noite"] .detalhe-titulo {
+    color: color-mix(in oklab, var(--accent) 42%, #fff);
+}
+
+:root[data-tema="noite"] .detalhe {
+    border-left-color: color-mix(in oklab, var(--accent) 62%, #fff);
+}
