@@ -12,9 +12,13 @@
 /* ------------------------------------------------------------------------- */
 
 var MESA_CONFIG = {
-    /* preencha para ligar o modo nuvem; vazio = modo local */
-    supabaseUrl: "",
-    supabaseChave: "",   /* a chave "anon"/publishable — é pública por design */
+    /* Projeto fem-mesa. A chave abaixo é a "publishable" do Supabase, que é
+       PÚBLICA por desenho — ela vai no código da página de qualquer jeito, e
+       sozinha não abre nada: as três tabelas estão seladas (RLS sem policy) e
+       o que ela alcança são as funções, que exigem o PIN. Conferido contra o
+       banco: GET em fichas, mesa_config e tentativas devolve 401. */
+    supabaseUrl: "https://unwbsqlsegjdcbfnykoo.supabase.co",
+    supabaseChave: "sb_publishable_tw75XZYOphr8a-f1LnMGSA_4ekxhsyY",
     maxJogadores: 6
 };
 
