@@ -3295,3 +3295,156 @@ body.com-modal { overflow: hidden; }
 .cab-arma,
 .def-campo > span,
 .imp-resumo span { font-size: 10px; }
+
+/* ========================================================================= */
+/* As páginas de referência na linguagem do C.R.I.S.                         */
+/*                                                                           */
+/* Até aqui elas seguiam a Referência Rápida de D&D 5e: moldura colorida de  */
+/* 8px por seção, um tom por tema, títulos em Lora versalete, fundo com      */
+/* brilho roxo. A ficha já falava a língua do C.R.I.S., e o site inteiro     */
+/* passa a falar: Roboto, chão #121212, painel #1f1f1f, fio de 1px a 10% de  */
+/* branco, raio de 2px e UM acento — o mesmo ciano.                          */
+/*                                                                           */
+/* Está tudo num bloco só, de propósito: para sair inteiro se não agradar.   */
+/* ========================================================================= */
+
+/* --- tokens: a paleta deles no lugar da anterior --- */
+:root {
+    --page-bg: #0a0a0a;
+    --glow-1: transparent;
+    --glow-2: transparent;
+    --surface: #fff;
+    --surface-alt: #f2f1ef;
+    --ink: #16151a;
+    --ink-soft: rgba(0, 0, 0, .58);
+    --rule: rgba(0, 0, 0, .11);
+    --th-bg: #f2f1ef;
+    --card-shadow: none;
+
+    --chrome-bg: #121212;
+    --chrome-line: rgba(255, 255, 255, .1);
+    --chrome-ink: #fff;
+    --chrome-dim: rgba(255, 255, 255, .6);
+    --chrome-hover: #1f1f1f;
+    --field-bg: #1f1f1f;
+    --gold: #22d3ee;
+}
+
+:root[data-tema="noite"] {
+    --page-bg: #0a0a0a;
+    --glow-1: transparent;
+    --glow-2: transparent;
+    --surface: #121212;
+    --surface-alt: #1f1f1f;
+    --ink: #fff;
+    --ink-soft: rgba(255, 255, 255, .6);
+    --rule: rgba(255, 255, 255, .1);
+    --th-bg: #1f1f1f;
+    --card-shadow: none;
+
+    --chrome-bg: #121212;
+    --chrome-line: rgba(255, 255, 255, .1);
+    --chrome-hover: #1f1f1f;
+    --field-bg: #1f1f1f;
+}
+
+/* --- um acento só: os ~40 tons por seção viram o ciano --- */
+:root,
+:root[data-tema="noite"] {
+    --c-atributo: #22d3ee; --c-valor: #22d3ee; --c-teste: #22d3ee;
+    --c-pericia: #22d3ee; --c-movimento: #22d3ee; --c-acao: #22d3ee;
+    --c-bonus: #22d3ee; --c-reacao: #22d3ee; --c-completa: #22d3ee;
+    --c-ataque: #22d3ee; --c-condicao: #22d3ee; --c-ambiente: #22d3ee;
+    --c-alma: #22d3ee; --c-energia: #22d3ee; --c-descanso: #22d3ee;
+    --c-lutador: #22d3ee; --c-esp-combate: #22d3ee; --c-esp-tecnica: #22d3ee;
+    --c-controlador: #22d3ee; --c-suporte: #22d3ee; --c-restringido: #22d3ee;
+    --c-talento: #22d3ee; --c-aptidao: #22d3ee;
+    --c-simples: #22d3ee; --c-complexa: #22d3ee; --c-distancia: #22d3ee;
+    --c-arremesso: #22d3ee; --c-uniforme: #22d3ee; --c-escudo: #22d3ee;
+    --c-propriedade: #22d3ee; --c-especial: #22d3ee; --c-encant: #22d3ee;
+    --c-origem: #22d3ee; --c-cla: #22d3ee; --c-anatomia: #22d3ee;
+    --c-tecnica: #22d3ee; --c-feitico: #22d3ee; --c-feitico2: #22d3ee;
+    --c-invocacao: #22d3ee; --c-conceito: #22d3ee; --c-dominio: #22d3ee;
+    --c-maxima: #22d3ee; --c-voto: #22d3ee; --c-mundo: #22d3ee;
+    --c-evolucao: #22d3ee; --c-treino: #22d3ee; --c-descanso2: #22d3ee;
+    --c-criacao: #22d3ee; --c-tabelas: #22d3ee; --c-tabela: #22d3ee;
+    --c-regras: #22d3ee;
+}
+
+/* --- a moldura de 8px vira painel liso com fio de 1px --- */
+.section-container {
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    background-color: var(--surface);
+    box-shadow: none;
+    margin-bottom: 14px;
+}
+
+/* o título deixa de ser barra colorida e vira rótulo, como as seções deles */
+.section-title {
+    min-height: 0;
+    padding: 10px 12px 8px;
+    font-family: Roboto, 'Noto Sans', Arial, sans-serif;
+    font-variant: normal;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    line-height: 1.4;
+    color: var(--ink-soft);
+    background-color: transparent;
+    border-bottom: 1px solid var(--rule);
+}
+
+.section-title .float-right {
+    font-weight: 400;
+    letter-spacing: .4px;
+    text-transform: none;
+    color: var(--ink-soft);
+    opacity: .75;
+}
+
+.section-content {
+    padding: 10px 12px 2px;
+    border-radius: 0;
+    background-color: transparent;
+}
+
+/* --- título da página e corpo em Roboto --- */
+.main-title {
+    font-family: Roboto, 'Noto Sans', Arial, sans-serif;
+    font-variant: normal;
+    font-weight: 700;
+    font-size: 26px;
+    letter-spacing: .5px;
+    color: var(--ink);
+    text-shadow: none;
+}
+
+.page-background,
+.section-container,
+.description,
+#sidebar,
+#nav { font-family: Roboto, 'Noto Sans', Arial, sans-serif; }
+
+/* o fundo perde o brilho roxo: o deles é chapado */
+.page-background { background-image: none; background-color: var(--page-bg); }
+
+/* --- tema claro: a página também clareia --- */
+/* O desenho antigo mantinha o fundo escuro com cartões claros nos dois
+   temas. No C.R.I.S. o dia é claro de verdade; só o topo segue escuro. */
+:root { --page-bg: #e7e5e2; }
+:root[data-tema="noite"] { --page-bg: #0a0a0a; }
+
+/* texto que fica FORA dos painéis segue a tinta da página, não a do topo */
+.description,
+.main-title { color: var(--ink); }
+
+.description a { color: var(--gold); }
+
+/* o rótulo de seção é o mesmo nas duas metades do site: 13px/700, 1,5px */
+.section-title {
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    color: var(--ink);
+}
