@@ -910,7 +910,7 @@ p:first-child {
     flex: 1 1 auto;
     min-height: 0;
     box-sizing: border-box;
-    --accent: #a16207;
+    /* o acento vem do bloco de paleta, la embaixo: um so, em ciano */
 }
 
 .col {
@@ -982,13 +982,9 @@ p:first-child {
     color: var(--tinta-tenue);
 }
 
-#sec-identidade { --accent: #1d4ed8; }
-#sec-atributos  { --accent: #7c3aed; }
-#sec-recursos   { --accent: #b91c1c; }
-#sec-valores    { --accent: #0f766e; }
-#sec-aptidoes   { --accent: #5b21b6; }
-#sec-pericias   { --accent: #a16207; }
-#sec-abas       { --accent: #be185d; }
+/* Um acento so na ficha, definido no bloco de paleta. Aqui ficavam sete
+   tons, um por secao — era o que mais destoava da ficha do C.R.I.S., que
+   usa um acento unico e reserva cor para estado. */
 
 .rodape-col {
     font-size: 11px;
@@ -1051,7 +1047,7 @@ p:first-child {
     border-bottom: 1px solid var(--linha);
     box-sizing: border-box;
     flex: 0 0 auto;
-    --accent: #1d4ed8;
+    --accent: #22d3ee;   /* o mesmo da ficha; o tema dia troca abaixo */
 }
 
 .cab-selo { flex: 0 0 58px; line-height: 0; }
@@ -1443,9 +1439,7 @@ p:first-child {
 .rec-pe .conta { font-size: 10px; }
 
 /* cada recurso tem o seu tom; o cheio e o acento puxado para o escuro */
-#sec-recursos .rec:nth-of-type(1) { --accent: #b91c1c; }
-#sec-recursos .rec:nth-of-type(2) { --accent: #1d4ed8; }
-#sec-recursos .rec:nth-of-type(3) { --accent: #7c3aed; }
+/* as cores das tres barras estao no bloco de paleta, mais abaixo */
 
 .rec { --rec-cheio: color-mix(in oklab, var(--accent) 46%, #000); }
 .rec-fill.meio { background-color: color-mix(in oklab, #c2760c 46%, #000); }
@@ -1572,8 +1566,8 @@ body.mostrar-contas .conta-longa { display: inline; }
     font-family: Roboto, 'Noto Sans', Arial, sans-serif;
     font-size: 13px;
     color: var(--tinta-fraca);
-    background: color-mix(in oklab, #a16207 22%, transparent);
-    border-bottom: 1px solid color-mix(in oklab, #a16207 55%, transparent);
+    background: color-mix(in oklab, #1e3a8a 30%, transparent);
+    border-bottom: 1px solid color-mix(in oklab, #1e3a8a 70%, transparent);
 }
 
 .aviso-leitura b { color: var(--tinta); font-weight: 500; }
@@ -1606,8 +1600,8 @@ body.somente-leitura .ficha-app button:disabled { opacity: .35; cursor: default;
 }
 
 .pilula-papel:empty { display: none; }
-.pilula-papel.jogador { background: #1d4ed8; }
-.pilula-papel.mestre { background: #a16207; }
+.pilula-papel.jogador { background: var(--accent-cheio); }
+.pilula-papel.mestre { background: #1e3a8a; }
 
 .tela-mesa {
     position: fixed;
@@ -1627,8 +1621,8 @@ body.somente-leitura .ficha-app button:disabled { opacity: .35; cursor: default;
     max-width: 860px;
     background: var(--elevado);
     border: 1px solid var(--linha-forte);
-    border-radius: 4px;
-    --accent: #be185d;
+    border-radius: 2px;   /* o raio deles e 2px em tudo */
+    --accent: #22d3ee;
 }
 
 .mesa-topo { display: flex; align-items: center; padding: 18px 22px 6px; }
@@ -1685,7 +1679,7 @@ body.somente-leitura .ficha-app button:disabled { opacity: .35; cursor: default;
 }
 
 .mesa-vaga.vazia { border-style: dashed; justify-content: center; }
-.mesa-vaga.mestre { border-color: color-mix(in oklab, #a16207 55%, transparent); }
+.mesa-vaga.mestre { border-color: color-mix(in oklab, #1e3a8a 70%, transparent); }
 
 .mesa-vaga-papel {
     font-size: 10px;
@@ -1740,7 +1734,7 @@ body.somente-leitura .ficha-app button:disabled { opacity: .35; cursor: default;
     flex-direction: column;
     background: var(--elevado);
     border: 1px solid var(--linha-forte);
-    border-radius: 4px;
+    border-radius: 2px;
     box-shadow: 0 18px 50px rgba(0, 0, 0, .5);
 }
 
@@ -1944,7 +1938,7 @@ body.mostrar-contas .linha .conta { flex: 1 1 100%; text-align: left; }
 
 .btn-topo:hover { color: var(--gold); }
 .btn-topo.ligado { border-color: var(--gold); color: var(--gold); }
-.btn-topo.perigo:hover { color: #fca5a5; }
+.btn-topo.perigo:hover { color: var(--vermelho); }
 
 /* Icones dos botoes: SVG na grade de 24 do Material, como no C.R.I.S.,
    desenhados em currentColor para seguir o botao nos dois temas. */
@@ -2402,7 +2396,7 @@ input:focus, select:focus, textarea:focus, .aba-btn:focus-visible {
 .imp-bloco { margin-top: 14px; padding-left: 10px; border-left: 2px solid var(--linha-forte); }
 .imp-bloco.ok { border-left-color: var(--verde); }
 .imp-bloco.hb { border-left-color: var(--accent); }
-.imp-bloco.dedu { border-left-color: #1d4ed8; }
+.imp-bloco.dedu { border-left-color: var(--accent); }
 .imp-bloco.aviso { border-left-color: #c2760c; }
 .imp-bloco h4 { display: flex; align-items: baseline; gap: 7px; margin: 0 0 5px;
     font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .9px;
@@ -2603,7 +2597,7 @@ input:focus, select:focus, textarea:focus, .aba-btn:focus-visible {
     right: 16px;
     bottom: 16px;
     z-index: 60;
-    --accent: #a16207;
+    --accent: #22d3ee;
 }
 
 /* --- bolha fechada --- */
