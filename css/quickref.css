@@ -3348,29 +3348,10 @@ body.com-modal { overflow: hidden; }
     --field-bg: #1f1f1f;
 }
 
-/* --- um acento só: os ~40 tons por seção viram o ciano --- */
-:root,
-:root[data-tema="noite"] {
-    --c-atributo: #22d3ee; --c-valor: #22d3ee; --c-teste: #22d3ee;
-    --c-pericia: #22d3ee; --c-movimento: #22d3ee; --c-acao: #22d3ee;
-    --c-bonus: #22d3ee; --c-reacao: #22d3ee; --c-completa: #22d3ee;
-    --c-ataque: #22d3ee; --c-condicao: #22d3ee; --c-ambiente: #22d3ee;
-    --c-alma: #22d3ee; --c-energia: #22d3ee; --c-descanso: #22d3ee;
-    --c-lutador: #22d3ee; --c-esp-combate: #22d3ee; --c-esp-tecnica: #22d3ee;
-    --c-controlador: #22d3ee; --c-suporte: #22d3ee; --c-restringido: #22d3ee;
-    --c-talento: #22d3ee; --c-aptidao: #22d3ee;
-    --c-simples: #22d3ee; --c-complexa: #22d3ee; --c-distancia: #22d3ee;
-    --c-arremesso: #22d3ee; --c-uniforme: #22d3ee; --c-escudo: #22d3ee;
-    --c-propriedade: #22d3ee; --c-especial: #22d3ee; --c-encant: #22d3ee;
-    --c-origem: #22d3ee; --c-cla: #22d3ee; --c-anatomia: #22d3ee;
-    --c-tecnica: #22d3ee; --c-feitico: #22d3ee; --c-feitico2: #22d3ee;
-    --c-invocacao: #22d3ee; --c-conceito: #22d3ee; --c-dominio: #22d3ee;
-    --c-maxima: #22d3ee; --c-voto: #22d3ee; --c-mundo: #22d3ee;
-    --c-evolucao: #22d3ee; --c-treino: #22d3ee; --c-descanso2: #22d3ee;
-    --c-criacao: #22d3ee; --c-tabelas: #22d3ee; --c-tabela: #22d3ee;
-    --c-regras: #22d3ee;
-}
-
+/* --- as cores por seção ficam: elas distinguem Combate de Itens de
+       Origens, e isso vale mais que a uniformidade. O que muda é ONDE a cor
+       aparece: no formato liso não há moldura de 8px, então ela vira fio
+       lateral e cor do rótulo. --- */
 /* --- a moldura de 8px vira painel liso com fio de 1px --- */
 .section-container {
     border: 1px solid var(--rule);
@@ -3447,4 +3428,25 @@ body.com-modal { overflow: hidden; }
     font-size: 13px;
     letter-spacing: 1.5px;
     color: var(--ink);
+}
+
+/* --- o acento da seção volta a aparecer, no formato do C.R.I.S. --- */
+.section-container { border-left: 2px solid var(--accent); }
+.section-title { color: var(--accent); }
+
+/* a nota à direita do título segue neutra, para o acento não virar ruído */
+.section-title .float-right { color: var(--ink-soft); }
+
+/* no índice lateral, o ponto de cada seção já usa o acento dela */
+
+/* Os tons de seção foram feitos para ser FUNDO de texto branco: #581c87,
+   #166534, #831843. Como texto sobre o painel escuro eles somem (contraste
+   perto de 1,6:1). No tema claro, sobre painel branco, funcionam como estão;
+   no escuro precisam ser levantados até o texto ficar legível. */
+:root[data-tema="noite"] .section-title {
+    color: color-mix(in oklab, var(--accent) 42%, #fff);
+}
+
+:root[data-tema="noite"] .section-container {
+    border-left-color: color-mix(in oklab, var(--accent) 62%, #fff);
 }
