@@ -387,6 +387,79 @@ if (typeof window !== "undefined") {
     });
 }
 
+/* ------------------------------------------------------------- vigia --- */
+
+/* O quadro nao sabia quando outra pessoa mexia em alguma coisa: so
+   recarregando. Como a tabela e selada, o Realtime do Supabase (que escuta
+   mudancas na tabela) nao alcanca — entao a pagina pergunta de vez em
+   quando, que para seis linhas e barato.
+
+   Dois ritmos, de proposito: o quadro aberto atualiza sozinho; a ficha
+   aberta so AVISA, porque recarregar por baixo de quem esta escrevendo
+   seria pior do que o problema. O aviso chega antes de a pessoa perder
+   trabalho, em vez de so na hora de salvar. */
+var VIGIA_QUADRO = 20000;
+var VIGIA_FICHA = 30000;
+var _vigia = null;
+
+function mesa_vigiar(ligado) {
+    clearInterval(_vigia);
+    _vigia = null;
+    if (!ligado || !ArmazemNuvem.ativo || ArmazemNuvem.semRede) { return; }
+    _vigia = setInterval(_olhada, VIGIA_QUADRO);
+}
+
+async function _olhada() {
+    /* aba escondida nao precisa de nada: nao gasta cota a toa */
+    if (document.visibilityState === "hidden") { return; }
+
+    var r = await ArmazemNuvem._rpc("mesa_listar", {});
+    if (!r.ok || !Array.isArray(r.dados)) { return; }
+
+    var mudou = false;
+    var aberta = null;
+    r.dados.forEach(function (linha) {
+        var env = mesa_buscar(linha.id);
+        if (!env) { mudou = true; return; }
+        if (env.atualizadoEm && env.atualizadoEm !== linha.atualizado_em) {
+            mudou = true;
+            if (typeof ENVELOPE !== "undefined" && ENVELOPE && ENVELOPE.id === linha.id) {
+                aberta = linha;
+            }
+        }
+        env.atualizadoEm = linha.atualizado_em;
+        env.titulo = linha.titulo;
+        env.jogador = linha.jogador || "";
+        env.resumoRemoto = linha.resumo || {};
+        env.capaRemota = linha.capa || "";
+        env.pin = linha.tem_pin ? { remoto: true } : null;
+    });
+    if (r.dados.length !== MESA.fichas.length) { mudou = true; }
+
+    if (!mudou) { return; }
+
+    /* a ficha que EU estou editando mudou do outro lado: avisa, nao recarrega */
+    if (aberta && ArmazemNuvem._visto[aberta.id] !== aberta.atualizado_em
+        && typeof avisar_salvo === "function") {
+        avisar_salvo(new Error("fora"), "Alguém alterou esta ficha agora há pouco. " +
+            "Recarregue antes de continuar — o que você escrever daqui em diante " +
+            "vai ser recusado para não apagar o trabalho da outra pessoa.");
+    }
+
+    /* o quadro aberto pode se redesenhar sem atrapalhar ninguem */
+    var tela = document.getElementById("tela-mesa");
+    if (tela && !tela.classList.contains("hidden") && typeof desenhar_mesa === "function") {
+        desenhar_mesa();
+    }
+}
+
+if (typeof document !== "undefined") {
+    document.addEventListener("visibilitychange", function () {
+        /* voltou para a aba: olha na hora, sem esperar o intervalo */
+        if (document.visibilityState === "visible" && _vigia) { _olhada(); }
+    });
+}
+
 async function mesa_gravar() {
     if (!MESA) { return false; }
     if (!ArmazemNuvem.ativo) { return await (ARMAZEM || ArmazemLocal).gravar(MESA); }

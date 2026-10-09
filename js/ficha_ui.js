@@ -1095,6 +1095,9 @@ window.addEventListener("DOMContentLoaded", async function () {
     if (typeof mesa_carregar === "function") {
         await mesa_carregar();
         ligar_mesa();
+        /* olho na mesa: no modo nuvem, outra pessoa pode mexer enquanto
+           esta aba esta aberta */
+        if (typeof mesa_vigiar === "function") { mesa_vigiar(true); }
         document.getElementById("mesa-fechar").onclick = function () {
             if (ENVELOPE) { mesa_esconder(); }
         };
