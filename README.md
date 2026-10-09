@@ -26,24 +26,31 @@ quem você mandar.
 
 Para atualizar esse mesmo link depois de mexer no site, é só pedir — o endereço não muda.
 
-### Link público (GitHub Pages)
+### Link público (GitHub Pages) — **no ar**
 
-Faça o login uma única vez (abre o navegador):
+https://kaelzin135-netizen.github.io/fem-quickref/
 
-```bash
-gh auth login
-```
-
-Depois rode:
+Público de verdade: qualquer pessoa abre, sem login e sem conta. Para republicar depois
+de mexer no site:
 
 ```bash
 bash publicar-github.sh
 ```
 
-O script cria o repositório público, envia os arquivos, liga o GitHub Pages e mostra o
-endereço final — algo como `https://SEU-USUARIO.github.io/fem-quickref/`. Rodando de novo
-depois de qualquer mudança, ele só envia o que mudou. Esse link é público de verdade:
-qualquer pessoa abre, sem login e sem conta.
+O script commita o que estiver pendente e envia. A publicação leva de 1 a 2 minutos.
+
+### Render (opcional)
+
+O repositório traz um `render.yaml` pronto. Só vale a pena se você quiser o site em um
+domínio próprio ou fora do GitHub — o Pages acima já resolve o caso comum.
+
+1. Entre em <https://render.com> e conecte a conta do GitHub.
+2. **New → Blueprint →** escolha `fem-quickref` → **Apply**.
+
+Uma observação que costuma confundir: **não é preciso bot de ping.** No plano gratuito do
+Render só os *Web Services* dormem depois de 15 minutos parados. Este site entra como
+**Static Site**, que não dorme. Um pinger ali não manteria nada acordado — só gastaria as
+horas gratuitas da conta à toa.
 
 São três páginas, ligadas pelas abas no topo:
 
