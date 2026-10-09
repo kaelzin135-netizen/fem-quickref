@@ -3263,3 +3263,41 @@ body.com-modal { overflow: hidden; }
 
 /* a tira de abas na medida deles: 14px, sem caixa alta */
 .aba-btn { font-size: 14px; letter-spacing: normal; text-transform: none; }
+
+/* ------------------------------------------------------------------------- */
+/* Terceira demão: a escala do C.R.I.S.                                       */
+/*                                                                            */
+/* Medido na ficha deles: 14px para corpo e rótulo, 11px para apoio, 10px no  */
+/* menor caso — e nada abaixo disso. A nossa tinha SETE tamanhos (9 a 15) e   */
+/* descia a 9px nas pastilhas, que é menor do que eles usam em qualquer       */
+/* lugar. Aqui o piso sobe para 10 e a escala encolhe.                        */
+/* ------------------------------------------------------------------------- */
+
+/* nada abaixo de 10px: as pastilhas de etapa, selo e grupo subiram de 9 */
+.etapa-exige,
+.etapa-focos,
+.trilha-completo-rot,
+.trilha-selo,
+.mesa-selo-atual,
+.rol-selo,
+.feitico-usar::after,
+.no-nome { font-size: 10px; }
+
+/* alvos clicáveis não ficam no menor tamanho da escala */
+.cat-chip { font-size: 12px; }
+
+/* --- barras de recurso na proporção deles (62px, não 84) --- */
+.rec-rot { margin-bottom: 3px; }
+.rec-caixa { height: 34px; }
+.rec-pe { margin-top: 1px; }
+
+/* o resto dos 9px: cabeçalhos de coluna, rótulos de caixa e o miolo do selo */
+.cab-caixa > span,
+.no-nome,
+.centro-rot,
+.centro-sub,
+.rd > span,
+.cab-lista,
+.cab-arma,
+.def-campo > span,
+.imp-resumo span { font-size: 10px; }
