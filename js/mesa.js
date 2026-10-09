@@ -293,9 +293,60 @@ async function mesa_carregar() {
     return MESA;
 }
 
+/* ------------------------------------------------------------ gravacao -- */
+
+/* recalcular() chama salvar() a cada tecla. No localStorage isso e barato;
+   no servidor nao: medido, doze letras digitadas viravam DOZE POSTs, cada um
+   levando a ficha inteira — com o retrato em base64, megabytes por palavra.
+   Trava a digitacao, queima a cota e ainda deixa respostas chegarem fora de
+   ordem. Entao o modo nuvem junta as gravacoes numa so, pouco depois de a
+   pessoa parar de mexer. */
+var ESPERA_GRAVACAO = 1200;
+var _timerGravacao = null;
+var _gravando = false;
+var _pedidoNovo = false;
+
+async function _descarregar() {
+    if (_gravando) { _pedidoNovo = true; return; }
+    _gravando = true;
+    var ok = false;
+    try {
+        ok = await ArmazemNuvem.gravar(MESA);
+    } finally {
+        _gravando = false;
+    }
+    if (typeof avisar_salvo === "function") { avisar_salvo(ok ? null : new Error("servidor")); }
+    /* mexeu de novo enquanto o POST estava no ar: manda mais uma rodada */
+    if (_pedidoNovo) { _pedidoNovo = false; await _descarregar(); }
+    return ok;
+}
+
+/* Fecha a aba, troca de janela: grava agora, sem esperar o timer. */
+function mesa_descarregar_ja() {
+    if (!ArmazemNuvem.ativo || !MESA) { return; }
+    clearTimeout(_timerGravacao);
+    _timerGravacao = null;
+    _descarregar();
+}
+
+if (typeof window !== "undefined") {
+    window.addEventListener("pagehide", mesa_descarregar_ja);
+    document.addEventListener("visibilitychange", function () {
+        if (document.visibilityState === "hidden") { mesa_descarregar_ja(); }
+    });
+}
+
 async function mesa_gravar() {
     if (!MESA) { return false; }
-    return await (ARMAZEM || ArmazemLocal).gravar(MESA);
+    if (!ArmazemNuvem.ativo) { return await (ARMAZEM || ArmazemLocal).gravar(MESA); }
+
+    /* nuvem: adia e junta. Quem avisa o resultado e o _descarregar(). */
+    clearTimeout(_timerGravacao);
+    _timerGravacao = setTimeout(function () {
+        _timerGravacao = null;
+        _descarregar();
+    }, ESPERA_GRAVACAO);
+    return true;
 }
 
 /* Cria os lugares na primeira vez. Idempotente: nao duplica ninguem, e
