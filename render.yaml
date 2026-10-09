@@ -1,0 +1,35 @@
+# Hospedagem no Render.
+#
+# O site é estático (HTML, CSS e JS, sem servidor), então entra como
+# "Static Site". Isso importa: no plano gratuito do Render, só os *Web
+# Services* dormem depois de 15 minutos parados. Static Sites NÃO dormem —
+# ficam no ar o tempo todo, sem precisar de nenhum bot de ping.
+#
+# Como ligar, uma vez só:
+#   1. Entre em https://render.com e conecte a sua conta do GitHub.
+#   2. New  ->  Blueprint  ->  escolha o repositório fem-quickref.
+#   3. O Render lê este arquivo e cria o site sozinho. Apply.
+#
+# Depois disso, todo push na main republica automaticamente.
+services:
+  - type: web
+    runtime: static
+    name: fem-quickref
+    staticPublishPath: .
+    pullRequestPreviewsEnabled: false
+    buildCommand: ""
+    headers:
+      # a ficha guarda tudo no navegador; não queremos HTML velho em cache
+      - path: /*.html
+        name: Cache-Control
+        value: no-cache
+      - path: /js/*
+        name: Cache-Control
+        value: no-cache
+      - path: /css/*
+        name: Cache-Control
+        value: no-cache
+    routes:
+      - type: rewrite
+        source: /
+        destination: /index.html
