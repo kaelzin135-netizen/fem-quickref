@@ -100,73 +100,148 @@ var ArmazemLocal = {
     }
 };
 
-/* Nuvem: Supabase. A tabela e as políticas estão em MESA.md — sem elas o
-   servidor recusa tudo, que é justamente o ponto. */
+/* Nuvem: Supabase, SEM tela de login.
+ *
+ * A tabela fica selada (RLS ligado e nenhuma policy), e a pagina so alcanca
+ * quatro funcoes "security definer" que exigem o PIN da ficha. O PIN e a
+ * tranca; nao ha conta de usuario. O SQL inteiro esta em MESA.md.
+ *
+ * Consequencia no desenho: o quadro da mesa lista RESUMOS (nome, jogador,
+ * nivel, se tem PIN) e a ficha inteira so desce quando alguem abre com o PIN
+ * certo. O PIN fica na memoria desta aba enquanto a ficha estiver aberta,
+ * para os saves seguintes — nunca vai para o localStorage.
+ */
 var ArmazemNuvem = {
     id: "nuvem",
     rotulo: "Compartilhado (Supabase)",
     compartilha: true,
-    _sessao: null,
+    _pins: {},        /* id -> PIN, so em memoria */
+    _resumos: [],     /* ultimo mesa_listar() */
 
-    get ativo() {
+    get configurado() {
         return !!(MESA_CONFIG.supabaseUrl && MESA_CONFIG.supabaseChave);
     },
 
+    /* No modo nuvem nao ha sessao: configurado ja basta para estar ativo. */
+    get ativo() { return this.configurado; },
+
     _url(caminho) { return MESA_CONFIG.supabaseUrl.replace(/\/+$/, "") + caminho; },
 
-    _cabecalhos(comAuth) {
-        var h = {
-            "apikey": MESA_CONFIG.supabaseChave,
-            "Content-Type": "application/json"
-        };
-        if (comAuth && this._sessao) { h["Authorization"] = "Bearer " + this._sessao.access_token; }
-        return h;
+    /* Toda conversa com o banco e uma chamada de funcao. */
+    async _rpc(nome, args) {
+        try {
+            var r = await fetch(this._url("/rest/v1/rpc/" + nome), {
+                method: "POST",
+                headers: {
+                    "apikey": MESA_CONFIG.supabaseChave,
+                    "Authorization": "Bearer " + MESA_CONFIG.supabaseChave,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(args || {})
+            });
+            var corpo = await r.json().catch(function () { return null; });
+            if (!r.ok) {
+                var msg = (corpo && (corpo.message || corpo.hint)) || "o servidor recusou";
+                return { ok: false, erro: msg };
+            }
+            return { ok: true, dados: corpo };
+        } catch (e) {
+            return { ok: false, erro: "Não deu para falar com o servidor." };
+        }
     },
 
-    /* Entrar cria a sessão; a senha vai para o servidor, não fica na página. */
-    async entrar(email, senha) {
-        var r = await fetch(this._url("/auth/v1/token?grant_type=password"), {
-            method: "POST", headers: this._cabecalhos(false),
-            body: JSON.stringify({ email: email, password: senha })
-        });
-        if (!r.ok) { return { ok: false, erro: (await r.json()).error_description || "não entrou" }; }
-        this._sessao = await r.json();
-        return { ok: true };
-    },
+    /* Guarda o PIN desta aba para os proximos saves. */
+    lembrarPin(id, pin) { this._pins[id] = pin || null; },
+    esquecerPin(id) { delete this._pins[id]; },
 
-    async criarConta(email, senha) {
-        var r = await fetch(this._url("/auth/v1/signup"), {
-            method: "POST", headers: this._cabecalhos(false),
-            body: JSON.stringify({ email: email, password: senha })
-        });
-        if (!r.ok) { return { ok: false, erro: (await r.json()).msg || "não criou" }; }
-        return { ok: true };
-    },
+    /* ------------------------------------------------------------ leitura -- */
 
-    sair() { this._sessao = null; },
-
-    /* O servidor decide o que volta: jogador recebe a própria linha,
-       mestre recebe todas. A página não filtra nada. */
+    /* Devolve a mesa so com os resumos. A ficha de cada envelope vem vazia
+       ate alguem abrir com o PIN — e por isso que o cartao mostra nome,
+       jogador e nivel, e nada mais. */
     async ler() {
-        if (!this._sessao) { return null; }
-        var r = await fetch(this._url("/rest/v1/fichas?select=*"), { headers: this._cabecalhos(true) });
-        if (!r.ok) { return null; }
-        var linhas = await r.json();
-        return { fichas: linhas.map(function (l) { return l.dados; }) };
+        var r = await this._rpc("mesa_listar", {});
+        if (!r.ok || !Array.isArray(r.dados)) { return null; }
+        this._resumos = r.dados;
+        var self = this;
+        return {
+            versao: 3,
+            nome: "Mesa",
+            mestre: null,
+            fichas: r.dados.map(function (l) {
+                var resumo = l.resumo || {};
+                return {
+                    id: l.id,
+                    titulo: l.titulo,
+                    jogador: l.jogador || "",
+                    papel: "jogador",
+                    criadaEm: l.atualizado_em,
+                    /* o cartao so precisa saber SE tem PIN */
+                    pin: l.tem_pin ? { remoto: true } : null,
+                    resumoRemoto: resumo,
+                    carregada: !!self._pins[l.id],
+                    ficha: null
+                };
+            })
+        };
     },
 
+    /* Baixa a ficha inteira. Sem o PIN certo o servidor recusa. */
+    async abrir(id, pin) {
+        var r = await this._rpc("mesa_abrir", { p_id: id, p_pin: pin || null });
+        if (!r.ok) { return { ok: false, erro: r.erro }; }
+        this.lembrarPin(id, pin);
+        return { ok: true, ficha: r.dados || {} };
+    },
+
+    /* ------------------------------------------------------------ escrita -- */
+
+    /* Grava so a ficha aberta, com o PIN que destrancou ela. */
     async gravar(mesa) {
-        if (!this._sessao) { return false; }
-        var minha = mesa.fichas.filter(function (f) { return f.dono === "eu"; })[0];
-        if (!minha) { return false; }
-        var r = await fetch(this._url("/rest/v1/fichas?on_conflict=id"), {
-            method: "POST",
-            headers: Object.assign(this._cabecalhos(true), { "Prefer": "resolution=merge-duplicates" }),
-            body: JSON.stringify({ id: minha.id, dados: minha })
+        var self = this;
+        var abertos = (mesa.fichas || []).filter(function (f) {
+            return f.ficha && self._pins[f.id] !== undefined;
         });
-        return r.ok;
+        if (!abertos.length) { return true; }
+        var todosOk = true;
+        for (var i = 0; i < abertos.length; i++) {
+            var env = abertos[i];
+            var copia = Object.assign({}, env);
+            delete copia.resumoRemoto;
+            delete copia.carregada;
+            var r = await this._rpc("mesa_gravar", {
+                p_id: env.id,
+                p_pin: this._pins[env.id] || null,
+                p_dados: copia,
+                p_titulo: env.titulo || null,
+                p_jogador: env.jogador || null,
+                p_resumo: resumoDaFicha(env.ficha)
+            });
+            if (!r.ok) { todosOk = false; }
+        }
+        return todosOk;
+    },
+
+    async definirPin(id, atual, novo) {
+        var r = await this._rpc("mesa_definir_pin", {
+            p_id: id, p_atual: atual || null, p_novo: novo || null
+        });
+        if (!r.ok) { return { ok: false, erro: r.erro }; }
+        this.lembrarPin(id, novo || null);
+        return { ok: true, removido: !novo };
     }
 };
+
+/* O pouco que o quadro da mesa precisa saber sem abrir a ficha. */
+function resumoDaFicha(f) {
+    if (!f) { return {}; }
+    return {
+        nivel: f.nivel || 1,
+        especializacao: f.especializacao || "",
+        tecnica: f.tecnica || "",
+        origem: f.origem || ""
+    };
+}
 
 /* -------------------------------------------------------- a mesa -------- */
 
@@ -178,8 +253,7 @@ function mesa_nova() {
 }
 
 function armazemAtual() {
-    if (ArmazemNuvem.ativo && ArmazemNuvem._sessao) { return ArmazemNuvem; }
-    return ArmazemLocal;
+    return ArmazemNuvem.ativo ? ArmazemNuvem : ArmazemLocal;
 }
 
 async function mesa_carregar() {
@@ -197,6 +271,9 @@ async function mesa_gravar() {
 /* Cria os lugares na primeira vez. Idempotente: nao duplica ninguem, e
    se a ficha do personagem existir como arquivo, ela vem junto. */
 async function mesa_semear() {
+    /* No modo nuvem quem cria as fichas e o banco, pela tela da mesa: semear
+       aqui criaria seis linhas locais que ninguem mais veria. */
+    if (ArmazemNuvem.ativo) { return 0; }
     var criou = 0;
     if (!MESA.mestre) { MESA.mestre = { nome: MESA_MESTRE.nome, pin: null }; criou++; }
     for (var i = 0; i < MESA_PADRAO.length; i++) {
@@ -238,6 +315,13 @@ async function mesa_semear() {
 /* Definir ou trocar o PIN. Para trocar e preciso o PIN atual — quem ja
    trancou a ficha e o unico que pode destrancar. */
 async function mesa_definir_pin(id, pinAtual, pinNovo) {
+    /* No modo nuvem o PIN mora no banco como hash: quem confere e troca e o
+       servidor, nao esta pagina. */
+    if (ArmazemNuvem.ativo && id !== "mestre") {
+        var res = await ArmazemNuvem.definirPin(id, pinAtual, pinNovo);
+        if (res.ok) { await mesa_carregar(); }
+        return res;
+    }
     var env = (id === "mestre") ? MESA.mestre : mesa_buscar(id);
     if (!env) { return { ok: false, erro: "não encontrado" }; }
     if (env.pin && env.pin.sal) {
@@ -290,6 +374,11 @@ function mesa_buscar(id) {
 
 async function mesa_remover(id) {
     MESA.fichas = MESA.fichas.filter(function (f) { return f.id !== id; });
+    if (ArmazemNuvem.ativo) {
+        /* sem funcao de apagar no banco: a ficha some so desta tela.
+           Apagar de verdade e no painel do Supabase, de proposito. */
+        return;
+    }
     await mesa_gravar();
 }
 

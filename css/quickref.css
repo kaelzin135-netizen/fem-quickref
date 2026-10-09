@@ -3138,3 +3138,82 @@ body.body-ficha {
 
 body.na-mesa,
 body.com-modal { overflow: hidden; }
+
+/* ------------------------------------------------------------------------- */
+/* Quadro da mesa no molde da aba Campanhas do C.R.I.S.                       */
+/* Capa em cima, dados embaixo, uma ação primária por cartão.                 */
+/* ------------------------------------------------------------------------- */
+
+.mesa-grade { grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; }
+
+.mesa-vaga {
+    gap: 0;
+    padding: 0;
+    overflow: hidden;
+    transition: border-color .12s ease, transform .12s ease;
+}
+
+.mesa-vaga.ocupada:hover { border-color: var(--linha-forte); transform: translateY(-1px); }
+.mesa-vaga.atual { border-color: var(--accent); }
+
+/* --- a capa --- */
+.mesa-capa {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    background: var(--fundo-fundo);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.mesa-capa img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.mesa-capa-vazia {
+    font-family: Lora, Georgia, serif;
+    font-size: 38px;
+    font-weight: 700;
+    color: var(--linha-forte);
+    user-select: none;
+}
+
+.mesa-cadeado,
+.mesa-selo-atual {
+    position: absolute;
+    top: 6px;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 2px;
+    background: rgba(0, 0, 0, .62);
+}
+
+.mesa-cadeado { right: 6px; padding: 3px; color: rgba(255, 255, 255, .85); }
+.mesa-cadeado .ico { width: 13px; height: 13px; }
+
+.mesa-selo-atual {
+    left: 6px;
+    padding: 1px 6px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    color: var(--accent);
+}
+
+/* --- o corpo --- */
+.mesa-vaga-corpo { padding: 9px 11px 0; }
+.mesa-vaga-nome { font-size: 14px; font-weight: 700; line-height: 1.25; }
+.mesa-vaga-sub { margin-top: 2px; font-size: 11px; line-height: 1.4; }
+.mesa-vaga-jogador { margin-top: 3px; font-size: 11px; }
+
+.mesa-vaga-acoes {
+    gap: 6px;
+    margin-top: auto;
+    padding: 9px 11px 10px;
+}
+
+.mesa-vaga-acoes .btn { flex: 1 1 auto; justify-content: center; }
+.mesa-vaga-acoes .btn-mini { flex: 0 0 auto; }
+
+/* vaga livre continua tracejada, agora na mesma proporção dos outros */
+.mesa-vaga.vazia { min-height: 200px; padding: 14px; }

@@ -1,108 +1,167 @@
-# Mesa — seis jogadores e um mestre
+# Mesa compartilhada
 
-A aba **Ficha** agora abre numa tela de mesa: seis vagas de jogador e uma de mestre.
-Cada ficha pode ter um PIN próprio, e o mestre enxerga todas.
+Por padrão o site roda em **modo local**: as fichas ficam no `localStorage` do navegador
+de quem abriu. Serve para uma pessoa cuidar de várias fichas, mas **não compartilha nada**
+entre computadores — cada jogador veria a própria cópia, e o mestre não veria nada.
 
-Há **dois modos**, e a diferença entre eles é grande.
-
----
-
-## Modo local (o que está ligado hoje)
-
-Funciona sem configurar nada. As fichas ficam no `localStorage` do navegador de quem abriu.
-
-Serve bem para **uma pessoa cuidar de várias fichas** — um mestre com os PJs da mesa, ou
-alguém testando builds. Mas seja claro consigo mesmo sobre o que ele **não** é:
-
-- **Não compartilha nada.** Seis pessoas em seis computadores terão seis mesas separadas
-  que nunca se falam. O mestre não vê o que o jogador digitou na máquina dele.
-- **O PIN não é segurança.** Ele impede abrir a ficha pela interface, e só. Quem abrir o
-  console do navegador lê tudo, PIN ou não. O PIN é guardado como hash PBKDF2 com sal
-  (150 mil iterações), então ele não aparece em texto puro — mas o *conteúdo da ficha* está
-  ali do lado, em claro.
-
-Se a sua mesa é presencial e a ficha roda num computador só, isso basta.
+Para as seis pessoas verem as mesmas fichas é preciso um lugar que grave fora do
+navegador. Este documento liga isso usando o **Supabase** (plano gratuito), sem nenhuma
+tela de login: o quadro da mesa lista as fichas e **o PIN de cada ficha é a tranca**.
 
 ---
 
-## Modo compartilhado (Supabase)
+## Por que não dá para fazer "no arquivo"
 
-Aqui a senha vira senha de verdade: quem confere é o servidor, e quem decide o que cada
-pessoa pode ler é o banco — não o JavaScript desta página. Um jogador curioso abrindo o
-console **não** consegue ler a ficha dos outros, porque o servidor nunca as envia para ele.
+O site é estático: o GitHub Pages (e o Render Static Site) **servem** arquivos, não
+**gravam** neles. Não há processo do outro lado para receber um `POST` e reescrever um
+`.json`. O C.R.I.S. também não guarda em arquivo — guarda num banco.
 
-O plano gratuito do Supabase dá conta de uma mesa de RPG com folga.
+---
 
-### 1. Criar o projeto
+## O desenho, e por que ele é assim
 
-Crie a conta e o projeto em <https://supabase.com>. **Isso é com você** — eu não crio contas
-nem digito senhas em sites no seu lugar.
+A tentação é criar uma tabela aberta para a chave pública e conferir o PIN no navegador.
+**Isso não protege nada**: a chave `anon` vai no código da página, e qualquer pessoa pode
+chamar a API direto e ler ou sobrescrever todas as fichas, PIN ou não.
 
-Anote, em *Project Settings → API*:
+Então a tabela fica **selada** — RLS ligado e *nenhuma* policy, o que faz a API REST
+recusar qualquer acesso direto a ela. O que a página pode chamar são três funções
+`security definer`, e são elas que exigem o PIN. O PIN nunca sai do servidor em texto:
+fica como hash `bcrypt` do `pgcrypto`.
 
-- a **URL** do projeto
-- a chave **anon / publishable** (essa é pública por design, pode ficar no código)
+| A página pode | O que acontece |
+| --- | --- |
+| `mesa_listar()` | devolve só o que o cartão mostra: nome, jogador, nível, se tem PIN |
+| `mesa_abrir(id, pin)` | devolve a ficha **só** com o PIN certo |
+| `mesa_gravar(id, pin, dados)` | grava **só** com o PIN certo |
+| `mesa_definir_pin(id, atual, novo)` | troca o PIN, exigindo o atual |
+| ler/escrever a tabela direto | **recusado** |
 
-Nunca coloque a chave `service_role` aqui. Ela ignora todas as regras abaixo.
+### O que isto ainda não protege
 
-### 2. Criar a tabela e as regras
+Um PIN de 4 dígitos tem 10 mil combinações, e nada aqui limita tentativas — alguém
+determinado chuta até acertar. Se isso incomodar, **use 6 dígitos ou mais** e veja o
+passo 5, que liga uma trava simples de tentativas.
 
-No *SQL Editor* do Supabase, rode:
+---
+
+## 1. Criar o projeto
+
+Em <https://supabase.com>, crie um projeto (plano gratuito serve). Anote de
+*Project Settings → API*:
+
+- a **Project URL** (`https://xxxxxxxx.supabase.co`)
+- a chave **anon / publishable** — essa é pública por design, pode ir no código
+
+## 2. Rodar o SQL
+
+Em *SQL Editor → New query*, cole tudo e rode:
 
 ```sql
--- quem são os mestres
-create table mestres (
-  usuario uuid primary key references auth.users(id) on delete cascade
-);
+create extension if not exists pgcrypto;
 
--- as fichas
-create table fichas (
+create table if not exists fichas (
   id            text primary key,
-  dono          uuid not null default auth.uid() references auth.users(id) on delete cascade,
-  dados         jsonb not null,
+  titulo        text not null,
+  jogador       text,
+  resumo        jsonb not null default '{}'::jsonb,
+  dados         jsonb not null default '{}'::jsonb,
+  pin_hash      text,
   atualizado_em timestamptz not null default now()
 );
 
-alter table fichas  enable row level security;
-alter table mestres enable row level security;
+-- RLS ligado e NENHUMA policy: a API REST não encosta na tabela.
+alter table fichas enable row level security;
 
--- LEITURA: cada um lê a própria; o mestre lê todas
-create policy "jogador lê a própria" on fichas
-  for select using (dono = auth.uid());
+-- ---------------------------------------------------------------- listar --
+-- O que o quadro da mesa mostra. Nunca devolve "dados" nem o hash do PIN.
+create or replace function mesa_listar()
+returns table (
+  id text, titulo text, jogador text, resumo jsonb,
+  tem_pin boolean, atualizado_em timestamptz
+)
+language sql security definer set search_path = public as $$
+  select id, titulo, jogador, resumo, pin_hash is not null, atualizado_em
+    from fichas order by titulo;
+$$;
 
-create policy "mestre lê todas" on fichas
-  for select using (exists (select 1 from mestres where usuario = auth.uid()));
+-- ----------------------------------------------------------------- abrir --
+create or replace function mesa_abrir(p_id text, p_pin text default null)
+returns jsonb
+language plpgsql security definer set search_path = public, extensions as $$
+declare h text; d jsonb;
+begin
+  select pin_hash, dados into h, d from fichas where id = p_id;
+  if not found then raise exception 'ficha não encontrada'; end if;
+  if h is not null and (p_pin is null or crypt(p_pin, h) <> h) then
+    raise exception 'PIN incorreto';
+  end if;
+  return d;
+end $$;
 
--- ESCRITA: cada um escreve só a própria, e ninguém escreve na dos outros
-create policy "jogador cria a própria" on fichas
-  for insert with check (dono = auth.uid());
+-- ---------------------------------------------------------------- gravar --
+create or replace function mesa_gravar(
+  p_id text, p_pin text, p_dados jsonb,
+  p_titulo text default null, p_jogador text default null, p_resumo jsonb default null)
+returns boolean
+language plpgsql security definer set search_path = public, extensions as $$
+declare h text;
+begin
+  select pin_hash into h from fichas where id = p_id;
+  if not found then
+    insert into fichas (id, titulo, jogador, resumo, dados, pin_hash)
+      values (p_id, coalesce(p_titulo, 'Sem nome'), p_jogador,
+              coalesce(p_resumo, '{}'::jsonb), p_dados,
+              case when p_pin is null or p_pin = '' then null
+                   else crypt(p_pin, gen_salt('bf')) end);
+    return true;
+  end if;
+  if h is not null and (p_pin is null or crypt(p_pin, h) <> h) then
+    raise exception 'PIN incorreto';
+  end if;
+  update fichas set
+      dados = p_dados,
+      titulo = coalesce(p_titulo, titulo),
+      jogador = coalesce(p_jogador, jogador),
+      resumo = coalesce(p_resumo, resumo),
+      atualizado_em = now()
+    where id = p_id;
+  return true;
+end $$;
 
-create policy "jogador atualiza a própria" on fichas
-  for update using (dono = auth.uid()) with check (dono = auth.uid());
+-- ------------------------------------------------------------ definir PIN --
+create or replace function mesa_definir_pin(p_id text, p_atual text, p_novo text)
+returns boolean
+language plpgsql security definer set search_path = public, extensions as $$
+declare h text;
+begin
+  select pin_hash into h from fichas where id = p_id;
+  if not found then raise exception 'ficha não encontrada'; end if;
+  if h is not null and (p_atual is null or crypt(p_atual, h) <> h) then
+    raise exception 'PIN atual incorreto';
+  end if;
+  update fichas set pin_hash =
+      case when p_novo is null or p_novo = '' then null
+           else crypt(p_novo, gen_salt('bf')) end
+    where id = p_id;
+  return true;
+end $$;
 
-create policy "jogador apaga a própria" on fichas
-  for delete using (dono = auth.uid());
+-- Só as funções ficam ao alcance da chave pública.
+revoke all on function mesa_listar()                      from anon, authenticated;
+revoke all on function mesa_abrir(text, text)             from anon, authenticated;
+revoke all on function mesa_gravar(text, text, jsonb, text, text, jsonb) from anon, authenticated;
+revoke all on function mesa_definir_pin(text, text, text) from anon, authenticated;
 
--- a lista de mestres é legível por quem está logado, e só o dono do banco edita
-create policy "todos leem a lista de mestres" on mestres
-  for select using (auth.uid() is not null);
+grant execute on function mesa_listar()                      to anon, authenticated;
+grant execute on function mesa_abrir(text, text)             to anon, authenticated;
+grant execute on function mesa_gravar(text, text, jsonb, text, text, jsonb) to anon, authenticated;
+grant execute on function mesa_definir_pin(text, text, text) to anon, authenticated;
 ```
 
-Repare que **não existe** policy de `update` ou `delete` para o mestre sobre as fichas dos
-outros: ele lê, não altera. Se quiser que o mestre também edite, acrescente uma policy de
-`update` espelhando a de leitura — mas decida isso de propósito.
+## 3. Ligar no site
 
-### 3. Marcar quem é o mestre
-
-Depois que a pessoa criar a conta, pegue o `id` dela em *Authentication → Users* e rode:
-
-```sql
-insert into mestres (usuario) values ('cole-o-uuid-aqui');
-```
-
-### 4. Ligar no site
-
-Em [`js/mesa.js`](js/mesa.js), preencha:
+Em [`js/mesa.js`](js/mesa.js), preencha os dois valores do topo:
 
 ```js
 var MESA_CONFIG = {
@@ -112,32 +171,39 @@ var MESA_CONFIG = {
 };
 ```
 
-Pronto. A tela de mesa passa a pedir e-mail e senha, e o aviso no topo dela muda de
-"Modo local" para "Modo compartilhado".
+Dê commit e `bash publicar-github.sh`. O aviso no topo da Mesa muda de **Modo local**
+para **Modo compartilhado**, e as seis fichas passam a vir do banco.
 
-### O limite de seis
+## 4. Os PINs
 
-O limite de 6 jogadores é aplicado pela interface. Se quiser que o **banco** também recuse
-o sétimo, acrescente:
+Abra o quadro da Mesa e use **definir PIN** em cada ficha. É o único momento em que o PIN
+viaja; daí em diante ele só é conferido. Quem não tiver o PIN de uma ficha não abre nem
+grava aquela ficha — mas vê o nome dela no quadro, que é o comportamento desejado.
+
+O mestre não precisa de ficha: para ele enxergar todas, dê a ele os seis PINs, ou deixe
+uma ficha sem PIN e combine o resto na mesa.
+
+## 5. Opcional: travar tentativas de PIN
+
+Se preferir não depender do tamanho do PIN:
 
 ```sql
-create or replace function limite_de_seis() returns trigger as $$
-begin
-  if (select count(*) from fichas) >= 7 then
-    raise exception 'a mesa já está cheia';
-  end if;
-  return new;
-end $$ language plpgsql;
+create table if not exists tentativas (
+  id text, quando timestamptz not null default now()
+);
+create index if not exists tentativas_id_quando on tentativas (id, quando desc);
 
-create trigger fichas_limite before insert on fichas
-  for each row execute function limite_de_seis();
+-- dentro de mesa_abrir, antes do crypt():
+--   if (select count(*) from tentativas
+--        where id = p_id and quando > now() - interval '10 minutes') >= 10 then
+--     raise exception 'muitas tentativas; espere 10 minutos';
+--   end if;
+--   insert into tentativas (id) values (p_id);
 ```
-
-(7 = seis jogadores mais o mestre.)
 
 ---
 
 ## O que eu não posso fazer por você
 
-Criar a conta do Supabase, criar as contas dos seus jogadores e digitar as senhas deles.
-Eu escrevo o código e o SQL; as credenciais são suas e ficam com você.
+Criar a conta do Supabase e digitar os PINs dos seus jogadores. Eu escrevo o código e o
+SQL; as credenciais são suas e ficam com você.

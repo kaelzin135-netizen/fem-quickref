@@ -22,31 +22,64 @@ function mesa_esconder() {
     document.body.classList.remove("na-mesa");
 }
 
-/* Quem protege a ficha e o PIN, nao o estado da tela: qualquer um pode
-   pedir para abrir qualquer ficha, e quem tem PIN pede o PIN. Antes o botao
-   sumia depois que voce abria a sua, e as outras apareciam como "trancada"
-   mesmo sem PIN nenhum — alem de nao haver como trocar de ficha sem
-   recarregar a pagina. */
+/* O quadro da mesa, no molde da aba Campanhas do C.R.I.S.: capa em cima,
+   os dados embaixo e UMA acao primaria por cartao ("Acessar"). O que la e a
+   arte da campanha, aqui e o retrato do personagem — a ficha ja guarda um.
+
+   Quem protege a ficha e o PIN, nao o estado da tela: qualquer um pode pedir
+   para abrir qualquer ficha, e quem tem PIN pede o PIN. */
+
+var ICONE_CADEADO =
+    '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">' +
+    '<path d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 ' +
+    '0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm0 2a3 3 0 0 1 3 3v3H9V7a3 3 0 0 1 3-3zm0 10a2 2 0 0 1 1 ' +
+    '3.7V19a1 1 0 0 1-2 0v-1.3A2 2 0 0 1 12 14z"/></svg>';
+
+function _resumoFicha(env) {
+    /* no modo nuvem a ficha inteira so desce com o PIN; ate la o cartao se
+       vira com o resumo que mesa_listar() devolveu */
+    var f = env.ficha || env.resumoRemoto || {};
+    var partes = [];
+    var e = (typeof ESPECIALIZACOES !== "undefined")
+        ? ESPECIALIZACOES.filter(function (x) { return x.id === f.especializacao; })[0]
+        : null;
+    if (e) { partes.push(e.nome); }
+    partes.push("nível " + (f.nivel || 1));
+    if (f.tecnica) { partes.push(f.tecnica); }
+    return partes.join(" · ");
+}
+
 function _cartaoFicha(env) {
     var trancada = !!(env.pin && env.pin.sal);
     var atual = typeof ENVELOPE !== "undefined" && ENVELOPE && ENVELOPE.id === env.id;
+    var f = env.ficha || {};
+
+    var capa = f.retrato
+        ? '<img src="' + _esc(f.retrato) + '" alt="">'
+        : '<span class="mesa-capa-vazia">' + _esc((env.titulo || "?").slice(0, 1)) + "</span>";
+
     return '<div class="mesa-vaga ocupada' + (atual ? " atual" : "") + '">' +
-        '<div class="mesa-vaga-papel">Jogador</div>' +
+        '<div class="mesa-capa">' + capa +
+        (trancada ? '<span class="mesa-cadeado" title="Protegida por PIN">' +
+            ICONE_CADEADO + "</span>" : "") +
+        (atual ? '<span class="mesa-selo-atual">aberta</span>' : "") +
+        "</div>" +
+
+        '<div class="mesa-vaga-corpo">' +
         '<div class="mesa-vaga-nome">' + _esc(env.titulo || "Sem nome") + "</div>" +
+        '<div class="mesa-vaga-sub">' + _esc(_resumoFicha(env)) + "</div>" +
         (env.jogador ? '<div class="mesa-vaga-jogador">' + _esc(env.jogador) + "</div>" : "") +
-        '<div class="mesa-vaga-sub">' +
-        (env.ficha && env.ficha.especializacao ? _esc(env.ficha.especializacao) + " · " : "") +
-        "nível " + ((env.ficha && env.ficha.nivel) || 1) +
-        (trancada ? " · com PIN" : " · sem PIN") + "</div>" +
+        "</div>" +
+
         '<div class="mesa-vaga-acoes">' +
         '<button type="button" class="btn' + (atual ? " secundario" : "") +
         '" data-abrir-ficha="' + env.id + '">' +
-        (atual ? "Voltar" : SOU_MESTRE ? "Ver" : trancada ? "Abrir com PIN" : "Abrir") +
-        "</button>" +
-        '<button type="button" class="btn-mini" data-pin-ficha="' + env.id + '">' +
+        (atual ? "Voltar" : SOU_MESTRE ? "Ver" : "Acessar") + "</button>" +
+        '<button type="button" class="btn-mini" data-pin-ficha="' + env.id +
+        '" title="' + (trancada ? "Trocar o PIN" : "Definir um PIN") + '">' +
         (trancada ? "trocar PIN" : "definir PIN") + "</button>" +
         '<button type="button" class="btn-mini perigo" data-apagar-ficha="' + env.id +
-        '" title="Remover da mesa">remover</button>' +
+        '" title="Remover da mesa">' + icone("fechar") + "</button>" +
         "</div></div>";
 }
 
@@ -297,6 +330,16 @@ function ligar_mesa() {
         if (d.abrirFicha) {
             var env = mesa_buscar(d.abrirFicha);
             if (!env) { return; }
+            /* No modo nuvem a ficha ainda nao esta aqui: quem confere o PIN e
+               manda os dados e o servidor. Sem PIN na ficha, abre direto. */
+            if (ArmazemNuvem.ativo) {
+                if (env.pin) { desenhar_destrancar(env); return; }
+                var baixada = await ArmazemNuvem.abrir(env.id, null);
+                if (!baixada.ok) { _erro(baixada.erro); return; }
+                env.ficha = baixada.ficha.ficha || baixada.ficha;
+                abrir_envelope(env, SOU_MESTRE);
+                return;
+            }
             /* o mestre ja provou quem e ao entrar: nao pede o PIN do jogador */
             if (SOU_MESTRE) { abrir_envelope(env, true); return; }
             if (env.pin && env.pin.sal) { desenhar_destrancar(env); return; }
@@ -306,7 +349,21 @@ function ligar_mesa() {
 
         if (d.destrancar) {
             var alvo = mesa_buscar(d.destrancar);
-            var ok = await conferirPin(document.getElementById("mesa-pin").value, alvo.pin);
+            if (!alvo) { return; }
+            var digitado = document.getElementById("mesa-pin").value;
+
+            /* No modo nuvem quem confere e o banco: se o PIN estiver errado,
+               os dados simplesmente nao descem. Aqui a pagina nao tem o hash
+               para comparar, e e bom que nao tenha. */
+            if (ArmazemNuvem.ativo) {
+                var baixada = await ArmazemNuvem.abrir(alvo.id, digitado);
+                if (!baixada.ok) { _erro(baixada.erro || "PIN incorreto."); return; }
+                alvo.ficha = baixada.ficha.ficha || baixada.ficha;
+                abrir_envelope(alvo, SOU_MESTRE);
+                return;
+            }
+
+            var ok = await conferirPin(digitado, alvo.pin);
             if (!ok) { _erro("PIN incorreto."); return; }
             abrir_envelope(alvo, false);
             return;
