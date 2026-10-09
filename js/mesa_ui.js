@@ -54,8 +54,10 @@ function _cartaoFicha(env) {
     var atual = typeof ENVELOPE !== "undefined" && ENVELOPE && ENVELOPE.id === env.id;
     var f = env.ficha || {};
 
-    var capa = f.retrato
-        ? '<img src="' + _esc(f.retrato) + '" alt="">'
+    /* no modo nuvem a ficha ainda nao desceu: a capa vem da listagem */
+    var arte = f.capa || f.retrato || env.capaRemota || "";
+    var capa = arte
+        ? '<img src="' + _esc(arte) + '" alt="" loading="lazy">'
         : '<span class="mesa-capa-vazia">' + _esc((env.titulo || "?").slice(0, 1)) + "</span>";
 
     return '<div class="mesa-vaga ocupada' + (atual ? " atual" : "") + '">' +
@@ -100,7 +102,11 @@ function desenhar_mesa() {
         '<div class="mesa-aviso ' + (arm.compartilha ? "ok" : "atencao") + '">' +
         (arm.compartilha
             ? "<b>Modo compartilhado.</b> As fichas ficam no servidor e quem manda no acesso é ele: cada jogador vê a própria, o mestre vê todas."
-            : "<b>Modo local.</b> Estas fichas ficam <b>só neste navegador</b> — nada é compartilhado com outras pessoas. O PIN aqui é uma tranca de conveniência, não segurança: quem abrir o console lê tudo. Para valer entre seis computadores, ligue o modo compartilhado (veja MESA.md).") +
+            : "<b>Modo local.</b> Estas fichas ficam <b>só neste navegador</b> — nada é " +
+              "compartilhado com outras pessoas, e o PIN aqui é uma tranca de conveniência. " +
+              "Para as seis pessoas verem as mesmas fichas, faltam dois valores em " +
+              "<code>js/mesa.js</code>: a <b>Project URL</b> e a <b>chave anon</b> do Supabase. " +
+              "O SQL inteiro já está pronto em <b>MESA.md</b>.") +
         "</div>" +
         '<h3 class="mesa-titulo">Jogadores <span>' + jogadores.length + " de " + mesa_lugares() + "</span></h3>" +
         '<div class="mesa-grade">' + vagas.join("") + "</div>" +

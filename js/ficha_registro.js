@@ -442,6 +442,19 @@ function desenhar_registro() {
 
 /* A imagem entra reduzida: uma foto de 1,3 MB estoura o armazenamento do
    navegador, e a ficha inteira precisa caber no Exportar. */
+/* Reduz a imagem ja carregada para um quadrado de lado "lado", cortando pelo
+   centro — o cartao da mesa mostra em 16/10 e corta de todo jeito. */
+function _miniatura(img, lado) {
+    var c = document.createElement("canvas");
+    c.width = lado;
+    c.height = Math.round(lado * 0.625);        /* 16/10, igual ao cartao */
+    var ctx = c.getContext("2d");
+    var escala = Math.max(c.width / img.width, c.height / img.height);
+    var w = img.width * escala, h = img.height * escala;
+    ctx.drawImage(img, (c.width - w) / 2, (c.height - h) / 2, w, h);
+    return c.toDataURL("image/jpeg", 0.7);
+}
+
 function guardar_retrato(arquivo) {
     if (!arquivo) { return; }
     var leitor = new FileReader();
@@ -455,6 +468,10 @@ function guardar_retrato(arquivo) {
             c.height = Math.round(img.height * escala);
             c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
             F.retrato = c.toDataURL("image/jpeg", 0.82);
+            /* miniatura para o cartao da mesa: o retrato de 420px vira um
+               base64 de ~1 MB, e mandar seis desses a cada abertura do quadro
+               seria absurdo. 160px resolve o cartao e cabe na listagem. */
+            F.capa = _miniatura(img, 160);
             desenhar();
         };
         img.src = leitor.result;

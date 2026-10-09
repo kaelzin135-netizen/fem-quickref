@@ -116,6 +116,7 @@ var ArmazemNuvem = {
     rotulo: "Compartilhado (Supabase)",
     compartilha: true,
     _pins: {},        /* id -> PIN, so em memoria */
+    _pinMestre: null, /* idem: o PIN de mestre desta aba */
     _resumos: [],     /* ultimo mesa_listar() */
 
     get configurado() {
@@ -179,6 +180,7 @@ var ArmazemNuvem = {
                     /* o cartao so precisa saber SE tem PIN */
                     pin: l.tem_pin ? { remoto: true } : null,
                     resumoRemoto: resumo,
+                    capaRemota: l.capa || "",
                     carregada: !!self._pins[l.id],
                     ficha: null
                 };
@@ -188,7 +190,9 @@ var ArmazemNuvem = {
 
     /* Baixa a ficha inteira. Sem o PIN certo o servidor recusa. */
     async abrir(id, pin) {
-        var r = await this._rpc("mesa_abrir", { p_id: id, p_pin: pin || null });
+        /* sem PIN proprio, tenta o de mestre: o banco aceita os dois */
+        var usar = pin || this._pins[id] || this._pinMestre || null;
+        var r = await this._rpc("mesa_abrir", { p_id: id, p_pin: usar });
         if (!r.ok) { return { ok: false, erro: r.erro }; }
         this.lembrarPin(id, pin);
         return { ok: true, ficha: r.dados || {} };
@@ -215,11 +219,31 @@ var ArmazemNuvem = {
                 p_dados: copia,
                 p_titulo: env.titulo || null,
                 p_jogador: env.jogador || null,
-                p_resumo: resumoDaFicha(env.ficha)
+                p_resumo: resumoDaFicha(env.ficha),
+                p_capa: (env.ficha && env.ficha.capa) || null
             });
             if (!r.ok) { todosOk = false; }
         }
         return todosOk;
+    },
+
+    /* O PIN de mestre vive no banco como hash, numa linha de mesa_config.
+       Quem confere e o servidor; a pagina so acende o modo mestre. */
+    async conferirMestre(pin) {
+        var r = await this._rpc("mesa_e_mestre", { p_pin: pin || null });
+        if (!r.ok) { return { ok: false, erro: r.erro }; }
+        if (r.dados !== true) { return { ok: false, erro: "PIN de mestre incorreto." }; }
+        this._pinMestre = pin;
+        return { ok: true };
+    },
+
+    async definirPinMestre(atual, novo) {
+        var r = await this._rpc("mesa_definir_pin_mestre", {
+            p_atual: atual || null, p_novo: novo || null
+        });
+        if (!r.ok) { return { ok: false, erro: r.erro }; }
+        this._pinMestre = novo || null;
+        return { ok: true };
     },
 
     async definirPin(id, atual, novo) {
@@ -334,6 +358,9 @@ async function mesa_definir_pin(id, pinAtual, pinNovo) {
 
 /* Entrar como mestre nao abre ficha nenhuma: liga o acesso as seis. */
 async function mesa_entrar_mestre(pin) {
+    /* No modo nuvem o PIN de mestre e conferido pelo banco, e e ele que
+       destranca as fichas dos outros — a pagina nao tem hash nenhum. */
+    if (ArmazemNuvem.ativo) { return await ArmazemNuvem.conferirMestre(pin); }
     if (!MESA.mestre) { return { ok: false, erro: "esta mesa não tem mestre" }; }
     if (!await conferirPin(pin, MESA.mestre.pin)) { return { ok: false, erro: "PIN incorreto." }; }
     return { ok: true };

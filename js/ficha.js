@@ -15,7 +15,8 @@ function ficha_nova() {
         pvPerdidos: 0, pePerdidos: 0, integridadePerdida: 0,
 
         /* --- o resto da planilha --- */
-        retrato: "",                       /* imagem do personagem, em data URL */
+        retrato: "",
+        capa: "",               /* miniatura 160px, para o cartao da mesa */                       /* imagem do personagem, em data URL */
         aparencia: {}, historia: {},
         marcas: {},                        /* Kamo, Robustez, Des. Exa., Vigor Inf. */
         rds: {}, estadoAtual: "Estável", rdGeral: 0,
