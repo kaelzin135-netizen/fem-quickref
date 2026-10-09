@@ -3217,3 +3217,49 @@ body.com-modal { overflow: hidden; }
 
 /* vaga livre continua tracejada, agora na mesma proporção dos outros */
 .mesa-vaga.vazia { min-height: 200px; padding: 14px; }
+
+/* ------------------------------------------------------------------------- */
+/* Paleta: a disciplina do C.R.I.S., em ciano e azul escuro                   */
+/*                                                                            */
+/* Medido na ficha deles: UM acento (#A347FF) em tudo — botão, borda, realce  */
+/* — e cor só para estado (vermelho, verde) e para as barras de recurso. A    */
+/* nossa espalhava sete tons, um por seção, e é isso que fazia ela parecer    */
+/* remendada do lado da deles. Aqui vira um acento só, no ciano pedido.       */
+/*                                                                            */
+/* Dois tokens porque um não serve para as duas funções: o ciano claro brilha */
+/* em borda e texto sobre o preto, mas não aguenta texto branco em cima; o    */
+/* azul escuro aguenta, e é o fundo dos botões.                               */
+/* ------------------------------------------------------------------------- */
+
+.body-ficha {
+    --accent: #22d3ee;        /* ciano: bordas, realces, texto de acento */
+    --accent-cheio: #0e7490;  /* azul escuro: fundo de botão, texto branco por cima */
+}
+
+:root[data-tema="dia"] .body-ficha {
+    --accent: #0e7490;        /* no claro o ciano some; o azul escuro serve aos dois */
+    --accent-cheio: #0e7490;
+}
+
+/* um acento só: as seções deixam de ter o próprio tom */
+.ficha-app,
+#sec-identidade, #sec-atributos, #sec-recursos, #sec-valores,
+#sec-aptidoes, #sec-pericias, #sec-abas, #sec-marcas {
+    --accent: inherit;
+}
+
+.body-ficha .ficha-app { --accent: #22d3ee; }
+:root[data-tema="dia"] .body-ficha .ficha-app { --accent: #0e7490; }
+
+/* botão cheio usa o azul escuro, para o branco em cima continuar legível */
+.ficha-app .btn:not(.secundario),
+.ficha-cabecalho .btn:not(.secundario),
+.tela-mesa .btn:not(.secundario) { background-color: var(--accent-cheio); }
+
+/* as três barras: vida em vermelho, e as duas de energia no azul pedido */
+#sec-recursos .rec:nth-of-type(1) { --accent: #b22222; }  /* Pontos de Vida */
+#sec-recursos .rec:nth-of-type(2) { --accent: #0e7490; }  /* Pontos de PE   */
+#sec-recursos .rec:nth-of-type(3) { --accent: #1e3a8a; }  /* Integridade    */
+
+/* a tira de abas na medida deles: 14px, sem caixa alta */
+.aba-btn { font-size: 14px; letter-spacing: normal; text-transform: none; }
