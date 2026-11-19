@@ -815,7 +815,7 @@ function ligar_eventos() {
                 d.addLista === "votos" ? { nome: "", descricao: "" } :
                 d.addLista === "feiticos" ? {
                     nome: "", nivel: 0, execucao: "", alcance: "",
-                    alvo: "", duracao: "", custo: "", descricao: ""
+                    alvo: "", duracao: "", custo: "", dano: "", descricao: ""
                 } :
                 { nome: "", atual: "", max: "", custo: "" });
             if (d.addLista === "feiticos") { FEITICO_ABERTO = F.feiticos.length - 1; }
@@ -857,6 +857,14 @@ function ligar_eventos() {
         if (d.rerolar) { rerolar(d.rerolar); return; }
 
         if (d.usarFeitico !== undefined) { usar_feitico(Number(d.usarFeitico)); return; }
+
+        if (d.rolarFeitico !== undefined) {
+            var fe = (F.feiticos || [])[Number(d.rolarFeitico)];
+            if (fe && fe.dano) {
+                guardarRolagem(rolarDano((fe.nome || "feitiço").trim() + " — dano", fe.dano));
+            }
+            return;
+        }
 
         if (d.abrirFeitico !== undefined) {
             var n = Number(d.abrirFeitico);

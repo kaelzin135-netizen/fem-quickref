@@ -146,7 +146,8 @@ var CAMPOS_FEITICO = [
     { id: "alcance", nome: "Alcance" },
     { id: "alvo", nome: "Alvo" },
     { id: "duracao", nome: "Duração" },
-    { id: "custo", nome: "Custo" }
+    { id: "custo", nome: "Custo" },
+    { id: "dano", nome: "Dano" }
 ];
 
 /* Um cartao por feiticio, agrupado por nivel, com o chevron abrindo os
@@ -167,6 +168,17 @@ function cartaoFeitico(f, i) {
         '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg></button>' +
         '<input type="text" class="feitico-nome" data-lista="feiticos" data-i="' + i +
         '" data-chave="nome" value="' + esc(f.nome || "") + '" placeholder="nome do feitiço">' +
+        /* Dano a vista no cartao fechado, com o dado do lado. Na aba de
+           Rituais do C.R.I.S. cada patamar mostra os dados e traz o proprio
+           botao de rolar; em combate ninguem quer abrir o cartao para ver
+           quanto o feitico causa. */
+        (f.dano
+            ? '<span class="feitico-dano" title="Rolar ' + esc(f.dano) + '">' +
+              '<span class="feitico-dano-val">' + esc(f.dano) + "</span>" +
+              '<button type="button" class="btn-mini bt-dado" data-rolar-feitico="' + i +
+              '" title="Rolar o dano de ' + esc(f.nome || "feitiço") + '">' +
+              dadoSvg() + "</button></span>"
+            : "") +
         (custoFeitico(f)
             ? '<button type="button" class="btn-mini feitico-usar" data-usar-feitico="' + i +
               '" title="Gastar ' + custoFeitico(f) + ' de energia">' +

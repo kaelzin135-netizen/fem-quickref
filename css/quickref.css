@@ -3519,3 +3519,24 @@ body.com-modal { overflow: hidden; }
     text-transform: uppercase;
     color: var(--tinta-tenue);
 }
+
+/* --- dano do feitiço à vista, no molde da aba Rituais do C.R.I.S. --- */
+.feitico-dano {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 0 2px 0 6px;
+    border: 1px solid var(--linha);
+    border-radius: 2px;
+}
+
+.feitico-dano-val {
+    font-size: 11px;
+    color: var(--tinta-fraca);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.feitico-dano:hover { border-color: var(--accent); }
+.feitico-dano:hover .feitico-dano-val { color: var(--tinta); }
