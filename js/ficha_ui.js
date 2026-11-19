@@ -617,7 +617,7 @@ function recalcular() {
         desenhar_pericias();
         desenhar_testes();
         /* os paineis novos tambem dependem dos numeros: a trilha mostra o
-           selo do que ela concede, e o perfil mostra a CD de feitico */
+           selo do que ela concede, e o perfil mostra a CD de feitiço */
         if (typeof desenhar_marcas === "function") { desenhar_marcas(); }
         if (typeof desenhar_itens_aba === "function") { desenhar_itens_aba(); }
         if (typeof desenhar_perfil === "function") { desenhar_perfil(); }
@@ -696,6 +696,11 @@ function ligar_eventos() {
         }
         if (el.id === "filtro-item") {
             FILTRO_ITEM = el.value;
+            comFoco(desenhar_itens_aba);
+            return;
+        }
+        if (el.id === "filtro-arma") {
+            FILTRO_ARMA = el.value;
             comFoco(desenhar_itens_aba);
             return;
         }
@@ -904,6 +909,15 @@ function ligar_eventos() {
             return;
         }
 
+        if (d.abrirArma !== undefined) {
+            var na = Number(d.abrirArma);
+            ARMA_ABERTA = (ARMA_ABERTA === na) ? -1 : na;
+            /* desenhar_itens() e a lista de HABILIDADES; a aba Itens, onde
+               vivem as armas, e desenhar_itens_aba(). */
+            desenhar_itens_aba();
+            return;
+        }
+
         if (d.abrirFeitico !== undefined) {
             var n = Number(d.abrirFeitico);
             FEITICO_ABERTO = (FEITICO_ABERTO === n) ? -1 : n;
@@ -1046,7 +1060,7 @@ function rolar_arma(i) {
     if (dano) { guardarRolagem(dano); }
 }
 
-/* Lancar um feitico desconta o custo da barra de energia e deixa o registro
+/* Lancar um feitiço desconta o custo da barra de energia e deixa o registro
    na bandeja. Sem energia, nada e descontado e o botao avisa. */
 function usar_feitico(i) {
     var f = (F.feiticos || [])[i];

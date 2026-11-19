@@ -933,11 +933,11 @@ p:first-child {
 .col-1 { padding-right: 20px; }
 .col-3 { padding-left: 20px; }
 
-.col-2 .cartao.alto, .col-3 .cartao.alto { display: flex; flex-direction: column; min-height: 0; flex: 1; }
+.col-2 .cart.alto, .col-3 .cart.alto { display: flex; flex-direction: column; min-height: 0; flex: 1; }
 
 /* --- "cartão" agora é só um bloco com um fio embaixo --- */
 
-.cartao {
+.cart {
     background: none;
     border: 0;
     border-radius: 0;
@@ -947,12 +947,12 @@ p:first-child {
     color: var(--tinta);
 }
 
-.cartao:last-child, .cartao.alto { margin-bottom: 0; }
+.cart:last-child, .cart.alto { margin-bottom: 0; }
 
 /* titulo centralizado em versalete, como o PERICIAS / VIDA deles.
    Grade de 3 colunas: vazio | titulo | nota, para o titulo ficar no
    centro real mesmo quando ha nota a direita. */
-.cartao h2 {
+.cart h2 {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: baseline;
@@ -970,8 +970,8 @@ p:first-child {
     border: 0;
 }
 
-.cartao h2::before { content: ""; }
-.cartao h2:not(:first-child) { margin-top: 18px; }
+.cart h2::before { content: ""; }
+.cart h2:not(:first-child) { margin-top: 18px; }
 
 .h2-nota {
     text-align: right;
@@ -2366,28 +2366,28 @@ input:focus, select:focus, textarea:focus, .aba-btn:focus-visible {
 .feitico-grupo span { font-weight: 400; color: var(--tinta-tenue); }
 .feitico-grupo:first-child { margin-top: 0; }
 
-.feitico { background: var(--elevado); margin-bottom: 6px; }
-.feitico.aberto { border-top: 2px solid var(--accent); }
-.feitico-topo { display: flex; align-items: center; gap: 8px; padding: 8px 12px 9px; }
+.cart { background: var(--elevado); margin-bottom: 6px; }
+.cart.aberto { border-top: 2px solid var(--accent); }
+.cart-topo { display: flex; align-items: center; gap: 8px; padding: 8px 12px 9px; }
 
-.feitico-seta { flex: 0 0 auto; width: 24px; height: 24px; padding: 0; border: 0; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-.feitico-seta svg { width: 20px; height: 20px; fill: var(--accent); transition: transform .12s ease; }
-.feitico.aberto .feitico-seta svg { transform: rotate(180deg); }
+.cart-seta { flex: 0 0 auto; width: 24px; height: 24px; padding: 0; border: 0; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.cart-seta svg { width: 20px; height: 20px; fill: var(--accent); transition: transform .12s ease; }
+.cart.aberto .cart-seta svg { transform: rotate(180deg); }
 
-.feitico-nome { flex: 1 1 auto; min-width: 0; padding: 1px 0 2px; border: 0; background: none; color: var(--tinta); font-family: inherit; font-size: 14px; font-weight: 700; }
-.feitico-nome:focus { outline: none; border-bottom: 1px solid var(--accent); }
+.cart-nome { flex: 1 1 auto; min-width: 0; padding: 1px 0 2px; border: 0; background: none; color: var(--tinta); font-family: inherit; font-size: 14px; font-weight: 700; }
+.cart-nome:focus { outline: none; border-bottom: 1px solid var(--accent); }
 
-.feitico-corpo { padding: 2px 12px 13px 44px; }
+.cart-corpo { padding: 2px 12px 13px 44px; }
 .feitico-nivel { display: inline-block; padding: 2px 9px; margin-bottom: 10px; background: var(--accent); color: #fff; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .9px; }
 .feitico-sel { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .9px; color: var(--tinta-fraca); }
 .feitico-sel select { padding: 1px 0 2px; border: 0; border-bottom: 1px solid var(--linha-forte); background: none; color: var(--tinta); font-family: inherit; font-size: 13px; cursor: pointer; }
-.feitico-campo { display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px; }
-.feitico-campo > span { flex: 0 0 74px; font-size: 13px; color: var(--accent); }
-.feitico-campo input { flex: 1 1 auto; min-width: 0; padding: 1px 0 2px; border: 0; border-bottom: 1px solid var(--linha); background: none; color: var(--tinta); font-family: inherit; font-size: 13px; }
-.feitico-campo input:focus { outline: none; border-bottom-color: var(--accent); }
-.feitico-corpo textarea { width: 100%; box-sizing: border-box; margin-top: 8px; padding: 7px 9px; border: 0; border-left: 2px solid var(--linha-forte); background: rgba(255,255,255,.04); color: var(--tinta-fraca); font-family: inherit; font-size: 13px; line-height: 1.55; resize: vertical; }
-:root[data-tema="dia"] .feitico-corpo textarea { background: rgba(0,0,0,.04); }
-.feitico-corpo textarea:focus { outline: none; border-left-color: var(--accent); }
+.cart-campo { display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px; }
+.cart-campo > span { flex: 0 0 74px; font-size: 13px; color: var(--accent); }
+.cart-campo input { flex: 1 1 auto; min-width: 0; padding: 1px 0 2px; border: 0; border-bottom: 1px solid var(--linha); background: none; color: var(--tinta); font-family: inherit; font-size: 13px; }
+.cart-campo input:focus { outline: none; border-bottom-color: var(--accent); }
+.cart-corpo textarea { width: 100%; box-sizing: border-box; margin-top: 8px; padding: 7px 9px; border: 0; border-left: 2px solid var(--linha-forte); background: rgba(255,255,255,.04); color: var(--tinta-fraca); font-family: inherit; font-size: 13px; line-height: 1.55; resize: vertical; }
+:root[data-tema="dia"] .cart-corpo textarea { background: rgba(0,0,0,.04); }
+.cart-corpo textarea:focus { outline: none; border-left-color: var(--accent); }
 
 /* o que a trilha concede */
 .trilha-rodape { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-top: 7px; }
@@ -2408,9 +2408,12 @@ input:focus, select:focus, textarea:focus, .aba-btn:focus-visible {
 /* Aba Itens                                                                   */
 /* ------------------------------------------------------------------------- */
 
-.cab-arma, .linha-arma { display: grid; grid-template-columns: 20px 1.6fr .6fr .9fr .5fr .8fr .8fr 1.6fr 24px; gap: 5px; align-items: center; }
+/* As armas viraram cartao (.cart), como na aba COMBATE do C.R.I.S., entao
+   a grade de colunas saiu. .campo-arma fica porque as protecoes ainda usam. */
+.selos-arma { display: flex; gap: 6px; flex: 0 0 auto; }
+.selo-arma { font-size: 11px; color: var(--tinta-tenue); white-space: nowrap; }
+.selo-arma b { color: var(--tinta-fraca); font-weight: 700; }
 .cab-arma { padding: 0 2px 5px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: var(--tinta-tenue); }
-.linha-arma { min-height: 30px; }
 .campo-arma { min-width: 0; padding: 1px 0 2px; border: 0; border-bottom: 1px solid var(--linha); background: none; color: var(--tinta); font-family: inherit; font-size: 12px; }
 .campo-arma.largo { font-size: 13px; }
 .campo-arma:focus { outline: none; border-bottom-color: var(--accent); }
@@ -2508,8 +2511,8 @@ input:focus, select:focus, textarea:focus, .aba-btn:focus-visible {
 /* ------------------------------------------------------------------------- */
 
 /* --- o título de seção ganha o fio nas laterais, virando divisor --- */
-.cartao h2::before { border-top: 1px solid var(--linha); align-self: center; height: 0; }
-.cartao h2:not(:has(.h2-nota))::after {
+.cart h2::before { border-top: 1px solid var(--linha); align-self: center; height: 0; }
+.cart h2:not(:has(.h2-nota))::after {
     content: "";
     border-top: 1px solid var(--linha);
     align-self: center;
@@ -2541,12 +2544,12 @@ input:focus, select:focus, textarea:focus, .aba-btn:focus-visible {
 .retrato-acoes { justify-content: center; }
 
 /* --- o que é clicável parece clicável --- */
-.linha-nome-btn, .item-abrir, .feitico-nome, .aba-btn, .cat-chip,
+.linha-nome-btn, .item-abrir, .cart-nome, .aba-btn, .cat-chip,
 .btn, .btn-mini, .passo, .rec-bt, .trilha-escolha { transition: color .1s ease, background-color .1s ease; }
 
 .item-ficha { transition: background-color .12s ease; }
 .item-ficha:hover { background: color-mix(in oklab, var(--elevado) 70%, var(--tinta) 6%); }
-.feitico:hover { background: color-mix(in oklab, var(--elevado) 70%, var(--tinta) 6%); }
+.cart:hover { background: color-mix(in oklab, var(--elevado) 70%, var(--tinta) 6%); }
 .item-livro { transition: background-color .12s ease, box-shadow .12s ease; }
 .item-livro:hover { background: color-mix(in oklab, var(--elevado) 70%, var(--tinta) 6%); }
 
@@ -3120,8 +3123,8 @@ body.body-ficha {
 }
 
 /* nada mais segura rolagem própria dentro da ficha */
-.col-2 .cartao.alto,
-.col-3 .cartao.alto { display: block; flex: none; min-height: 0; }
+.col-2 .cart.alto,
+.col-3 .cart.alto { display: block; flex: none; min-height: 0; }
 
 .linhas { overflow: visible; }
 .aba-painel { overflow: visible; flex: none; }

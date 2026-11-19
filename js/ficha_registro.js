@@ -215,12 +215,12 @@ function custoFeitico(f) {
 
 function cartaoFeitico(f, i) {
     var aberto = FEITICO_ABERTO === i;
-    return '<div class="feitico' + (aberto ? " aberto" : "") + '">' +
-        '<div class="feitico-topo">' +
-        '<button type="button" class="feitico-seta" data-abrir-feitico="' + i +
+    return '<div class="cart' + (aberto ? " aberto" : "") + '">' +
+        '<div class="cart-topo">' +
+        '<button type="button" class="cart-seta" data-abrir-feitico="' + i +
         '" aria-expanded="' + (aberto ? "true" : "false") + '">' +
         '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg></button>' +
-        '<input type="text" class="feitico-nome" data-lista="feiticos" data-i="' + i +
+        '<input type="text" class="cart-nome" data-lista="feiticos" data-i="' + i +
         '" data-chave="nome" value="' + esc(f.nome || "") + '" placeholder="nome do feitiço">' +
         /* Dano a vista no cartao fechado, com o dado do lado. Na aba de
            Rituais do C.R.I.S. cada patamar mostra os dados e traz o proprio
@@ -242,7 +242,7 @@ function cartaoFeitico(f, i) {
         '">' + icone("fechar") + "</button>" +
         "</div>" +
         (aberto
-            ? '<div class="feitico-corpo">' +
+            ? '<div class="cart-corpo">' +
               '<span class="feitico-nivel">Nível ' + (Number(f.nivel) || 0) + "</span>" +
               '<label class="feitico-sel"><span>Nível</span>' +
               '<select data-lista="feiticos" data-i="' + i + '" data-chave="nivel">' +
@@ -251,7 +251,7 @@ function cartaoFeitico(f, i) {
                       (Number(f.nivel) === n ? " selected" : "") + ">" + n + "</option>";
               }).join("") + "</select></label>" +
               CAMPOS_FEITICO.map(function (c) {
-                  return '<div class="feitico-campo"><span>' + esc(c.nome) + ":</span>" +
+                  return '<div class="cart-campo"><span>' + esc(c.nome) + ":</span>" +
                       '<input type="text" data-lista="feiticos" data-i="' + i +
                       '" data-chave="' + c.id + '" value="' + esc(f[c.id] || "") + '"></div>';
               }).join("") +

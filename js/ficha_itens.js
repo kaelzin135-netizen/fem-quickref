@@ -18,18 +18,58 @@ var COLUNAS_ARMA = [
     { id: "propriedades", nome: "Propriedades", largo: true }
 ];
 
+var ARMA_ABERTA = -1;
+var FILTRO_ARMA = "";
+
+/* Cartao de ataque no desenho da aba COMBATE do C.R.I.S.: fechado ele mostra
+   so o nome, o dano, o critico e o botao de rolar; o resto fica atras do
+   chevron. Era uma fileira de sete campos de texto sempre abertos, o que em
+   coluna estreita virava sete caixinhas espremidas - e, no meio de um turno,
+   ninguem precisa ver "propriedades" para dar um golpe.
+
+   Usa as mesmas classes .cart* do cartao de feitico, entao os dois sao a
+   mesma peca e nao podem divergir por descuido. */
+var ARMA_RESUMO = [
+    { id: "dano", nome: "Dano" },
+    { id: "critico", nome: "Crít." }
+];
+
+var ARMA_DETALHE = COLUNAS_ARMA.filter(function (c) {
+    return c.id !== "arma" && c.id !== "dano" && c.id !== "critico";
+});
+
 function linhaArma(a, i) {
-    return '<div class="linha-arma">' +
+    var aberta = ARMA_ABERTA === i;
+    var selos = ARMA_RESUMO.map(function (c) {
+        if (!a[c.id]) { return ""; }
+        return '<span class="selo-arma">' + esc(c.nome) + ": <b>" +
+            esc(a[c.id]) + "</b></span>";
+    }).join("");
+
+    return '<div class="cart' + (aberta ? " aberto" : "") + '">' +
+        '<div class="cart-topo">' +
+        '<button type="button" class="cart-seta" data-abrir-arma="' + i +
+        '" aria-expanded="' + (aberta ? "true" : "false") +
+        '" title="Ver os outros campos">' +
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg></button>' +
+        '<input type="text" class="cart-nome" data-lista="armas" data-i="' + i +
+        '" data-chave="arma" value="' + esc(a.arma || "") + '" placeholder="nome da arma">' +
+        '<span class="selos-arma">' + selos + "</span>" +
         '<button type="button" class="btn-mini bt-dado" data-rolar-arma="' + i +
         '" title="Rolar o ataque e o dano">' + dadoSvg() + "</button>" +
-        COLUNAS_ARMA.map(function (c) {
-            return '<input type="text" class="campo-arma' + (c.largo ? " largo" : "") +
-                '" data-lista="armas" data-i="' + i + '" data-chave="' + c.id +
-                '" value="' + esc(a[c.id] || "") + '" title="' + esc(c.nome) +
-                '" placeholder="' + esc(c.nome.toLowerCase()) + '">';
-        }).join("") +
         '<button type="button" class="btn-mini perigo" data-remover-lista="armas" data-i="' + i +
-        '">' + icone("fechar") + "</button></div>";
+        '">' + icone("fechar") + "</button>" +
+        "</div>" +
+        (aberta
+            ? '<div class="cart-corpo">' +
+              ARMA_RESUMO.concat(ARMA_DETALHE).map(function (c) {
+                  return '<div class="cart-campo"><span>' + esc(c.nome) + ":</span>" +
+                      '<input type="text" data-lista="armas" data-i="' + i +
+                      '" data-chave="' + c.id + '" value="' + esc(a[c.id] || "") + '"></div>';
+              }).join("") +
+              "</div>"
+            : "") +
+        "</div>";
 }
 
 /* O que o personagem carrega de proteção, com o efeito à vista. */
@@ -78,7 +118,6 @@ function desenhar_itens_aba() {
     var alvo = document.getElementById("ficha-itens-aba");
     if (!alvo) { return; }
 
-    var armas = (F.armas || []).map(linhaArma).join("");
     var prot = (F.protecoes || []).map(linhaDefesa).join("");
 
     var catalogo = typeof ITENS_LIVRO === "undefined" ? [] : ITENS_LIVRO;
@@ -95,14 +134,35 @@ function desenhar_itens_aba() {
                 .toLowerCase().indexOf(busca) >= 0;
         });
 
+    /* O filtro e o mesmo gesto da aba COMBATE do C.R.I.S. ("Filtrar
+       ataques"): quem tem meia duzia de armas anotadas nao quer rolar a
+       pagina atras da certa no meio do turno. */
+    var buscaArma = FILTRO_ARMA.toLowerCase();
+    var armasVisiveis = (F.armas || [])
+        .map(function (a, i) { return { a: a, i: i }; })
+        .filter(function (x) {
+            if (!buscaArma) { return true; }
+            return (x.a.arma + " " + (x.a.propriedades || "") + " " + (x.a.tipo || ""))
+                .toLowerCase().indexOf(buscaArma) >= 0;
+        });
+    var armasHtml = armasVisiveis.map(function (x) { return linhaArma(x.a, x.i); }).join("");
+
     alvo.innerHTML =
-        '<h2>Jogadas de ataque <span class="h2-nota">as armas que você usa</span></h2>' +
-        '<div class="cab-arma"><span></span>' +
-        COLUNAS_ARMA.map(function (c) {
-            return '<span' + (c.largo ? ' class="largo"' : "") + ">" + esc(c.nome) + "</span>";
-        }).join("") + "<span></span></div>" +
+        '<h2>Jogadas de ataque <span class="h2-nota">' +
+        (F.armas || []).length + ' anotada' + ((F.armas || []).length === 1 ? "" : "s") +
+        "</span></h2>" +
+        '<div class="feitico-barra">' +
+        '<input type="search" id="filtro-arma" placeholder="Filtrar ataques" value="' +
+        esc(FILTRO_ARMA) + '">' +
+        '<div class="feitico-cd" title="' + esc(formula(cdEspec())) + '">' +
+        "<span>CD de especialização</span><b>" + cdEspec().total + "</b></div>" +
+        "</div>" +
         '<div class="lista-armas">' +
-        (armas || '<p class="aviso">Nenhuma arma anotada. Pegue uma do catálogo abaixo ou crie à mão.</p>') +
+        (armasHtml || '<p class="aviso">' +
+            (buscaArma
+                ? "Nenhuma arma com esse nome."
+                : "Nenhuma arma anotada. Pegue uma do catálogo abaixo ou crie à mão.") +
+            "</p>") +
         "</div>" +
         '<button type="button" class="btn secundario" data-add-lista="armas">' +
         icone("add") + "Arma</button>" +
