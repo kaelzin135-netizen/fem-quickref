@@ -18,21 +18,98 @@ function areaCaminho(caminho, rotulo, valor) {
 
 /* ------------------------------------------------------------- marcas ---- */
 
-function desenhar_marcas() {
-    var alvo = document.getElementById("ficha-marcas");
-    if (!alvo) { return; }
+/* ------------------------------------------------------------ condicoes -- */
+/* Livro, pg. 317. Sao 28 condicoes em seis grupos, e cada uma muda alguma
+   conta - Abalado tira 1 de ataques e pericias, Paralisado tira 10 da
+   Defesa, Sofrendo tira 3 metros. Elas sao aplicadas numa cena e esquecidas
+   na seguinte, e a ficha nao tinha onde registrar nenhuma.
 
-    var marcas = MARCAS_PV.map(function (m) {
-        return '<label class="marca"><input type="checkbox" data-marca="' + m.id + '"' +
-            (F.marcas && F.marcas[m.id] ? " checked" : "") + "><span>" + esc(m.nome) + "</span></label>";
+   A ficha MOSTRA, mas nao aplica sozinha. Nao e preguica: o livro diz que
+   "condicoes com os mesmos efeitos nao se acumulam; aplique apenas os mais
+   severos - por exemplo, um personagem enredado e caido sofre -3 na Defesa,
+   nao -5". Somar tudo daria um numero ERRADO, e um numero errado que a
+   ficha afirma com confianca e pior do que numero nenhum. Entao ela poe o
+   efeito na frente de quem joga e deixa a decisao com a mesa. */
+var GRUPOS_CONDICAO = [
+    { id: "fisica", nome: "Físicas" },
+    { id: "incapacitacao", nome: "Incapacitação" },
+    { id: "mental", nome: "Mentais" },
+    { id: "movimento", nome: "Movimento" },
+    { id: "sensorial", nome: "Sensoriais" },
+    { id: "vulnerabilidade", nome: "Vulnerabilidade" }
+];
+
+function todasCondicoes() {
+    var saida = [];
+    GRUPOS_CONDICAO.forEach(function (g) {
+        var lista = window["data_condicao_" + g.id] || [];
+        lista.forEach(function (c) { saida.push({ grupo: g, c: c }); });
+    });
+    return saida;
+}
+
+function acharCondicao(titulo) {
+    var achou = null;
+    todasCondicoes().forEach(function (x) {
+        if (x.c.title === titulo) { achou = x; }
+    });
+    return achou;
+}
+
+/* O nivel vem no comeco do subtitulo ("Media - -2 em ataques"), que e como
+   o livro escreve: "Envenenado (Media)". */
+function nivelCondicao(c) {
+    return String(c.subtitle || "").split("·")[0].trim();
+}
+
+function efeitoCondicao(c) {
+    var p = String(c.subtitle || "").split("·");
+    return p.length > 1 ? p.slice(1).join("·").trim() : "";
+}
+
+function blocoCondicoes() {
+    var ativas = F.condicoes || [];
+
+    var cartoes = ativas.map(function (titulo) {
+        var x = acharCondicao(titulo);
+        if (!x) { return ""; }
+        var nivel = nivelCondicao(x.c);
+        return '<div class="cond-ativa">' +
+            '<div class="cond-topo">' +
+            '<b>' + esc(x.c.title) + "</b>" +
+            '<span class="cond-nivel n-' + nivel.toLowerCase()
+                .replace(/[áà]/g, "a").replace(/í/g, "i") + '">' + esc(nivel) + "</span>" +
+            '<span class="cond-grupo">' + esc(x.grupo.nome) + "</span>" +
+            '<button type="button" class="btn-mini perigo" data-tirar-condicao="' +
+            esc(x.c.title) + '" title="Tirar ' + esc(x.c.title) + '">' +
+            icone("fechar") + "</button></div>" +
+            '<p class="cond-efeito">' + esc(x.c.description || "") + ".</p>" +
+            "</div>";
     }).join("");
 
-    var rds = TIPOS_DANO_RD.map(function (t) {
-        return '<label class="rd" title="' + esc(t.nome) + '">' +
-            "<span>" + esc(t.id.toUpperCase()) + "</span>" +
-            '<input type="number" data-rd="' + t.id + '" value="' +
-            ((F.rds && Number(F.rds[t.id])) || 0) + '"></label>';
+    var opcoes = GRUPOS_CONDICAO.map(function (g) {
+        var lista = (window["data_condicao_" + g.id] || []).filter(function (c) {
+            return ativas.indexOf(c.title) < 0;
+        });
+        if (!lista.length) { return ""; }
+        return '<optgroup label="' + esc(g.nome) + '">' +
+            lista.map(function (c) {
+                return '<option value="' + esc(c.title) + '">' + esc(c.title) +
+                    " — " + esc(nivelCondicao(c)) + "</option>";
+            }).join("") + "</optgroup>";
     }).join("");
+
+    return '<div class="condicoes">' +
+        (cartoes || '<p class="aviso">Nenhuma condição ativa.</p>') +
+        '<label class="cond-add"><span>Aplicar</span>' +
+        '<select id="add-condicao"><option value="">escolha uma condição…</option>' +
+        opcoes + "</select></label>" +
+        (ativas.length > 1
+            ? '<p class="cond-nota">Efeitos iguais <b>não se acumulam</b>: ' +
+              "aplique só o mais severo (livro, pg. 317).</p>"
+            : "") +
+        "</div>";
+}
 
 /* Livro, pg. 323. A exaustao e cumulativa e cada nivel muda conta em meia
    ficha - deslocamento, Defesa, as duas CDs, toda rolagem, e nos niveis 3 e
@@ -87,6 +164,22 @@ function blocoExaustao() {
         '<i class="exa-val">' + n + "/6</i></div>" + texto + "</div>";
 }
 
+function desenhar_marcas() {
+    var alvo = document.getElementById("ficha-marcas");
+    if (!alvo) { return; }
+
+    var marcas = MARCAS_PV.map(function (m) {
+        return '<label class="marca"><input type="checkbox" data-marca="' + m.id + '"' +
+            (F.marcas && F.marcas[m.id] ? " checked" : "") + "><span>" + esc(m.nome) + "</span></label>";
+    }).join("");
+
+    var rds = TIPOS_DANO_RD.map(function (t) {
+        return '<label class="rd" title="' + esc(t.nome) + '">' +
+            "<span>" + esc(t.id.toUpperCase()) + "</span>" +
+            '<input type="number" data-rd="' + t.id + '" value="' +
+            ((F.rds && Number(F.rds[t.id])) || 0) + '"></label>';
+    }).join("");
+
     var pip = function (campo, n) {
         var v = (F.testesMorte && Number(F.testesMorte[campo])) || 0;
         var caixas = "";
@@ -115,6 +208,10 @@ function blocoExaustao() {
         '<input type="number" data-caminho="experiencia" value="' + (Number(F.experiencia) || 0) + '"></label>' +
         "</div>" +
         '<h2>Exaustão</h2>' + blocoExaustao() +
+        '<h2>Condições <span class="h2-nota">' +
+            ((F.condicoes || []).length || "nenhuma") + ' ativa' +
+            ((F.condicoes || []).length === 1 ? "" : "s") + '</span></h2>' +
+        blocoCondicoes() +
         '<h2>RD por tipo</h2><div class="grade-rd">' + rds + "</div>" +
         '<h2>Testes de morte</h2>' +
         '<div class="morte"><span>Sucessos</span><div class="pips">' + pip("sucessos") + "</div></div>" +

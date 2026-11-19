@@ -14,6 +14,7 @@ function ficha_nova() {
         itens: [], anotacoes: "",
         pvPerdidos: 0, pePerdidos: 0, integridadePerdida: 0,
         exaustao: 0,                       /* 0 a 6, livro pg. 323 */
+        condicoes: [],                     /* ids ativos, livro pg. 317 */
 
         /* --- o resto da planilha --- */
         retrato: "",

@@ -799,6 +799,20 @@ function ligar_eventos() {
     }
 
     raiz.addEventListener("change", function (e) {
+        /* O <select> de condicoes mora aqui, e nao no listener de "input":
+           "change" e o evento canonico de select, e e o que os outros
+           selects da ficha ja usam. */
+        if (e.target.id === "add-condicao") {
+            if (e.target.value) {
+                if (!F.condicoes) { F.condicoes = []; }
+                if (F.condicoes.indexOf(e.target.value) < 0) {
+                    F.condicoes.push(e.target.value);
+                }
+                salvar();
+                desenhar_marcas();
+            }
+            return;
+        }
         if (e.target.dataset.escolha) {
             if (!F.treinosEscolha) { F.treinosEscolha = {}; }
             F.treinosEscolha[e.target.dataset.escolha] = e.target.value;
@@ -922,6 +936,15 @@ function ligar_eventos() {
             var n = Number(d.abrirFeitico);
             FEITICO_ABERTO = (FEITICO_ABERTO === n) ? -1 : n;
             desenhar_perfil();
+            return;
+        }
+
+        if (d.tirarCondicao) {
+            F.condicoes = (F.condicoes || []).filter(function (t) {
+                return t !== d.tirarCondicao;
+            });
+            salvar();
+            desenhar_marcas();
             return;
         }
 
