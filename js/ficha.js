@@ -225,6 +225,55 @@ function peMax() {
     return resultado(partes.concat(mods("pe")));
 }
 
+/* ------------------------------------------------------------- descansos -- */
+/* Livro, pg. 335. Num descanso CURTO o personagem "recupera metade do seu
+   maximo de energia amaldicoada" e pode gastar dados de vida para se curar
+   - gastar e uma escolha dele, entao o descanso curto nao mexe na vida nem
+   nos dados. Num descanso LONGO recupera "todos os seus pontos de vida",
+   "todos os seus dados de vida gastos" e "todos os seus pontos de energia".
+   Nenhum dos dois cura a Integridade da Alma: o livro nao diz que cura, e
+   zerar por conta propria apagaria dano que o Narrador aplicou.
+
+   Devolve a lista do que mudou, para a ficha poder dizer em palavras - um
+   botao que mexe em quatro campos de uma vez precisa se explicar. */
+function descansar(tipo) {
+    var mudou = [];
+    var alvoPE = peMax().total;
+
+    if (tipo === "longo") {
+        if (F.pvPerdidos > 0) {
+            mudou.push(F.pvPerdidos + " PV");
+            F.pvPerdidos = 0;
+        }
+        if (F.pePerdidos > 0) {
+            mudou.push(F.pePerdidos + " de " + nomeRecurso());
+            F.pePerdidos = 0;
+        }
+        var dados = 0;
+        DADOS_VIDA.forEach(function (d) {
+            dados += Number(F.dadosVidaGastos[d]) || 0;
+            F.dadosVidaGastos[d] = 0;
+        });
+        if (dados > 0) { mudou.push(dados + " dado" + (dados > 1 ? "s" : "") + " de vida"); }
+    } else {
+        /* "metade do seu maximo": metade do MAXIMO, nao do que falta. Se o
+           personagem perdeu menos que isso, recupera so o que perdeu. */
+        var volta = Math.min(F.pePerdidos, Math.floor(alvoPE / 2));
+        if (volta > 0) {
+            mudou.push(volta + " de " + nomeRecurso());
+            F.pePerdidos -= volta;
+        }
+    }
+    return mudou;
+}
+
+/* O Restringido nao tem energia amaldicoada: "Os Restringidos nao possuem
+   Pontos de Energia, recebendo os Pontos de Estamina no lugar" (pg. 21). */
+function nomeRecurso() {
+    var e = espec();
+    return e ? e.recurso : "Energia";
+}
+
 /* a planilha conta quantidade x peso */
 function espacosOcupados() {
     return (F.inventario || []).reduce(function (soma, it) {

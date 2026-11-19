@@ -211,12 +211,34 @@ function primeirosPassos() {
         "</div>";
 }
 
+/* Qual descanso esta armado para confirmar. O artifact nao mostra confirm(),
+   e um clique errado em "longo" apagaria dano que o Narrador aplicou, entao o
+   botao pede o segundo clique por conta propria. */
+var DESCANSO_ARMADO = "";
+
+function botaoDescanso(tipo, rotulo, explica) {
+    var armado = DESCANSO_ARMADO === tipo;
+    return '<button type="button" class="desc-bt' + (armado ? " armado" : "") +
+        '" data-descanso="' + tipo + '" title="' + esc(explica) + '">' +
+        (armado ? "confirmar?" : esc(rotulo)) + "</button>";
+}
+
 function desenhar_recursos() {
     var e = espec();
+    var rec = e ? e.recurso : "Energia";
     document.getElementById("ficha-recursos").innerHTML =
         barra("Pontos de Vida", pvMax(), "pvPerdidos") +
-        barra("Pontos de " + (e ? e.recurso : "Energia"), peMax(), "pePerdidos") +
-        barra("Integridade da Alma", integridadeMax(), "integridadePerdida");
+        barra("Pontos de " + rec, peMax(), "pePerdidos") +
+        barra("Integridade da Alma", integridadeMax(), "integridadePerdida") +
+        '<div class="descanso">' +
+        '<span class="descanso-rot">Descanso</span>' +
+        botaoDescanso("curto", "Curto",
+            "2 a 4 horas: recupera metade do seu máximo de " + rec +
+            ". Os dados de vida você gasta à mão, quando quiser (livro, pg. 335).") +
+        botaoDescanso("longo", "Longo",
+            "Cerca de 8 horas: recupera todos os PV, todos os dados de vida " +
+            "gastos e todo o " + rec + " (livro, pg. 335).") +
+        "</div>";
 }
 
 function tile(rotulo, res, sufixo) {
@@ -799,6 +821,22 @@ function ligar_eventos() {
 
         if (d.aba) { trocar_aba(d.aba); return; }
 
+        if (d.descanso) {
+            if (DESCANSO_ARMADO !== d.descanso) {
+                DESCANSO_ARMADO = d.descanso;
+                desenhar_recursos();
+                return;
+            }
+            DESCANSO_ARMADO = "";
+            var mudou = descansar(d.descanso);
+            desenhar();
+            salvar();
+            avisar_nota(mudou.length
+                ? "Descanso " + d.descanso + ": recuperou " + mudou.join(", ") + "."
+                : "Descanso " + d.descanso + ": nada a recuperar.");
+            return;
+        }
+
         if (d.periciaVer) { abrir_pericia(d.periciaVer); return; }
 
         if (d.addLista) {
@@ -1049,6 +1087,17 @@ function avisar_salvo(erro, mensagem) {
     el.className = "salvo visivel";
     el.textContent = "salvo";
     _sumirSalvo = setTimeout(function () { el.classList.remove("visivel"); }, 1100);
+}
+
+/* O "salvo" pisca e some; um descanso mexe em quatro campos de uma vez e
+   precisa de tempo para ser lido. */
+function avisar_nota(texto) {
+    var el = document.getElementById("salvo");
+    if (!el) { return; }
+    clearTimeout(_sumirSalvo);
+    el.className = "salvo nota visivel";
+    el.textContent = texto;
+    _sumirSalvo = setTimeout(function () { el.classList.remove("visivel"); }, 4200);
 }
 
 /* Rola o que a pessoa digitou no campo solto da bandeja. */

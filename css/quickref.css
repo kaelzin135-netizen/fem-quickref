@@ -1435,6 +1435,62 @@ p:first-child {
 .rec-valor input:focus { outline: none; }
 .rec-valor i { font-size: 13px; font-style: normal; color: var(--tinta-fraca); }
 
+/* Linha de descanso, embaixo das tres barras: o rotulo em 14/700 como o das
+   barras, e os dois botoes no molde dos botoes do C.R.I.S. - 14/600, 2px de
+   raio, altura 36. Armado, o botao fica vermelho e troca o texto por
+   "confirmar?", porque o descanso longo zera dano que alguem aplicou. */
+.descanso {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--linha);
+}
+
+.descanso-rot {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--tinta-fraca);
+    margin-right: auto;
+}
+
+.desc-bt {
+    min-width: 76px;
+    height: 36px;
+    padding: 0 12px;
+    border: 1px solid var(--linha);
+    border-radius: 2px;
+    background: var(--elevado);
+    color: var(--tinta-fraca);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color .1s ease, border-color .1s ease, background-color .1s ease;
+}
+
+.desc-bt:hover {
+    color: var(--tinta);
+    border-color: var(--accent);
+}
+
+.desc-bt.armado {
+    border-color: var(--vermelho);
+    background: color-mix(in oklab, var(--vermelho) 16%, var(--elevado));
+    color: var(--tinta);
+}
+
+.salvo.nota {
+    max-width: 360px;
+    padding: 8px 12px;
+    font-size: 12px;
+    letter-spacing: 0;
+    line-height: 1.45;
+    border-color: var(--accent);
+    color: var(--tinta);
+}
+
 .rec-pe { margin-top: 3px; text-align: right; }
 .rec-pe .conta { font-size: 10px; }
 

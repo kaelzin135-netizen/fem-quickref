@@ -16,7 +16,7 @@ var ESPECIALIZACOES = [
     {
         id: "lutador", nome: "Lutador",
         pv1: 12, pvPasso: 6, pvDado: "1d10",
-        peNivel: 4, peSomaMod: false, recurso: "PE",
+        peNivel: 4, peSomaMod: false, recurso: "Energia",
         chave: ["for", "des"],
         trOpcoes: ["fortitude", "reflexos"],
         pagina: 49
@@ -24,7 +24,7 @@ var ESPECIALIZACOES = [
     {
         id: "combate", nome: "Especialista em Combate",
         pv1: 12, pvPasso: 6, pvDado: "1d10",
-        peNivel: 4, peSomaMod: false, recurso: "PE",
+        peNivel: 4, peSomaMod: false, recurso: "Energia",
         chave: ["for", "des", "sab"],
         trOpcoes: ["fortitude", "reflexos"],
         pagina: 63
@@ -32,7 +32,7 @@ var ESPECIALIZACOES = [
     {
         id: "tecnica", nome: "Especialista em Técnica",
         pv1: 10, pvPasso: 5, pvDado: "1d8",
-        peNivel: 6, peSomaMod: true, recurso: "PE",
+        peNivel: 6, peSomaMod: true, recurso: "Energia",
         chave: ["int", "sab"],
         trOpcoes: ["astucia", "vontade"],
         pagina: 78
@@ -40,7 +40,7 @@ var ESPECIALIZACOES = [
     {
         id: "controlador", nome: "Controlador",
         pv1: 10, pvPasso: 5, pvDado: "1d8",
-        peNivel: 5, peSomaMod: true, recurso: "PE",
+        peNivel: 5, peSomaMod: true, recurso: "Energia",
         chave: ["pre", "sab"],
         trOpcoes: ["astucia", "vontade"],
         pagina: 90
@@ -48,7 +48,7 @@ var ESPECIALIZACOES = [
     {
         id: "suporte", nome: "Suporte",
         pv1: 10, pvPasso: 5, pvDado: "1d8",
-        peNivel: 5, peSomaMod: true, recurso: "PE",
+        peNivel: 5, peSomaMod: true, recurso: "Energia",
         chave: ["pre", "sab"],
         trOpcoes: ["astucia", "vontade"],
         pagina: 102
