@@ -939,6 +939,18 @@ function ligar_eventos() {
             return;
         }
 
+        if (d.orcar !== undefined) {
+            var fo = (F.feiticos || [])[Number(d.orcar)];
+            if (fo) {
+                /* Clicar de novo no mesmo selo tira o valor, para quem pos
+                   sem querer nao ter de apagar o campo a mao. */
+                fo.dano = (fo.dano === d.dado) ? "" : d.dado;
+                salvar();
+                desenhar_perfil();
+            }
+            return;
+        }
+
         if (d.tirarCondicao) {
             F.condicoes = (F.condicoes || []).filter(function (t) {
                 return t !== d.tirarCondicao;

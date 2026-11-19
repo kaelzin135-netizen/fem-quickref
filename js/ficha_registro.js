@@ -310,6 +310,60 @@ function custoFeitico(f) {
     return m ? Number(m[1]) : 0;
 }
 
+/* O que o livro orca para um feitico daquele nivel (pgs. 205 e 206).
+   O C.R.I.S. tem um botao "Adicionar" que puxa rituais prontos de um
+   catalogo; o F&M nao tem catalogo, tem um sistema de construcao. Entao o
+   equivalente aqui e a tabela na frente de quem monta - e um clique que
+   escreve o valor no campo de dano, que e o gesto que o "Adicionar" deles
+   economiza: nao ter de copiar numero do PDF a mao. */
+function selosOrcamento(f, i) {
+    var n = Number(f.nivel) || 0;
+    var u = FEITICO_DANO_UNICO[n];
+    var a = FEITICO_DANO_AREA[n];
+    var selos = [];
+
+    if (u) {
+        selos.push({ rot: "alvo único, TR", dado: u.tr, media: u.trMedia });
+        selos.push({ rot: "alvo único, ataque", dado: u.ataque, media: u.ataqueMedia });
+    }
+    if (a) {
+        selos.push({ rot: "em área", dado: a.dado, media: a.media });
+    }
+
+    return selos.map(function (s) {
+        var posto = f.dano === s.dado ? " posto" : "";
+        return '<button type="button" class="orc-selo' + posto +
+            '" data-orcar="' + i + '" data-dado="' + s.dado +
+            '" title="Escrever ' + s.dado + ' no campo de dano">' +
+            '<span class="orc-rot">' + esc(s.rot) + "</span>" +
+            "<b>" + s.dado + "</b>" +
+            '<i>média ' + s.media + "</i></button>";
+    }).join("");
+}
+
+function orcamentoFeitico(f, i) {
+    var n = Number(f.nivel) || 0;
+    var selos = selosOrcamento(f, i);
+    if (!selos) { return ""; }
+
+    var extras = [];
+    if (FEITICO_ALCANCE[n] !== undefined) {
+        extras.push("alcance " + String(FEITICO_ALCANCE[n]).replace(".", ",") + " m");
+    }
+    if (FEITICO_AREA[n] !== undefined) {
+        extras.push("área " + String(FEITICO_AREA[n]).replace(".", ",") + " m");
+    }
+
+    return '<div class="orcamento">' +
+        '<div class="orc-cab">O livro orça, no nível ' + n +
+        ' <span>pgs. 205 e 206</span></div>' +
+        '<div class="orc-selos">' + selos + "</div>" +
+        (extras.length
+            ? '<p class="orc-extra">' + esc(extras.join(" · ")) + "</p>"
+            : "") +
+        "</div>";
+}
+
 function cartaoFeitico(f, i) {
     var aberto = FEITICO_ABERTO === i;
     return '<div class="cart' + (aberto ? " aberto" : "") + '">' +
@@ -352,6 +406,7 @@ function cartaoFeitico(f, i) {
                       '<input type="text" data-lista="feiticos" data-i="' + i +
                       '" data-chave="' + c.id + '" value="' + esc(f[c.id] || "") + '"></div>';
               }).join("") +
+              orcamentoFeitico(f, i) +
               '<textarea data-lista="feiticos" data-i="' + i + '" data-chave="descricao" rows="4" ' +
               'placeholder="o que o feitiço faz">' + esc(f.descricao || "") + "</textarea>" +
               "</div>"
