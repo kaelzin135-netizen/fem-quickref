@@ -315,6 +315,26 @@ function deslocamento() {
     return resultado(partes.concat(mods("deslocamento")));
 }
 
+/* Sao DUAS CDs, com atributos-base diferentes.
+ *
+ * A CD de Especializacao rege o que vem da especializacao: efeitos de
+ * critico de arma, encantamentos, manobras. A CD Amaldicoada rege o jujutsu
+ * — aptidoes amaldicoadas e feiticos (pg. 172: "utiliza-se a sua CD
+ * Amaldicoada, compartilhada tambem para os Feiticos").
+ *
+ * A conta e a mesma; o que muda e o atributo. Ate aqui a ficha calculava um
+ * valor so e o usava nos dois lugares, o que so nao aparecia porque a Amanai
+ * tem Destreza nos dois campos. */
+function cdAmaldicoada() {
+    var partes = [
+        { rotulo: "base", valor: 10, sempre: true },
+        { rotulo: "½ nível", valor: metadeNivel(), sempre: true },
+        { rotulo: nomeAtributo(F.atribJujutsu), valor: modAtributo(F.atribJujutsu), sempre: true },
+        { rotulo: "treinamento", valor: bt().total, sempre: true }
+    ];
+    return resultado(partes.concat(mods("cdAmaldicoada")));
+}
+
 function cdEspec() {
     var partes = [
         { rotulo: "base", valor: 10, sempre: true },

@@ -110,10 +110,10 @@ function desenhar_identidade() {
     var alvo = document.getElementById("ficha-atrib-chave");
     if (alvo) {
         alvo.innerHTML =
-            campoCab("Atrib. da CD", '<select data-campo="atribCD">' +
+            campoCab("CD de espec.", '<select data-campo="atribCD">' +
                 opcoes(e ? ATRIBUTOS.filter(function (a) { return e.chave.indexOf(a.id) >= 0; }) :
                     ATRIBUTOS, F.atribCD) + "</select>") +
-            campoCab("Atrib. de jujutsu", '<select data-campo="atribJujutsu">' +
+            campoCab("CD amaldiçoada", '<select data-campo="atribJujutsu">' +
                 opcoes(ATRIBUTOS, F.atribJujutsu) + "</select>");
     }
 }
@@ -146,11 +146,22 @@ function desenhar_atributos() {
         }).join("");
 
     var e = espec();
-    var cd = cdEspec();
+    var cdE = cdEspec();
+    var cdA = cdAmaldicoada();
+    /* As duas CDs no miolo do selo. Mostrar so uma escondia a diferenca
+       justamente de quem tem atributos diferentes nos dois campos. */
+    var caixa = function (rot, res, attr) {
+        return '<span class="centro-cd" title="' + esc(rot + ": " + formula(res)) + '">' +
+            '<b>' + res.total + "</b>" +
+            '<i>' + esc(e ? nomeAtributo(attr).slice(0, 3) : "—") + "</i></span>";
+    };
     document.getElementById("ficha-selo-centro").innerHTML =
         '<span class="centro-rot">CD</span>' +
-        '<span class="centro-val" title="' + esc(formula(cd)) + '">' + cd.total + "</span>" +
-        '<span class="centro-sub">' + esc(e ? nomeAtributo(F.atribCD).slice(0, 3) : "—") + "</span>";
+        '<span class="centro-duplo">' +
+        caixa("CD de Especialização", cdE, F.atribCD) +
+        caixa("CD Amaldiçoada", cdA, F.atribJujutsu) +
+        "</span>" +
+        '<span class="centro-sub">espec · jujutsu</span>';
 }
 
 /* Barra de recurso no molde do info-bar do C.R.I.S.: rotulo centrado em

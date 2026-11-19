@@ -91,6 +91,14 @@ function cd(nivel, modAtrib, outros) {
 }
 confere("CD da Amanaí (nível 2, Des 20)", cd(2, 5, 0), 18, 172);
 
+/* São DUAS CDs, cada uma com o seu atributo-base: a de Especialização rege
+   o que vem da especialização, e a Amaldiçoada rege aptidões e feitiços.
+   O caso que importa é quando os atributos DIVERGEM — com os dois iguais,
+   um bug aqui passaria despercebido. */
+confere("CD de Especialização (nível 6, Força 18 = +4)", cd(6, 4, 0), 20, 172);
+confere("CD Amaldiçoada do mesmo personagem (Inteligência 14 = +2)", cd(6, 2, 0), 18, 172);
+confere("as duas diferem quando os atributos diferem", cd(6, 4, 0) !== cd(6, 2, 0), true, 172);
+
 /* -------------------------------------------------------------- perícia --- */
 /* "mod. do atributo-chave + metade do nível + bônus de treinamento (se
    treinado)"; mestre soma 1,5× o bônus — pg. 280 */

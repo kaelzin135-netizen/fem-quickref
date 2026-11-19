@@ -3500,3 +3500,22 @@ body.com-modal { overflow: hidden; }
 }
 
 .mesa-lembrar input { margin: 0; accent-color: var(--accent); cursor: pointer; }
+
+/* --- as duas CDs no miolo do selo de atributos --- */
+.centro-duplo { display: flex; align-items: baseline; gap: 10px; }
+
+.centro-cd {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.05;
+}
+
+.centro-cd b { font-size: 21px; font-weight: 500; color: var(--tinta); }
+.centro-cd i {
+    font-style: normal;
+    font-size: 10px;
+    letter-spacing: .6px;
+    text-transform: uppercase;
+    color: var(--tinta-tenue);
+}

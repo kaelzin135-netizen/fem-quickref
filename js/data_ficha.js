@@ -176,6 +176,7 @@ var ALVOS = [
     { id: "iniciativa", rotulo: "Iniciativa", grupo: "Valores" },
     { id: "deslocamento", rotulo: "Deslocamento (metros)", grupo: "Valores" },
     { id: "cdEspec", rotulo: "CD de Especialização", grupo: "Valores" },
+    { id: "cdAmaldicoada", rotulo: "CD Amaldiçoada (feitiços)", grupo: "Valores" },
     { id: "bt", rotulo: "Bônus de Treinamento", grupo: "Valores" },
 
     { id: "ataque.corpo", rotulo: "Ataque corpo a corpo", grupo: "Ataques" },

@@ -223,7 +223,8 @@ function desenhoFeiticos() {
         '<div class="feitico-barra">' +
         '<input type="search" id="filtro-feitico" placeholder="Filtrar feitiços" value="' +
         esc(FILTRO_FEITICO) + '">' +
-        '<div class="feitico-cd"><span>CD de feitiço</span><b>' + cdEspec().total + "</b></div>" +
+        '<div class="feitico-cd" title="' + esc(formula(cdAmaldicoada())) + '">' +
+        "<span>CD de feitiço</span><b>" + cdAmaldicoada().total + "</b></div>" +
         "</div>" +
         '<div class="lista-feiticos">' + cartoes + "</div>" +
         '<button type="button" class="btn secundario" data-add-lista="feiticos">' +
