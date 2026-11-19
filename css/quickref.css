@@ -3466,3 +3466,37 @@ body.com-modal { overflow: hidden; }
 :root[data-tema="noite"] .detalhe {
     border-left-color: color-mix(in oklab, var(--accent) 62%, #fff);
 }
+
+/* --- identidade da sessão no topo --- */
+.pilula-papel { display: inline-flex; align-items: center; gap: 7px; }
+.pilula-quem { white-space: nowrap; }
+
+.pilula-sair {
+    padding: 0 5px;
+    border: 0;
+    border-left: 1px solid rgba(255, 255, 255, .35);
+    border-radius: 0;
+    background: none;
+    color: inherit;
+    font-family: inherit;
+    font-size: 10px;
+    letter-spacing: .5px;
+    text-transform: lowercase;
+    opacity: .8;
+    cursor: pointer;
+}
+
+.pilula-sair:hover { opacity: 1; text-decoration: underline; }
+
+/* "lembrar neste aparelho", na tela de PIN */
+.mesa-lembrar {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin: 10px 0 2px;
+    font-size: 13px;
+    color: var(--tinta);
+    cursor: pointer;
+}
+
+.mesa-lembrar input { margin: 0; accent-color: var(--accent); cursor: pointer; }

@@ -129,8 +129,11 @@ var ArmazemNuvem = {
         return !!(MESA_CONFIG.supabaseUrl && MESA_CONFIG.supabaseChave);
     },
 
-    /* No modo nuvem nao ha sessao: configurado ja basta para estar ativo. */
-    get ativo() { return this.configurado; },
+    /* "Ativo" tem de significar configurado E alcancavel. So "configurado"
+       mandava a interface inteira pelo caminho da nuvem com o servidor fora
+       do ar: a pessoa digitava o PIN certo e nao entrava em lugar nenhum,
+       porque cada ponto decide nuvem-ou-local por esta propriedade. */
+    get ativo() { return this.configurado && !this.semRede; },
 
     _url(caminho) { return MESA_CONFIG.supabaseUrl.replace(/\/+$/, "") + caminho; },
 
@@ -301,6 +304,96 @@ function resumoDaFicha(f) {
         tecnica: f.tecnica || "",
         origem: f.origem || ""
     };
+}
+
+/* ------------------------------------------------------- a sessao ------- */
+
+/* "Quem e voce nesta mesa", guardado no aparelho do jogador.
+ *
+ * O PIN fica aqui junto, e isso e uma decisao, nao um descuido: sem ele
+ * guardado nao ha sessao nenhuma — a pessoa redigitaria o PIN a cada vez que
+ * abrisse a pagina, que e justamente o atrito que se quer tirar da mesa.
+ *
+ * O que isso custa: quem puser a mao NESTE navegador abre esta ficha. Como o
+ * PIN so protege a propria ficha e o aparelho e do proprio jogador, o risco
+ * e o mesmo de deixar a conta aberta no proprio celular. O que NAO acontece:
+ * o PIN nao viaja para outro aparelho nem para o servidor em texto — ele so
+ * sai daqui para ser conferido, como ja era.
+ *
+ * Quem nao quiser, desmarca "lembrar neste aparelho" e a sessao nao e
+ * gravada; e "sair" apaga.
+ */
+var CHAVE_SESSAO_JOGADOR = "fem-sessao-v1";
+
+function sessao_guardar(id, pin, lembrar) {
+    if (!lembrar) { return sessao_esquecer(); }
+    try {
+        localStorage.setItem(CHAVE_SESSAO_JOGADOR, JSON.stringify({
+            fichaId: id,
+            pin: pin || null,
+            mestre: false,
+            em: new Date().toISOString()
+        }));
+    } catch (e) { /* sem armazenamento: a sessao vale so nesta aba */ }
+}
+
+function sessao_guardar_mestre(pin, lembrar) {
+    if (!lembrar) { return sessao_esquecer(); }
+    try {
+        localStorage.setItem(CHAVE_SESSAO_JOGADOR, JSON.stringify({
+            fichaId: null, pin: pin || null, mestre: true,
+            em: new Date().toISOString()
+        }));
+    } catch (e) { /* ignora */ }
+}
+
+function sessao_ler() {
+    try {
+        var bruto = localStorage.getItem(CHAVE_SESSAO_JOGADOR);
+        return bruto ? JSON.parse(bruto) : null;
+    } catch (e) { return null; }
+}
+
+function sessao_esquecer() {
+    try { localStorage.removeItem(CHAVE_SESSAO_JOGADOR); } catch (e) { /* ignora */ }
+}
+
+/* Abre direto a ficha de quem ja entrou neste aparelho. Devolve true quando
+   conseguiu — o chamador so mostra o quadro da mesa se isto falhar. */
+async function sessao_retomar() {
+    var s = sessao_ler();
+    if (!s) { return false; }
+
+    if (s.mestre) {
+        var m = await mesa_entrar_mestre(s.pin);
+        if (!m.ok) {
+            if (!ArmazemNuvem.semRede) { sessao_esquecer(); }
+            return false;
+        }
+        SOU_MESTRE = true;
+        return false;   /* mestre nao tem ficha: cai no quadro, ja destrancado */
+    }
+
+    var env = mesa_buscar(s.fichaId);
+    if (!env) { sessao_esquecer(); return false; }
+
+    if (ArmazemNuvem.ativo && !ArmazemNuvem.semRede) {
+        var r = await ArmazemNuvem.abrir(env.id, s.pin);
+        if (!r.ok) {
+            /* So esquece quando o servidor RECUSOU (PIN errado, ficha que
+               sumiu). Se ele simplesmente nao respondeu, a sessao continua
+               valendo: uma queda do servidor nao pode deslogar a mesa
+               inteira e obrigar os seis a redigitar o PIN. */
+            if (!ArmazemNuvem.semRede) { sessao_esquecer(); return false; }
+            return false;
+        }
+        env.ficha = r.ficha.ficha || r.ficha;
+    } else if (env.pin && env.pin.sal) {
+        if (!await conferirPin(s.pin, env.pin)) { sessao_esquecer(); return false; }
+    }
+
+    abrir_envelope(env, false);
+    return true;
 }
 
 /* -------------------------------------------------------- a mesa -------- */

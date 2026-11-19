@@ -1130,7 +1130,10 @@ window.addEventListener("DOMContentLoaded", async function () {
         };
         /* primeira visita: cria os lugares da mesa */
         if (!MESA.fichas.length) { await mesa_semear(); }
-        /* sem ficha aberta, comeca pela mesa */
-        if (!ENVELOPE) { mesa_mostrar(); }
+        /* quem ja entrou neste aparelho volta direto para a propria ficha;
+           so quem nunca entrou (ou saiu) ve o quadro da mesa */
+        var retomou = false;
+        if (typeof sessao_retomar === "function") { retomou = await sessao_retomar(); }
+        if (!retomou && !ENVELOPE) { mesa_mostrar(); }
     }
 });

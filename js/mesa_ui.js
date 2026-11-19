@@ -103,12 +103,19 @@ function desenhar_mesa() {
         (arm.compartilha
             ? "<b>Modo compartilhado.</b> As fichas ficam no servidor e quem manda no acesso é ele: cada jogador vê a própria, o mestre vê todas."
             : (ArmazemNuvem.configurado && ArmazemNuvem.semRede
-                ? "<b>Modo local — aqui não dá para compartilhar.</b> Esta página não " +
-                  "consegue falar com o servidor da mesa: o visualizador do Claude bloqueia " +
-                  "chamadas para fora, por segurança. As fichas compartilhadas abrem em " +
-                  '<a href="' + ENDERECO_COMPARTILHADO + '" target="_blank" rel="noopener">' +
-                  "kaelzin135-netizen.github.io/fem-quickref</a> — é esse o endereço para " +
-                  "mandar aos jogadores. O que você editar aqui fica só neste navegador."
+                ? (/claude\.ai$/.test(location.hostname)
+                    ? "<b>Modo local — aqui não dá para compartilhar.</b> Esta página não " +
+                      "consegue falar com o servidor da mesa: o visualizador do Claude " +
+                      "bloqueia chamadas para fora, por segurança. As fichas compartilhadas " +
+                      'abrem em <a href="' + ENDERECO_COMPARTILHADO + '" target="_blank" ' +
+                      'rel="noopener">kaelzin135-netizen.github.io/fem-quickref</a> — é esse ' +
+                      "o endereço para mandar aos jogadores. O que você editar aqui fica só " +
+                      "neste navegador."
+                    : "<b>Modo local — o servidor da mesa não respondeu.</b> Pode ser falta " +
+                      "de internet ou o projeto do Supabase <b>pausado</b> — o plano gratuito " +
+                      "pausa depois de uns dias sem uso, e basta despausar no painel. " +
+                      "Enquanto isso o que você editar fica <b>só neste navegador</b> e " +
+                      "<b>não sobe</b> para a mesa.")
                 : "<b>Modo local.</b> Estas fichas ficam <b>só neste navegador</b> — nada é " +
                   "compartilhado com outras pessoas, e o PIN aqui é uma tranca de conveniência. " +
                   "Para as seis pessoas verem as mesmas fichas, faltam dois valores em " +
@@ -173,6 +180,11 @@ function desenhar_destrancar(env) {
         "<h3>" + _esc(env.titulo) + "</h3>" +
         '<label class="cab-campo"><span>PIN</span>' +
         '<input type="password" id="mesa-pin" inputmode="numeric" autocomplete="current-password"></label>' +
+        '<label class="mesa-lembrar"><input type="checkbox" id="mesa-lembrar" checked>' +
+        "<span>Lembrar neste aparelho</span></label>" +
+        '<p class="mesa-nota">Marcado, você abre direto nesta ficha da próxima vez. ' +
+        "O PIN fica guardado <b>neste navegador</b> — quem usar este aparelho entra. " +
+        "Desmarque em computador compartilhado.</p>" +
         '<div class="mesa-form-acoes">' +
         '<button type="button" class="btn" data-destrancar="' + env.id + '">Abrir</button>' +
         '<button type="button" class="btn secundario" data-cancelar-form="1">Cancelar</button>' +
@@ -280,12 +292,38 @@ function abrir_envelope(env, comoMestre) {
     F = base;
     mesa_esconder();
     desenhar();
-    var faixa = document.getElementById("faixa-papel");
-    if (faixa) {
-        faixa.textContent = SOU_MESTRE ? "Mestre · " + env.titulo : env.titulo;
-        faixa.className = "pilula-papel " + (SOU_MESTRE ? "mestre" : "jogador");
-    }
+    desenhar_identidade_sessao(env);
     aplicar_leitura();
+}
+
+/* Quem esta nesta ficha, no alto da pagina. Com sessao guardada aparece o
+   "sair", que e o unico jeito obvio de trocar de pessoa no mesmo aparelho. */
+function desenhar_identidade_sessao(env) {
+    var faixa = document.getElementById("faixa-papel");
+    if (!faixa) { return; }
+    var temSessao = !!sessao_ler();
+    var quem = SOU_MESTRE ? "Mestre · " + env.titulo
+        : (env.jogador ? env.jogador + " · " + env.titulo : env.titulo);
+
+    faixa.className = "pilula-papel " + (SOU_MESTRE ? "mestre" : "jogador");
+    faixa.innerHTML = '<span class="pilula-quem">' + _esc(quem) + "</span>" +
+        (temSessao
+            ? '<button type="button" class="pilula-sair" id="btn-sair-sessao" ' +
+              'title="Esquecer este aparelho e voltar para a mesa">sair</button>'
+            : "");
+
+    var bt = document.getElementById("btn-sair-sessao");
+    if (bt) {
+        bt.onclick = function () {
+            sessao_esquecer();
+            SOU_MESTRE = false;
+            LEITURA = false;
+            if (ArmazemNuvem.ativo) { ArmazemNuvem._pins = {}; ArmazemNuvem._pinMestre = null; }
+            ENVELOPE = null;
+            mesa_mostrar();
+            desenhar_mesa();
+        };
+    }
 }
 
 function ligar_mesa() {
@@ -357,12 +395,14 @@ function ligar_mesa() {
                 var baixada = await ArmazemNuvem.abrir(env.id, null);
                 if (!baixada.ok) { _erro(baixada.erro); return; }
                 env.ficha = baixada.ficha.ficha || baixada.ficha;
+                if (!SOU_MESTRE) { sessao_guardar(env.id, null, true); }
                 abrir_envelope(env, SOU_MESTRE);
                 return;
             }
             /* o mestre ja provou quem e ao entrar: nao pede o PIN do jogador */
             if (SOU_MESTRE) { abrir_envelope(env, true); return; }
             if (env.pin && env.pin.sal) { desenhar_destrancar(env); return; }
+            sessao_guardar(env.id, null, true);
             abrir_envelope(env, false);
             return;
         }
@@ -375,16 +415,21 @@ function ligar_mesa() {
             /* No modo nuvem quem confere e o banco: se o PIN estiver errado,
                os dados simplesmente nao descem. Aqui a pagina nao tem o hash
                para comparar, e e bom que nao tenha. */
+            var lembrarEl = document.getElementById("mesa-lembrar");
+            var lembrar = !lembrarEl || lembrarEl.checked;
+
             if (ArmazemNuvem.ativo) {
                 var baixada = await ArmazemNuvem.abrir(alvo.id, digitado);
                 if (!baixada.ok) { _erro(baixada.erro || "PIN incorreto."); return; }
                 alvo.ficha = baixada.ficha.ficha || baixada.ficha;
+                sessao_guardar(alvo.id, digitado, lembrar);
                 abrir_envelope(alvo, SOU_MESTRE);
                 return;
             }
 
             var ok = await conferirPin(digitado, alvo.pin);
             if (!ok) { _erro("PIN incorreto."); return; }
+            sessao_guardar(alvo.id, digitado, lembrar);
             abrir_envelope(alvo, false);
             return;
         }
