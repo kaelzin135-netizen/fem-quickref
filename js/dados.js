@@ -114,10 +114,24 @@ function _hora(d) {
     return String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
 }
 
+/* Notacao emprestada do C.R.I.S.: eles mostram TODOS os dados e marcam com
+   "d" os descartados — [1d, 4d, 9d, 13d, 20]+17 =37. La e porque o sistema
+   rola varios d20 e guarda o maior; aqui o caso equivalente e vantagem e
+   desvantagem, onde eu mostrava os dois dados sem dizer qual tinha valido. */
 function _detalheTeste(r) {
-    var dado = r.pares
-        ? "d20 " + (r.modo === "vantagem" ? "↑" : "↓") + " (" + r.pares.join(", ") + ")"
-        : "d20 (" + r.d20 + ")";
+    var dado;
+    if (r.pares) {
+        var valeu = r.d20;
+        var usado = false;
+        dado = "[" + r.pares.map(function (v) {
+            /* o que valeu aparece limpo; o outro leva o "d" de descartado.
+               Com dois iguais, so o primeiro conta como o que valeu. */
+            if (v === valeu && !usado) { usado = true; return String(v); }
+            return v + "d";
+        }).join(", ") + "]";
+    } else {
+        dado = "[" + r.d20 + "]";
+    }
     var b = r.bonus;
     return dado + (b ? (b < 0 ? " − " : " + ") + Math.abs(b) : "");
 }
