@@ -34,6 +34,59 @@ function desenhar_marcas() {
             ((F.rds && Number(F.rds[t.id])) || 0) + '"></label>';
     }).join("");
 
+/* Livro, pg. 323. A exaustao e cumulativa e cada nivel muda conta em meia
+   ficha - deslocamento, Defesa, as duas CDs, toda rolagem, e nos niveis 3 e
+   5 o proprio maximo de vida. E justamente por estar espalhada que a mesa
+   esquece dela, entao aqui o nivel fica a um clique e a ficha diz, em
+   palavras, o que aquele nivel esta cobrando agora.
+
+   Os efeitos sao CUMULATIVOS: no nivel 4 valem tambem os de 1, 2 e 3. */
+var EFEITOS_EXAUSTAO = [
+    "−1 em todas as rolagens, na Defesa e nas CDs — e mais −1 a cada nível.",
+    "Você fica <b>Desprevenido</b>.",
+    "Perde 20 pontos de vida máximos, ou ¼ da vida máxima — o que for maior. " +
+        "Você também fica <b>Exposto</b>.",
+    "Você fica <b>Condenado</b> e <b>Desorientado</b>. Se entrar em morrendo, " +
+        "já conta com duas falhas.",
+    "Perde 50 pontos de vida máximos, ou metade da vida máxima — o que for maior. " +
+        "Você também fica <b>Enjoado</b>.",
+    "<b>O personagem morre.</b>"
+];
+
+function blocoExaustao() {
+    var n = nivelExaustao();
+    var pips = "";
+    for (var i = 1; i <= 6; i++) {
+        pips += '<button type="button" class="pip exa' + (i <= n ? " cheio" : "") +
+            (i === 6 ? " fatal" : "") +
+            '" data-exaustao-set="' + (i === n ? i - 1 : i) +
+            '" title="Nível ' + i + '" aria-label="Nível ' + i + '"></button>';
+    }
+
+    var texto = "";
+    if (n > 0) {
+        var itens = "";
+        for (var j = 0; j < n; j++) {
+            itens += "<li><b>" + (j + 1) + ".</b> " + EFEITOS_EXAUSTAO[j] + "</li>";
+        }
+        var desmaio = desmaiaPorExaustao();
+        if (desmaio) {
+            itens += '<li class="exa-desmaio"><b>!</b> Este corte zeraria a sua vida. ' +
+                "Em vez disso você fica <b>desmaiado por " + desmaio +
+                " descanso" + (desmaio > 1 ? "s" : "") + " longo" +
+                (desmaio > 1 ? "s" : "") + "</b>, e o máximo de vida para em 1.</li>";
+        }
+        texto = '<ul class="exa-efeitos">' + itens + "</ul>" +
+            '<p class="exa-nota">Deslocamento −' +
+            (1.5 * n).toString().replace(".", ",") + " m. " +
+            "Um descanso longo tira <b>um</b> nível, não todos.</p>";
+    }
+
+    return '<div class="exaustao">' +
+        '<div class="morte"><span>Nível</span><div class="pips">' + pips + "</div>" +
+        '<i class="exa-val">' + n + "/6</i></div>" + texto + "</div>";
+}
+
     var pip = function (campo, n) {
         var v = (F.testesMorte && Number(F.testesMorte[campo])) || 0;
         var caixas = "";
@@ -61,6 +114,7 @@ function desenhar_marcas() {
         '<label class="cab-campo curto"><span>XP</span>' +
         '<input type="number" data-caminho="experiencia" value="' + (Number(F.experiencia) || 0) + '"></label>' +
         "</div>" +
+        '<h2>Exaustão</h2>' + blocoExaustao() +
         '<h2>RD por tipo</h2><div class="grade-rd">' + rds + "</div>" +
         '<h2>Testes de morte</h2>' +
         '<div class="morte"><span>Sucessos</span><div class="pips">' + pip("sucessos") + "</div></div>" +

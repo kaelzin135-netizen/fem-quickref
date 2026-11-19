@@ -13,6 +13,7 @@ function ficha_nova() {
         pericias: {}, resistencias: {}, ataques: {}, aptidoes: {},
         itens: [], anotacoes: "",
         pvPerdidos: 0, pePerdidos: 0, integridadePerdida: 0,
+        exaustao: 0,                       /* 0 a 6, livro pg. 323 */
 
         /* --- o resto da planilha --- */
         retrato: "",
@@ -159,7 +160,88 @@ function mods(alvo) {
             }
         });
     }
+    exaustaoNos(alvo).forEach(function (m) { saida.push(m); });
+
     return saida;
+}
+
+/* --------------------------------------------------------------- exaustao -- */
+/* Livro, pg. 323. A exaustao e cumulativa e pega quase toda conta da ficha,
+   o que a torna facil de esquecer no meio de uma sessao - o tipo de coisa
+   que a ficha tem de lembrar por voce.
+
+   "Para cada nivel de exaustao obtida, um personagem tem seu deslocamento
+   reduzido em 1,5 metros", e no nivel 1 "recebe -1 em todas as suas
+   rolagens, Defesa e Classe de Dificuldade. Esse negativo aumenta em -1
+   para cada nivel" - ou seja, no nivel N o castigo e -N.
+
+   Atencao NAO entra aqui: ela ja e 10 + a pericia de Percepcao, que ja
+   levou o -N por "pericia.todas". Somar de novo cobraria duas vezes. */
+function nivelExaustao() {
+    return Math.max(0, Math.min(6, Number(F.exaustao) || 0));
+}
+
+function exaustaoNos(alvo) {
+    var n = nivelExaustao();
+    if (!n) { return []; }
+    var rot = "Exaustão " + n;
+
+    if (alvo === "deslocamento") {
+        return [{ rotulo: rot, valor: -1.5 * n }];
+    }
+    if (alvo === "defesa" || alvo === "cdEspec" || alvo === "cdAmaldicoada" ||
+            alvo === "iniciativa" || alvo === "pericia.todas" ||
+            alvo.indexOf("tr.") === 0 || alvo.indexOf("ataque.") === 0) {
+        return [{ rotulo: rot, valor: -n }];
+    }
+    /* Niveis 3 e 5 derrubam o MAXIMO de vida: "perde 20 pontos de vida
+       maximos, ou 1/4 da vida maxima, o que for maior" (3) e "50 pontos de
+       vida maximos, ou metade da vida maxima, o que for maior" (5). O "o
+       que for maior" e sobre o tamanho da perda, nao sobre o que sobra. */
+    if (alvo === "pv") {
+        var corte = corteDeVida(n);
+        if (corte) { return [{ rotulo: rot, valor: -corte }]; }
+    }
+    return [];
+}
+
+/* Quanto a exaustao tira do MAXIMO de vida, ja limitado.
+
+   O livro prevem o caso extremo: "Se essa reducao for o suficiente para
+   reduzir a vida do personagem a 0, ao inves disso, desmaie-o por uma
+   quantidade de descansos longos igual a quantidade de niveis de exaustao".
+   Ou seja: quando o corte zeraria a vida, ele NAO e aplicado inteiro - o
+   personagem desmaia. Sem esse limite a ficha mostrava "PV maximo -8", que
+   nao e um estado que exista no sistema.
+
+   Devolve 0 quando nao ha corte. desmaiaPorExaustao() diz se caiu no caso
+   extremo, para a ficha poder avisar em vez de so engolir o limite. */
+function corteDeVida(n) {
+    var base = pvSemExaustao();
+    var bruto = 0;
+    if (n >= 5) { bruto = Math.max(50, Math.floor(base / 2)); }
+    else if (n >= 3) { bruto = Math.max(20, Math.floor(base / 4)); }
+    if (!bruto) { return 0; }
+    return Math.min(bruto, Math.max(0, base - 1));
+}
+
+function desmaiaPorExaustao() {
+    var n = nivelExaustao();
+    if (n < 3) { return 0; }
+    var base = pvSemExaustao();
+    var bruto = n >= 5 ? Math.max(50, Math.floor(base / 2)) : Math.max(20, Math.floor(base / 4));
+    /* "reduzir a vida do personagem a 0": o corte bruto alcanca o maximo. */
+    return bruto >= base ? n : 0;
+}
+
+/* O PV antes do corte da exaustao. Precisa existir separado porque
+   exaustaoNos("pv") e chamado de dentro de pvMax() - usar pvMax() aqui
+   seria recursao infinita. */
+function pvSemExaustao() {
+    var e = espec();
+    if (!e) { return 0; }
+    var mCon = modAtributo("con");
+    return e.pv1 + mCon + (e.pvPasso + mCon) * (F.nivel - 1);
 }
 
 function soma(partes) {
@@ -255,6 +337,12 @@ function descansar(tipo) {
             F.dadosVidaGastos[d] = 0;
         });
         if (dados > 0) { mudou.push(dados + " dado" + (dados > 1 ? "s" : "") + " de vida"); }
+        /* "se recupera apenas um nivel de exaustao apos um descanso longo"
+           (pg. 324) - um, nao todos. */
+        if (nivelExaustao() > 0) {
+            F.exaustao = nivelExaustao() - 1;
+            mudou.push("1 nível de exaustão");
+        }
     } else {
         /* "metade do seu maximo": metade do MAXIMO, nao do que falta. Se o
            personagem perdeu menos que isso, recupera so o que perdeu. */

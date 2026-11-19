@@ -911,6 +911,15 @@ function ligar_eventos() {
             return;
         }
 
+        if (d.exaustaoSet !== undefined) {
+            F.exaustao = Number(d.exaustaoSet);
+            salvar();
+            /* A exaustao mexe em PV, Defesa, CDs, deslocamento e pericias:
+               nao da para redesenhar so este canto. */
+            desenhar();
+            return;
+        }
+
         if (d.morteSet) {
             F.testesMorte[d.morteSet] = Number(d.valor);
             salvar();

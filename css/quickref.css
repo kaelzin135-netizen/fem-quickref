@@ -2261,6 +2261,41 @@ input:focus, select:focus, textarea:focus, .aba-btn:focus-visible {
 .pip { width: 15px; height: 15px; padding: 0; border: 1px solid var(--linha-forte); border-radius: 50%; background: none; cursor: pointer; }
 .pip.cheio { background: var(--accent); border-color: var(--accent); }
 
+/* Exaustao. Os pips cheios ficam vermelhos, e nao no accent, porque aqui
+   marcar e ruim - o contrario dos testes de morte, onde o sucesso e azul.
+   O sexto leva o anel: no nivel 6 "o personagem morre" (pg. 323), e o pip
+   tem de parecer diferente ANTES de ser clicado. */
+.pip.exa.cheio { background: var(--vermelho); border-color: var(--vermelho); }
+.pip.exa.fatal { border-color: var(--vermelho); box-shadow: 0 0 0 2px color-mix(in oklab, var(--vermelho) 28%, transparent); }
+
+.exaustao { margin-bottom: 4px; }
+.exa-val { font-size: 11px; font-style: normal; color: var(--tinta-tenue); margin-left: 6px; }
+
+.exa-efeitos {
+    margin: 7px 0 0;
+    padding: 8px 10px;
+    list-style: none;
+    border-left: 2px solid var(--vermelho);
+    background: color-mix(in oklab, var(--vermelho) 7%, transparent);
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: var(--tinta-fraca);
+}
+
+.exa-efeitos li + li { margin-top: 4px; }
+.exa-efeitos b { color: var(--tinta); font-weight: 700; }
+.exa-efeitos .exa-desmaio { margin-top: 6px; padding-top: 6px; border-top: 1px solid color-mix(in oklab, var(--vermelho) 40%, transparent); color: var(--tinta-fraca); }
+.exa-efeitos .exa-desmaio > b:first-child { color: var(--vermelho); }
+
+.exa-nota {
+    margin: 6px 0 0;
+    font-size: 11px;
+    line-height: 1.45;
+    color: var(--tinta-tenue);
+}
+
+.exa-nota b { color: var(--tinta-fraca); }
+
 .grade-dados { display: flex; gap: 12px; }
 .dado-vida { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; color: var(--tinta-fraca); }
 .dado-vida input { width: 46px; padding: 1px 0 2px; border: 0; border-bottom: 1px solid var(--linha-forte); background: none; color: var(--tinta); font-family: inherit; font-size: 13px; text-align: center; }

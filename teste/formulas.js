@@ -16,16 +16,16 @@ var raiz = path.join(__dirname, "..");
    simples de usar exatamente o que o site usa, sem duplicar valor nenhum.
    O eval indireto — (0, eval) — avalia no escopo global, senão um "var"
    dentro desta função não sairia dela. */
-function carregar(arquivo) {
+function carregarArquivo(arquivo) {
     (0, eval)(fs.readFileSync(path.join(raiz, arquivo), "utf8"));
 }
 
-carregar("js/data_pericia.js");
-carregar("js/data_registro.js");
-carregar("js/data_ficha.js");
+carregarArquivo("js/data_pericia.js");
+carregarArquivo("js/data_registro.js");
+carregarArquivo("js/data_ficha.js");
 /* ficha.js não toca no document no topo, então dá para chamar as funções
    reais da ficha aqui em vez de copiar as contas para o teste. */
-carregar("js/ficha.js");
+carregarArquivo("js/ficha.js");
 
 var falhas = 0, passou = 0;
 
@@ -41,13 +41,15 @@ function confere(nome, obtido, esperado, pagina) {
 }
 
 /* ------------------------------------------------------- bônus de treino -- */
+/* Os helpers daqui levam sufixo (bt4, defesaDaTabela, periciaDaTabela) porque
+   ficha.js já define bt(), defesa() e pericia() lendo a ficha carregada. */
 /* "Seu bônus de treinamento inicia como +2 e, nos níveis 5, 9, 13 e 17,
    ele aumenta em +1." — pg. 281 */
-function bt(nivel) { return 1 + Math.ceil(nivel / 4); }
+function bt4(nivel) { return 1 + Math.ceil(nivel / 4); }
 
 [[1, 2], [4, 2], [5, 3], [8, 3], [9, 4], [12, 4],
  [13, 5], [16, 5], [17, 6], [20, 6]].forEach(function (par) {
-    confere("bônus de treinamento no nível " + par[0], bt(par[0]), par[1], 281);
+    confere("bônus de treinamento no nível " + par[0], bt4(par[0]), par[1], 281);
 });
 
 /* ------------------------------------------------------------ modificador -- */
@@ -63,7 +65,9 @@ confere("modificador de 8", mod(8), -1);
 /* Lutador: "No primeiro nível seu máximo de vida é 12 + Modificador de
    Constituição"; nos seguintes "aumenta em 1d10 + Mod. de Constituição. Você
    também pode escolher aumentar em 6 + Modificador de Constituição". — pg. 49 */
-function pvMax(espec, nivel, modCon) {
+/* "pvDaTabela" e nao "pvMax": ficha.js ja tem um pvMax() que le a ficha
+   carregada, e um nome repetido aqui o sombrearia. */
+function pvDaTabela(espec, nivel, modCon) {
     return espec.pv1 + modCon + (nivel - 1) * (espec.pvPasso + modCon);
 }
 /* "doEspec" e nao "espec" de proposito: ficha.js ja traz um espec() que le a
@@ -130,23 +134,23 @@ confere("o modificador entra uma vez, não por nível", peDaTabela(doEspec("cont
 confere("Estamina do Restringido nível 5", peDaTabela(doEspec("restringido"), 5, 3), 20, 114);
 
 /* A Amanaí: Lutador nível 2, Constituição 16 (+3) */
-confere("PV da Amanaí (nível 2, Con 16)", pvMax(lutador, 2, 3), 24, 49);
+confere("PV da Amanaí (nível 2, Con 16)", pvDaTabela(lutador, 2, 3), 24, 49);
 confere("PE da Amanaí (nível 2)", lutador.peNivel * 2, 8, 49);
 
 /* --------------------------------------------------------------- Defesa --- */
 /* "Defesa = 10 + Modificador de Destreza + Metade do seu Nível + Outros
    Bônus" — pg. 281 */
-function defesa(modDes, nivel, outros) {
+function defesaDaTabela(modDes, nivel, outros) {
     return 10 + modDes + Math.floor(nivel / 2) + (outros || 0);
 }
-confere("Defesa da Amanaí (Des 20, nível 2)", defesa(5, 2, 0), 16, 281);
-confere("Defesa com equipamento +2 e voto −2", defesa(5, 2, 2 - 2), 16, 281);
+confere("Defesa da Amanaí (Des 20, nível 2)", defesaDaTabela(5, 2, 0), 16, 281);
+confere("Defesa com equipamento +2 e voto −2", defesaDaTabela(5, 2, 2 - 2), 16, 281);
 
 /* ------------------------------------------------------------------- CD --- */
 /* "10 + Metade do Nível de Personagem + Modificador de Atributo + Bônus de
    Treinamento + Outros Valores Aplicáveis" — pg. 172 */
 function cd(nivel, modAtrib, outros) {
-    return 10 + Math.floor(nivel / 2) + modAtrib + bt(nivel) + (outros || 0);
+    return 10 + Math.floor(nivel / 2) + modAtrib + bt4(nivel) + (outros || 0);
 }
 confere("CD da Amanaí (nível 2, Des 20)", cd(2, 5, 0), 18, 172);
 
@@ -161,15 +165,15 @@ confere("as duas diferem quando os atributos diferem", cd(6, 4, 0) !== cd(6, 2, 
 /* -------------------------------------------------------------- perícia --- */
 /* "mod. do atributo-chave + metade do nível + bônus de treinamento (se
    treinado)"; mestre soma 1,5× o bônus — pg. 280 */
-function pericia(modAtrib, nivel, treinado, mestre) {
+function periciaDaTabela(modAtrib, nivel, treinado, mestre) {
     var b = 0;
-    if (mestre) { b = Math.floor(bt(nivel) * 1.5); }
-    else if (treinado) { b = bt(nivel); }
+    if (mestre) { b = Math.floor(bt4(nivel) * 1.5); }
+    else if (treinado) { b = bt4(nivel); }
     return modAtrib + Math.floor(nivel / 2) + b;
 }
-confere("Acrobacia da Amanaí (Des +5, nível 2, treinada)", pericia(5, 2, true, false), 8, 280);
-confere("perícia sem treino (Des +5, nível 2)", pericia(5, 2, false, false), 6, 280);
-confere("perícia como mestre no nível 2 (BT 2 → 3)", pericia(5, 2, true, true), 9, 280);
+confere("Acrobacia da Amanaí (Des +5, nível 2, treinada)", periciaDaTabela(5, 2, true, false), 8, 280);
+confere("perícia sem treino (Des +5, nível 2)", periciaDaTabela(5, 2, false, false), 6, 280);
+confere("perícia como mestre no nível 2 (BT 2 → 3)", periciaDaTabela(5, 2, true, true), 9, 280);
 
 /* ----------------------------------------------------------- treinamentos -- */
 /* "Cada linha tem 4 etapas: as três primeiras custam 1 foco cada e a quarta
@@ -237,6 +241,87 @@ F.nivel = 2;
 F.pePerdidos = 8;
 confere("o relato do Restringido fala de Estamina",
     /Estamina/.test(descansar("longo").join(" ")), true, 21);
+
+/* -------------------------------------------------------------- exaustão -- */
+/* Livro, pg. 323. O castigo no nível N é −N em "todas as suas rolagens,
+   Defesa e Classe de Dificuldade", e −1,5 m de deslocamento por nível. */
+function comExaustao(n) {
+    F = ficha_nova();
+    F.especializacao = "lutador";
+    F.nivel = 4;
+    F.atributosBase.des = 16;
+    F.atributosBase.con = 16;
+    F.exaustao = n;
+}
+
+comExaustao(0);
+var defSa = defesa().total, pvSa = pvMax().total;
+var cdESa = cdEspec().total, cdASa = cdAmaldicoada().total;
+confere("sem exaustão a Defesa não muda", defSa, 10 + 3 + 2, 281);
+confere("sem exaustão o deslocamento é 9 m", deslocamento().total, 9, 323);
+
+comExaustao(1);
+confere("exaustão 1: −1 na Defesa", defesa().total, defSa - 1, 323);
+confere("exaustão 1: −1 na CD de Especialização", cdEspec().total, cdESa - 1, 323);
+confere("exaustão 1: −1 na CD Amaldiçoada", cdAmaldicoada().total, cdASa - 1, 323);
+confere("exaustão 1: −1,5 m de deslocamento", deslocamento().total, 7.5, 323);
+confere("exaustão 1 ainda não corta o PV máximo", pvMax().total, pvSa, 323);
+
+comExaustao(3);
+confere("exaustão 3: −3 na Defesa", defesa().total, defSa - 3, 323);
+confere("exaustão 3: −4,5 m de deslocamento", deslocamento().total, 4.5, 323);
+/* Lutador nível 4, Con 16 (+3): 12+3 + 3×(6+3) = 42. Um quarto é 10,5, que
+   é MENOR que 20, então o corte é de 20 — "o que for maior" vale para o
+   tamanho da perda, não para o que sobra. */
+confere("PV antes do corte", pvSa, 42, 49);
+confere("exaustão 3 corta 20, não 1/4 (que seria menos)", pvMax().total, 42 - 20, 323);
+
+comExaustao(5);
+/* 42 de vida e um corte bruto de 50: o corte zeraria o personagem. O livro
+   diz que aí ele NÃO é aplicado inteiro — "ao invés disso, desmaie-o por uma
+   quantidade de descansos longos igual à quantidade de níveis de exaustão".
+   Sem esse limite a ficha mostrava "PV máximo −8", que não existe no sistema. */
+confere("o corte não leva o PV máximo a zero ou menos", pvMax().total, 1, 323);
+confere("a ficha avisa o desmaio, por 5 descansos longos", desmaiaPorExaustao(), 5, 323);
+confere("exaustão 5: −7,5 m de deslocamento", deslocamento().total, 1.5, 323);
+
+/* Num personagem robusto o bastante, o corte de 50 cabe e é aplicado
+   inteiro — aí não há desmaio. Lutador nível 12, Con 20 (+5): 12+5 +
+   11×(6+5) = 138. Metade é 69, que é maior que 50, então o corte é 69. */
+F = ficha_nova();
+F.especializacao = "lutador";
+F.nivel = 12;
+F.atributosBase.con = 20;
+F.exaustao = 5;
+confere("PV antes do corte, nível 12", pvSemExaustao(), 138, 49);
+confere("exaustão 5 corta metade (69), que é maior que 50", pvMax().total, 138 - 69, 323);
+confere("com vida sobrando não há desmaio", desmaiaPorExaustao(), 0, 323);
+
+comExaustao(5);
+
+/* Atenção é 10 + a perícia de Percepção, que já levou o −N. Se a exaustão
+   entrasse também em "atenção", o castigo seria cobrado duas vezes. */
+comExaustao(0);
+var atSa = atencao().total, perSa = pericia("percepcao").total;
+comExaustao(2);
+confere("exaustão 2: −2 na perícia", pericia("percepcao").total, perSa - 2, 323);
+confere("a Atenção cai −2, e não −4", atencao().total, atSa - 2, 323);
+
+/* O descanso longo tira UM nível, não todos (pg. 324). */
+comExaustao(3);
+descansar("longo");
+confere("descanso longo tira um nível de exaustão", F.exaustao, 2, 324);
+descansar("longo");
+confere("e mais um no descanso seguinte", F.exaustao, 1, 324);
+comExaustao(0);
+confere("descanso longo não empurra a exaustão para negativo",
+    (descansar("longo"), F.exaustao), 0, 324);
+
+/* A ficha não deixa passar de 6 nem descer de 0. */
+comExaustao(9);
+confere("exaustão não passa de 6", nivelExaustao(), 6, 323);
+comExaustao(-2);
+confere("exaustão não desce de 0", nivelExaustao(), 0, 323);
 
 /* --------------------------------------------------------------- saída ---- */
 console.log("");
